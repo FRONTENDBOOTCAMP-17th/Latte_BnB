@@ -35,6 +35,26 @@
 - 위시리스트 페이지 : 내용
 - 로그인/회원가입 페이지 : 내용
 
+## 🛠️ 프로토타입
+
+### 프로토타입 구현과정 문서
+- [prototype-implementation-process.md](./docs/prototype-Implementation-process.md)
+
+<details>
+<summary>디자인 시안 모음 (클릭 시 열립니다.)</summary>
+<ul>
+  <li><a href="./docs/prototype-design-draft/landing.md">랜딩 페이지</a></li>
+  <li><a href="./docs/prototype-design-draft/login.md">로그인 페이지</a></li>
+  <li><a href="./docs/prototype-design-draft/register.md">회원가입 페이지</a></li>
+  <li><a href="./docs/prototype-design-draft/accommodation_detail.md.md">숙소 상세 페이지</a></li>
+  <li><a href="./docs/prototype-design-draft/reservation_request.md.md">예약 신청 페이지</a></li>
+  <li><a href="./docs/prototype-design-draft/reservation_detail.md.md">예약 상세 페이지</a></li>
+  <li><a href="./docs/prototype-design-draft/my_reservation.md.md">내 예약 목록 페이지</a></li>
+  <li><a href="./docs/prototype-design-draft/wish.md">위시리스트 페이지</a></li>
+  <li><a href="./docs/prototype-design-draft/profile.md">프로필 페이지</a></li>
+</ul>
+</details>
+
 ## 📁 프로젝트 구조
 
 ```
