@@ -27,28 +27,28 @@
 
 ### 2.2 API 요약 표
 
-| Method | API URL | Authorization 여부 | Request Body | API 요약 |
-| --- | --- | --- | --- | --- |
-| `POST` | `/api/v1/auth/signup` | 아니오 | `username`, `password`, `name`, `phone` | 일반 회원가입 |
-| `POST` | `/api/v1/auth/login` | 아니오 | `username`, `password` | 로그인 및 토큰 발급 |
-| `POST` | `/api/v1/auth/logout` | 예 | `-` | 로그아웃 처리 |
-| `GET` | `/api/v1/accommodations?page={page}&pageLimit={pageLimit}&query={query}&sort={sort}` | 아니오 | `-` | 숙소 목록 조회, 검색, 정렬, 페이지네이션 |
-| `GET` | `/api/v1/accommodations/{id}` | 아니오 | `-` | 숙소 상세 조회 |
-| `GET` | `/api/v1/me/wishlist?page={page}&pageLimit={pageLimit}` | 예 | `-` | 위시리스트 목록 조회 |
-| `POST` | `/api/v1/me/wishlist/check` | 예 | `accommodationIds[]` | 현재 페이지 숙소들의 찜 여부 확인 |
-| `PATCH` | `/api/v1/me/wishlist` | 예 | `accommodation.id`, `isWishlisted` | 찜 추가/삭제 통합 |
-| `GET` | `/api/v1/accommodations/{id}/reservation-context` | 예 | `-` | 예약 요청 페이지 진입용 숙소/요금 정보 조회 |
-| `POST` | `/api/v1/reservations` | 예 | `accommodation.id`, `schedule`, `guestCount`, `agreeToTerms` | 예약 생성 및 확정 |
-| `GET` | `/api/v1/me/reservations?page={page}&pageLimit={pageLimit}&status={status}` | 예 | `-` | 내 예약 목록 조회 |
-| `GET` | `/api/v1/reservations/{id}` | 예 | `-` | 예약 상세 조회 |
-| `PATCH` | `/api/v1/reservations/{id}/cancel` | 예 | `reason` | 예약 취소 |
-| `GET` | `/api/v1/me/profile` | 예 | `-` | 내 프로필 조회 |
-| `DELETE` | `/api/v1/me` | 예 | `password` | 회원 탈퇴 |
-| `GET` | `/api/v1/admin/accommodations?page={page}&pageLimit={pageLimit}&query={query}` | 예(Admin) | `-` | 관리자 숙소 목록 조회 |
-| `GET` | `/api/v1/admin/accommodations/{id}` | 예(Admin) | `-` | 관리자 숙소 단건 조회 |
-| `POST` | `/api/v1/admin/accommodations` | 예(Admin) | 숙소 등록 필드 | 관리자 숙소 등록 |
-| `PATCH` | `/api/v1/admin/accommodations/{id}` | 예(Admin) | 수정할 숙소 필드 | 관리자 숙소 수정 |
-| `DELETE` | `/api/v1/admin/accommodations/{id}` | 예(Admin) | `-` | 관리자 숙소 삭제 |
+| Method | API URL | Authorization 여부 |  API 요약 |
+| --- | --- | --- | --- |
+| `POST` | `/api/v1/auth/signup` | 아니오 |  일반 회원가입 |
+| `POST` | `/api/v1/auth/login` | 아니오 |  로그인 및 토큰 발급 |
+| `POST` | `/api/v1/auth/logout` | 예 | 로그아웃 처리 |
+| `GET` | `/api/v1/accommodations?page={page}&pageLimit={pageLimit}&query={query}&sort={sort}` | 아니오 | 숙소 목록 조회, 검색, 정렬, 페이지네이션 |
+| `GET` | `/api/v1/accommodations/{id}` | 아니오 | 숙소 상세 조회 |
+| `GET` | `/api/v1/me/wishlist?page={page}&pageLimit={pageLimit}` | 예 | 위시리스트 목록 조회 |
+| `POST` | `/api/v1/me/wishlist/check` | 예 |  현재 페이지 숙소들의 찜 여부 확인 |
+| `PATCH` | `/api/v1/me/wishlist` | 예 |  찜 추가/삭제 통합 |
+| `GET` | `/api/v1/accommodations/{id}/reservation-context` | 예 | 예약 요청 페이지 진입용 숙소/요금 정보 조회 |
+| `POST` | `/api/v1/reservations` | 예 | 예약 생성 및 확정 |
+| `GET` | `/api/v1/me/reservations?page={page}&pageLimit={pageLimit}&status={status}` | 예 | 내 예약 목록 조회 |
+| `GET` | `/api/v1/reservations/{id}` | 예 | 예약 상세 조회 |
+| `PATCH` | `/api/v1/reservations/{id}/cancel` | 예 | 예약 취소 |
+| `GET` | `/api/v1/me/profile` | 예 | 내 프로필 조회 |
+| `DELETE` | `/api/v1/me` | 예 | 회원 탈퇴 |
+| `GET` | `/api/v1/admin/accommodations?page={page}&pageLimit={pageLimit}&query={query}` | 예(Admin) | 관리자 숙소 목록 조회 |
+| `GET` | `/api/v1/admin/accommodations/{id}` | 예(Admin) | 관리자 숙소 단건 조회 |
+| `POST` | `/api/v1/admin/accommodations` | 예(Admin) | 관리자 숙소 등록 |
+| `PATCH` | `/api/v1/admin/accommodations/{id}` | 예(Admin) | 관리자 숙소 수정 |
+| `DELETE` | `/api/v1/admin/accommodations/{id}` | 예(Admin) | 관리자 숙소 삭제 |
 
 ---
 
