@@ -73,3 +73,8 @@
   --color-negative-900: #7e241e;
   --color-negative-950: #440e0b;
 }
+
+body::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
