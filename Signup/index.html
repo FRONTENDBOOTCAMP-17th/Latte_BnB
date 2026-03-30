@@ -3,15 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../src/style.css" />
     <title>회원가입 페이지</title>
     <style>
-      body {
+      .signup-card {
+        background: var(--color-pink-100);
+        /* box-shadow: 8px 5px var(--color-rose-300); */
         display: flex;
         flex-flow: nowrap column;
         justify-content: center;
         gap: 3rem;
         padding-block: 2rem;
-        margin: 0;
+        margin: 2rem;
+        border-radius: 10px;
+        min-width: 416px;
+        transition-duration: 500ms;
 
         @media (width >= 768px) {
           inline-size: 450px;
@@ -24,7 +30,13 @@
         }
       }
 
+      .signup-card:hover {
+        transform: translate(-5px, -10px);
+        /* box-shadow: 12px 8px var(--color-rose-200); */
+      }
+
       p {
+        color: var(--color-slate-700);
         display: flex;
         justify-content: center;
         font-size: 1.5rem;
@@ -42,46 +54,55 @@
       }
 
       input[type='text'] {
+        background: var(--color-white);
         padding-block: 0.75rem;
         padding-inline-start: 0.75rem;
-        border-radius: 0.5rem;
-        margin-inline: 20px;
+        border: none;
+        border-radius: 1rem;
+        margin-inline: 4rem;
       }
 
       div > label {
-        margin-inline-start: 1rem;
-        color: gray;
+        color: var(--color-shark-400);
+        margin-inline-start: 2rem;
       }
 
       #lattebtn {
-        background: #ff8194;
+        background: var(--color-rose-300);
         border-radius: 0.5rem;
         display: flex;
         justify-content: center;
         align-self: center;
         inline-size: 10rem;
         padding: 1rem;
+        border: none;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
-    <p>에어비앤비에 오신 것을 환영합니다!</p>
-    <div id="id">
-      <label for="latteId">아이디</label>
-      <input type="text" id="latteId" placeholder="아이디를 입력해주세요." />
+    <div class="signup-card">
+      <p>라떼비앤비에 오신 것을 환영합니다!</p>
+      <div id="id">
+        <label for="latteId">아이디</label>
+        <input type="text" id="latteId" placeholder="아이디를 입력해주세요." />
+      </div>
+      <div id="pwd">
+        <label for="lattePw">비밀번호</label>
+        <input
+          type="text"
+          id="lattePw"
+          placeholder="비밀번호를 입력해주세요." />
+      </div>
+      <div id="name">
+        <label for="latteNm">이름</label>
+        <input type="text" id="latteNm" placeholder="이름을 입력해주세요." />
+      </div>
+      <div id="phone">
+        <label for="lattePn">전화번호</label>
+        <input type="text" id="lattePn" placeholder="예) 010-1234-5678" />
+      </div>
+      <button type="submit" id="lattebtn">회원가입</button>
     </div>
-    <div id="pwd">
-      <label for="lattePw">비밀번호</label>
-      <input type="text" id="lattePw" placeholder="비밀번호를 입력해주세요." />
-    </div>
-    <div id="name">
-      <label for="latteNm">이름</label>
-      <input type="text" id="latteNm" placeholder="이름을 입력해주세요." />
-    </div>
-    <div id="phone">
-      <label for="lattePn">전화번호</label>
-      <input type="text" id="lattePn" placeholder="예) 010-1234-5678" />
-    </div>
-    <button type="submit" id="lattebtn">회원가입</button>
   </body>
 </html>
