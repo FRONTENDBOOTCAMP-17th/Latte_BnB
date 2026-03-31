@@ -74,7 +74,17 @@
   --color-negative-950: #440e0b;
 }
 
-body::-webkit-scrollbar {
-  width: 0;
-  background: transparent;
+@layer base {
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: theme('colors.shark.700');
+    -webkit-box-shadow: 0 0 0 1000px theme('colors.primary.200') inset;
+    box-shadow: 0 0 0 1000px theme('colors.primary.200') inset;
+    transition: background-color 9999s ease-out 0s;
+  }
+  body::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
 }
