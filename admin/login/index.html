@@ -4,35 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>latte-bnb | 관리자 로그인</title>
-    <style>
-      [popover] {
-        transition: all 0.3s ease-in-out;
-        &:popover-open {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @starting-style {
-        #warnning:popover-open {
-          opacity: 0;
-          transform: translateY(8px);
-        }
-      }
-
-      [popover]:popover-open.closePopover {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-
-      .blankInputMessage {
-        &::before {
-          content: '빈 칸: (';
-        }
-        &::after {
-          content: ')';
-        }
-      }
-    </style>
     <script type="module" src="./index.js"></script>
   </head>
   <body>
@@ -88,13 +59,6 @@
           </button>
         </fieldset>
       </form>
-      <div
-        id="warnning"
-        popover
-        class="absolute top-4/5 left-1/2 -translate-y-full -translate-x-1/2 rounded-2xl p-4 border-1 border-negative-600 bg-negative-300 text-shark-700 shadow-md">
-        <p class="font-semibold">⚠ 빈 칸을 채워주세요.</p>
-        <pre class="blankInputMessage text-sm"></pre>
-      </div>
     </main>
   </body>
 </html>
