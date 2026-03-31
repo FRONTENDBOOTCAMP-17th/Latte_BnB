@@ -9,7 +9,7 @@ function buildDefaultToast() {
   toastNode = document.createElement('div');
   toastNode.id = 'toast';
   toastNode.className =
-    'absolute top-4/5 left-1/2 -translate-y-full -translate-x-1/2 rounded-2xl p-4 border-1 border-neutral-600 bg-neutral-300 text-shark-700 shadow-md';
+    'absolute top-4/5 left-1/2 -translate-y-full -translate-x-1/2 rounded-2xl p-4 border-1 shadow-md';
   toastNode.appendChild(buildMessageNode());
   toastNode.appendChild(buildDetailNode());
   return toastNode;
