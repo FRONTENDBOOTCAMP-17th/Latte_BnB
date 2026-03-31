@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>latte-bnb | 관리자 로그인</title>
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <main
+      class="min-w-100 h-screen grid grid-col-[400px] grid-rows-[0.4fr_1fr] gap-4 bg-gradient-to-t from-primary-50 via-primary-400 to-primary-100">
+      <a
+        href="/"
+        id="logo"
+        class="w-fit h-15 text-primary-300 flex items-center justify-start self-end justify-self-center focus:outline-primary-500 focus:outline-offset-10 focus:rounded-xl">
+        <svg
+          class="w-12 h-12"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 256 320"
+          role="img"
+          aria-label="latte bnb 로고">
+          <path
+            fill="white"
+            d="M128 12 C78 12 38 52 38 102 C38 170 93 220 121 248 C125 252 131 252 135 248 C163 220 218 170 218 102 C218 52 178 12 128 12Z" />
+          <path
+            fill="currentColor"
+            d="M127 70 L80 105 C77 108 78 114 82 114 L88 114 L88 150 C88 154 91 157 95 157 L161 157 C165 157 168 154 168 150 L168 114 L175 114 C180 114 181 108 178 106 L160 94 L160 74 C160 71 158 69 155 69 L145 69 C142 69 140 71 140 74 L140 79 L133 73 C130 70 126 70 123 73Z" />
+          <rect x="110" y="108" width="14" height="14" rx="2" fill="white" />
+          <rect x="132" y="108" width="14" height="14" rx="2" fill="white" />
+          <rect x="110" y="130" width="14" height="14" rx="2" fill="white" />
+          <rect x="132" y="130" width="14" height="14" rx="2" fill="white" />
+        </svg>
+        <p class="font-semibold text-2xl text-white">lattebnb</p>
+      </a>
+      <form
+        method="post"
+        id="adminLoginForm"
+        class="min-w-100 w-fit self-start justify-self-center p-10 md:border-shark-50 md:border-2 md:rounded-3xl bg-transparent">
+        <fieldset class="flex flex-col gap-8">
+          <legend class="text-3xl text-white font-semibold text-center mb-10">
+            관리자 로그인
+          </legend>
+          <input
+            type="text"
+            id="adminId"
+            class="border-shark-50 text-white border-1 rounded-md px-4 py-2 focus:outline-primary-500 placeholder:text-shark-100"
+            placeholder="아이디" />
+          <input
+            type="password"
+            id="adminPassword"
+            class="border-shark-50 text-white border-1 rounded-md px-4 py-2 focus:outline-primary-500 placeholder:text-shark-100"
+            placeholder="비밀번호" />
+          <button
+            type="submit"
+            class="text-white border-shark-50 border-1 rounded-md py-2 hover:bg-primary-100/50 hover:text-shark-500 focus:outline-primary-500">
+            로그인
+          </button>
+        </fieldset>
+      </form>
+    </main>
+  </body>
+</html>
