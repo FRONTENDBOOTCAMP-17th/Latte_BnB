@@ -4,105 +4,60 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../src/style.css" />
+    <script type="module" src="./index.js"></script>
     <title>회원가입 페이지</title>
-    <style>
-      .signup-card {
-        background: var(--color-pink-100);
-        /* box-shadow: 8px 5px var(--color-rose-300); */
-        display: flex;
-        flex-flow: nowrap column;
-        justify-content: center;
-        gap: 3rem;
-        padding-block: 2rem;
-        margin: 2rem;
-        border-radius: 10px;
-        min-width: 416px;
-        transition-duration: 500ms;
-
-        @media (width >= 768px) {
-          inline-size: 450px;
-          justify-self: center;
-        }
-
-        @media (width >= 1920px) {
-          inline-size: 600px;
-          justify-self: center;
-        }
-      }
-
-      .signup-card:hover {
-        transform: translate(-5px, -10px);
-        /* box-shadow: 12px 8px var(--color-rose-200); */
-      }
-
-      p {
-        color: var(--color-slate-700);
-        display: flex;
-        justify-content: center;
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin: 0;
-      }
-
-      #id,
-      #pwd,
-      #name,
-      #phone {
-        display: flex;
-        flex-flow: wrap column;
-        gap: 2rem;
-      }
-
-      input[type='text'] {
-        background: var(--color-white);
-        padding-block: 0.75rem;
-        padding-inline-start: 0.75rem;
-        border: none;
-        border-radius: 1rem;
-        margin-inline: 4rem;
-      }
-
-      div > label {
-        color: var(--color-shark-400);
-        margin-inline-start: 2rem;
-      }
-
-      #lattebtn {
-        background: var(--color-rose-300);
-        border-radius: 0.5rem;
-        display: flex;
-        justify-content: center;
-        align-self: center;
-        inline-size: 10rem;
-        padding: 1rem;
-        border: none;
-        cursor: pointer;
-      }
-    </style>
   </head>
   <body>
-    <div class="signup-card">
-      <p>라떼비앤비에 오신 것을 환영합니다!</p>
-      <div id="id">
-        <label for="latteId">아이디</label>
-        <input type="text" id="latteId" placeholder="아이디를 입력해주세요." />
-      </div>
-      <div id="pwd">
-        <label for="lattePw">비밀번호</label>
+    <div
+      class="m-8 flex min-w-104 flex-col justify-center gap-8 rounded-[10px] py-8 shadow-[3px_3px_5px_5px_var(--color-shark-300)] transition duration-700 hover:-translate-x-1.25 hover:-translate-y-1.25 hover:shadow-[5px_5px_7px_7px_var(--color-shark-200)] md:w-112.5 md:justify-self-center min-[1920px]:w-150 min-[1920px]:justify-self-center">
+      <p class="m-0 flex justify-center text-2xl font-bold text-slate-700">
+        라떼비앤비에 오신 것을 환영합니다!
+      </p>
+      <div id="id" class="flex flex-col gap-4">
+        <label for="latteId" class="ms-8 text-shark-400">아이디</label>
         <input
           type="text"
+          id="latteId"
+          placeholder="아이디를 입력해주세요."
+          class="mx-16 rounded-2xl border border-shark-400 bg-white py-3 ps-3" />
+        <p id="result1" class="m-0 flex justify-center text-xs font-bold"></p>
+      </div>
+      <div id="pwd" class="flex flex-col gap-4">
+        <label for="lattePw" class="ms-8 text-shark-400">비밀번호</label>
+        <input
+          type="password"
           id="lattePw"
-          placeholder="비밀번호를 입력해주세요." />
+          placeholder="비밀번호를 입력해주세요."
+          class="mx-16 rounded-2xl border border-shark-400 bg-white py-3 ps-3" />
+        <p id="result2" class="m-0 flex justify-center text-xs font-bold"></p>
       </div>
-      <div id="name">
-        <label for="latteNm">이름</label>
-        <input type="text" id="latteNm" placeholder="이름을 입력해주세요." />
+      <div id="name" class="flex flex-col gap-4">
+        <label for="latteNm" class="ms-8 text-shark-400">이름</label>
+        <input
+          type="text"
+          id="latteNm"
+          placeholder="이름을 입력해주세요."
+          class="mx-16 rounded-2xl border border-shark-400 bg-white py-3 ps-3" />
+        <p id="result3" class="m-0 flex justify-center text-xs font-bold"></p>
       </div>
-      <div id="phone">
-        <label for="lattePn">전화번호</label>
-        <input type="text" id="lattePn" placeholder="예) 010-1234-5678" />
+      <div id="phone" class="flex flex-col gap-4">
+        <label for="lattePn" class="ms-8 text-shark-400">전화번호</label>
+        <input
+          type="text"
+          id="lattePn"
+          placeholder="예) 010-1234-5678"
+          class="mx-16 rounded-2xl border border-shark-400 bg-white py-3 ps-3" />
+        <p id="result4" class="m-0 flex justify-center text-xs font-bold"></p>
       </div>
-      <button type="submit" id="lattebtn">회원가입</button>
+      <p
+        id="result5"
+        class="m-0 flex justify-center whitespace-pre-line text-xs font-bold"></p>
+      <button
+        type="submit"
+        id="lattebtn"
+        class="flex w-40 cursor-pointer justify-center self-center rounded-lg bg-primary-300 p-4 text-white transition duration-500 hover:bg-white hover:text-primary-300 hover:shadow-[0_0_0_2px_var(--color-primary-300)]">
+        회원가입
+      </button>
     </div>
   </body>
 </html>
