@@ -10,6 +10,7 @@ export default defineConfig({
         landing: resolve(__dirname, 'index.html'),
         signup: resolve(__dirname, 'signup/index.html'),
         roomsDetail: resolve(__dirname, 'rooms-detail/index.html'),
+        adminLogin: resolve(__dirname, 'admin/login/index.html'),
       },
     },
   },
