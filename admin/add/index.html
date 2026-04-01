@@ -32,7 +32,10 @@
         </svg>
         <p class="font-semibold text-2xl text-white">lattebnb</p>
       </a>
-      <form method="post" class="self-start p-5 border-t-2 border-primary-400">
+      <form
+        id="addForm"
+        method="post"
+        class="self-start p-5 border-t-2 border-primary-400">
         <fieldset
           class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           <legend class="font-semibold text-white text-2xl mb-10">
@@ -75,11 +78,47 @@
           <div
             class="flex flex-col md:col-start-2 md:row-start-3 lg:row-start-2 lg:col-start-4 lg:self-start">
             <label for="maxGuest" class="adminLabel">최대 수용 인원</label>
-            <input
-              type="number"
-              name="maxGuest"
-              id="maxGuest"
-              class="adminInputNumber" />
+            <div class="flex items-center">
+              <button
+                type="button"
+                class="w-10 aspect-square text-primary-950 border-shark-50 border-1 border-r-0 bg-primary-500 hover:bg-primary-500/70 rounded-tl-[50%] rounded-bl-[50%]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6 ml-auto mr-1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5 12h14" />
+                </svg>
+              </button>
+              <input
+                type="number"
+                name="maxGuest"
+                id="maxGuest"
+                class="adminInputNumber rounded-none w-20 text-center"
+                min="0"
+                value="0" />
+              <button
+                type="button"
+                class="w-10 aspect-square text-primary-950 border-shark-50 border-1 border-l-0 bg-primary-500 hover:bg-primary-500/70 rounded-tr-[50%] rounded-br-[50%]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  class="size-6 ml-1.5 mr-auto">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </button>
+            </div>
           </div>
           <div
             class="flex flex-col lg:row-start-2 lg:col-start-3 lg:col-span-2 lg:self-end lg:h-2/3 lg:row-span-2">
@@ -112,11 +151,47 @@
           <div
             class="flex flex-col md:col-start-2 md:row-start-3 md:self-end lg:row-start-2 lg:col-start-4 lg:self-start lg:translate-y-full">
             <label for="minNights" class="adminLabel">최소 숙박 가능일</label>
-            <input
-              type="number"
-              name="minNights"
-              id="minNights"
-              class="adminInputNumber" />
+            <div class="flex items-center">
+              <button
+                type="button"
+                class="w-10 aspect-square text-primary-950 border-shark-50 border-1 border-r-0 bg-primary-500 hover:bg-primary-500/70 rounded-tl-[50%] rounded-bl-[50%]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6 ml-auto mr-1.5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5 12h14" />
+                </svg>
+              </button>
+              <input
+                type="number"
+                name="minNights"
+                id="minNights"
+                class="adminInputNumber rounded-none w-20 text-center"
+                min="0"
+                value="0" />
+              <button
+                type="button"
+                class="w-10 aspect-square text-primary-950 border-shark-50 border-1 border-l-0 bg-primary-500 hover:bg-primary-500/70 rounded-tr-[50%] rounded-br-[50%]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  class="size-6 ml-1.5 mr-auto">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </button>
+            </div>
           </div>
           <div
             class="w-full grid grid-cols-2 lg:grid-cols-4 justify-self-start lg:self-center gap-5 lg:col-span-2">
@@ -167,6 +242,12 @@
           </div>
         </fieldset>
       </form>
+      <button
+        type="submit"
+        form="addForm"
+        class="w-3/4 max-w-lg place-self-center font-semibold text-2xl text-white bg-primary-500 hover:bg-primary-500/80 m-5 p-4 rounded-3xl">
+        등록하기
+      </button>
     </main>
   </body>
 </html>

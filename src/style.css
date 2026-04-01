@@ -75,6 +75,22 @@
 }
 
 @layer base {
+  input,
+  a,
+  button {
+    @apply focus:outline-primary-500;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus {
@@ -106,7 +122,7 @@
 
   .adminInputText,
   .adminInputNumber {
-    @apply border-shark-50 text-white border-1 rounded-md px-4 py-2 focus:outline-primary-500 placeholder:text-shark-100 my-2;
+    @apply border-shark-50 text-white border-1 h-10 px-4 py-2 rounded-md focus:outline-primary-500 placeholder:text-shark-100 my-2;
   }
   .adminLabel {
     @apply font-semibold text-white text-lg;
