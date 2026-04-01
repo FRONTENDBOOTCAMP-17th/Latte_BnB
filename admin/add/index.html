@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>latte-bnb | 관리자 숙소 추가</title>
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <main
+      class="min-w-100 h-screen bg-gradient-to-t grid grid-cols-1 auto-rows-min from-primary-50 via-primary-400 to-primary-300">
+      <a
+        href="/"
+        id="logo"
+        class="w-fit h-15 text-primary-300 flex items-center justify-start justify-self-center focus:outline-primary-500 focus:outline-offset-10 focus:rounded-xl">
+        <svg
+          class="w-12 h-12"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 256 320"
+          role="img"
+          aria-label="latte bnb 로고">
+          <path
+            fill="white"
+            d="M128 12 C78 12 38 52 38 102 C38 170 93 220 121 248 C125 252 131 252 135 248 C163 220 218 170 218 102 C218 52 178 12 128 12Z" />
+          <path
+            fill="currentColor"
+            d="M127 70 L80 105 C77 108 78 114 82 114 L88 114 L88 150 C88 154 91 157 95 157 L161 157 C165 157 168 154 168 150 L168 114 L175 114 C180 114 181 108 178 106 L160 94 L160 74 C160 71 158 69 155 69 L145 69 C142 69 140 71 140 74 L140 79 L133 73 C130 70 126 70 123 73Z" />
+          <rect x="110" y="108" width="14" height="14" rx="2" fill="white" />
+          <rect x="132" y="108" width="14" height="14" rx="2" fill="white" />
+          <rect x="110" y="130" width="14" height="14" rx="2" fill="white" />
+          <rect x="132" y="130" width="14" height="14" rx="2" fill="white" />
+        </svg>
+        <p class="font-semibold text-2xl text-white">lattebnb</p>
+      </a>
+      <form method="post" class="self-start">
+        <fieldset>
+          <legend>숙소 정보를 입력하세요.</legend>
+          <div>
+            <label for="title">숙소 이름</label>
+            <input type="text" name="title" id="title" />
+          </div>
+          <div>
+            <label for="thumbnail">대표 이미지</label>
+            <input
+              type="file"
+              name="thumbnail"
+              id="thumbnail"
+              accept="image/*"
+              class="hidden" />
+            <button type="button">썸네일 추가</button>
+            <div id="thumbnailPreview"></div>
+          </div>
+          <div>
+            <label for="region">지역</label>
+            <input type="text" name="region" id="region" />
+            <label for="address">상세 주소</label>
+            <input type="text" name="address" id="address" />
+          </div>
+          <div>
+            <label for="">최대 수용 인원</label>
+            <input type="number" name="maxGuest" id="maxGuest" />
+          </div>
+          <div>
+            <label for="description">숙소 설명</label>
+            <textarea name="description" id="description"></textarea>
+          </div>
+          <div>
+            <label for="adultPrice">성인 1박 요금</label>
+            <input type="text" name="adultPrice" id="adultPrice" />
+            <label for="childPrice">어린이 1박 요금</label>
+            <input type="text" name="childPrice" id="childPrice" />
+          </div>
+          <div>
+            <label for="serviceFee">서비스 요금</label>
+            <input type="text" name="serviceFee" id="serviceFee" />
+          </div>
+          <div>
+            <label for="minNights">최소 숙박 가능일</label>
+            <input type="text" name="minNights" id="minNights" />
+          </div>
+          <div>
+            <label for="checkInTime">체크인 시간</label>
+            <input type="time" name="checkInTime" id="checkInTime" />
+            <label for="checkOutTime">체크아웃 시간</label>
+            <input type="time" name="checkOutTime" id="checkOutTime" />
+          </div>
+          <div>
+            <label for="images">숙소 이미지(다중 선택 가능)</label>
+            <input
+              type="file"
+              name="images"
+              id="images"
+              multiple
+              class="hidden" />
+            <button type="button">숙소 이미지 추가</button>
+            <div id="imagesPreview"></div>
+          </div>
+          <div>
+            <p>예약 불가 날짜</p>
+            <span>
+              하루만 지정하고 싶은 경우 시작일, 종료일을 동일하게 지정
+            </span>
+            <label for="startDate">시작일</label>
+            <input type="date" name="startDate" id="startDate" />
+            <label for="endDate">종료일</label>
+            <input type="date" name="endDate" id="endDate" />
+          </div>
+        </fieldset>
+      </form>
+    </main>
+  </body>
+</html>

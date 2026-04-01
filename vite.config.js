@@ -11,6 +11,7 @@ export default defineConfig({
         signup: resolve(__dirname, 'signup/index.html'),
         roomsDetail: resolve(__dirname, 'rooms-detail/index.html'),
         adminLogin: resolve(__dirname, 'admin/login/index.html'),
+        adminAdd: resolve(__dirname, 'admin/add/index.html'),
       },
     },
   },
