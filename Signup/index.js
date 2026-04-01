@@ -1,5 +1,42 @@
 const lattebtn = document.getElementById('lattebtn');
 
+const id = document.getElementById('latteId');
+const pw = document.getElementById('lattePw');
+const nm = document.getElementById('latteNm');
+const pn = document.getElementById('lattePn');
+
+window.addEventListener('load', () => {
+  id.focus();
+});
+
+id.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    pw.focus();
+  }
+});
+
+pw.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    nm.focus();
+  }
+});
+
+nm.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    pn.focus();
+  }
+});
+
+pn.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    lattebtn.click();
+  }
+});
+
 lattebtn.addEventListener('click', async () => {
   const result1 = document.getElementById('result1');
   const result2 = document.getElementById('result2');
@@ -14,10 +51,10 @@ lattebtn.addEventListener('click', async () => {
   result5.textContent = '';
 
   const signupData = {
-    username: document.getElementById('latteId').value.trim(),
-    password: document.getElementById('lattePw').value.trim(),
-    name: document.getElementById('latteNm').value.trim(),
-    phone: document.getElementById('lattePn').value.trim().replace(/-/g, ''),
+    username: id.value.trim(),
+    password: pw.value.trim(),
+    name: nm.value.trim(),
+    phone: pn.value.trim().replace(/-/g, ''),
   };
 
   const regId = /^[a-z0-9_]{4,20}$/;
@@ -63,7 +100,10 @@ lattebtn.addEventListener('click', async () => {
 
     if (!res.ok) {
       throw new Error('HTTP 오류: ' + res.status);
+    } else {
+      alert(`회원가입이 완료되었습니다!`);
     }
+
     location.href = `../index.html`;
   } catch (e) {
     result5.textContent = `형식에 맞지 않습니다.\n회원 정보를 다시 입력해주세요.`;

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../src/style.css" />
+    <script type="module" src="./index.js"></script>
+    <title>로그인 페이지</title>
+  </head>
+  <body>
+    <div
+      id="login-card"
+      class="m-8 flex min-w-104 h-195 flex-col justify-start gap-8 rounded-[10px] py-8 shadow-[3px_3px_5px_5px_var(--color-shark-300)] transition duration-700 hover:-translate-x-1.25 hover:-translate-y-1.25 hover:shadow-[5px_5px_7px_7px_var(--color-shark-200)] md:w-112.5 md:justify-self-center min-[1920px]:w-150 min-[1920px]:justify-self-center">
+      <p
+        id="loginDes"
+        class="m-0 flex justify-center text-2xl font-bold text-slate-700">
+        로그인 또는 회원가입
+      </p>
+      <div id="id" class="flex flex-col">
+        <label for="loginId" class="mb-6 ms-8 text-shark-400">아이디</label>
+        <input
+          type="text"
+          id="loginId"
+          placeholder="아이디를 입력해주세요."
+          class="mx-16 rounded-2xl border border-shark-400 p-3" />
+        <p
+          id="result1"
+          class="mt-2 flex justify-start mx-16 text-xs font-bold"></p>
+      </div>
+      <div id="pw" class="flex flex-col">
+        <label for="loginPw" class="mb-6 ms-8 text-shark-400">비밀번호</label>
+        <input
+          type="password"
+          id="loginPw"
+          placeholder="비밀번호를 입력해주세요."
+          class="mx-16 rounded-2xl border border-shark-400 p-3" />
+        <p
+          id="result2"
+          class="mt-2 flex justify-start mx-16 text-xs font-bold"></p>
+      </div>
+      <p id="result3" class="flex justify-center text-xs font-bold"></p>
+      <button
+        type="submit"
+        id="loginbtn"
+        class="mx-auto flex cursor-pointer justify-center rounded-lg border-none bg-primary-300 px-8 py-3 text-white transition duration-500 hover:bg-white hover:text-primary-300 hover:shadow-[0_0_0_2px_var(--color-primary-300)]">
+        로그인
+      </button>
+      <p id="noId" class="flex flex-row justify-center">
+        아직 계정이 없으신가요? &nbsp;
+        <a href="../signup/index.html" class="underline">회원가입</a>
+      </p>
+    </div>
+  </body>
+</html>
