@@ -32,10 +32,10 @@
         </svg>
         <p class="font-semibold text-2xl text-white">lattebnb</p>
       </a>
-      <form method="post" class="self-start p-5">
+      <form method="post" class="self-start p-5 border-t-2 border-primary-400">
         <fieldset
           class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          <legend class="font-semibold text-white text-2xl">
+          <legend class="font-semibold text-white text-2xl mb-10">
             숙소 정보 입력
           </legend>
           <div class="flex flex-col md:col-start-1 md:-col-end-1 lg:col-end-3">
@@ -50,7 +50,7 @@
               id="thumbnail"
               accept="image/*"
               class="hidden" />
-            <div id="thumbnailPreview">
+            <div id="thumbnailPreview" class="p-5">
               <button
                 type="button"
                 class="bg-shark-400 w-full max-w-90 aspect-square">
@@ -82,12 +82,12 @@
               class="adminInputNumber" />
           </div>
           <div
-            class="flex flex-col lg:row-start-2 lg:col-start-3 lg:col-span-2 lg:self-end lg:h-1/2">
+            class="flex flex-col lg:row-start-2 lg:col-start-3 lg:col-span-2 lg:self-end lg:h-2/3 lg:row-span-2">
             <label for="description" class="adminLabel">숙소 설명</label>
             <textarea
               name="description"
               id="description"
-              class="adminInputText resize-none h-full"></textarea>
+              class="adminInputText resize-none min-h-40 h-full"></textarea>
           </div>
           <div class="flex flex-col lg:row-start-3">
             <label for="adultPrice" class="adminLabel">성인 1박 요금</label>
@@ -119,12 +119,12 @@
               class="adminInputNumber" />
           </div>
           <div
-            class="flex flex-col justify-self-start lg:flex-row lg:self-center gap-5 lg:col-span-2">
-            <div>
+            class="w-full grid grid-cols-2 lg:grid-cols-4 justify-self-start lg:self-center gap-5 lg:col-span-2">
+            <div class="lg:col-span-2">
               <label for="checkInTime" class="adminLabel">체크인 시간</label>
               <input type="time" name="checkInTime" id="checkInTime" />
             </div>
-            <div>
+            <div class="lg:col-span-2">
               <label for="checkOutTime" class="adminLabel">체크아웃 시간</label>
               <input type="time" name="checkOutTime" id="checkOutTime" />
             </div>
@@ -141,7 +141,7 @@
               class="hidden" />
             <div
               id="imagesPreview"
-              class="imageContainer w-full flex flex-nowrap gap-5 overflow-x-auto px-2 py-5 bg-primary-50/30 rounded-xl">
+              class="imageContainer w-full flex flex-nowrap gap-5 overflow-x-auto p-5 rounded-xl">
               <div
                 class="flex-1 bg-shark-400 min-w-70 aspect-square shadow-lg"></div>
               <button

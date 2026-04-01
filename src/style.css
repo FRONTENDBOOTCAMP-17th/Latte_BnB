@@ -96,7 +96,7 @@
     }
     &::-webkit-scrollbar-thumb {
       border-radius: 0.25rem;
-      background: theme('colors.primary.400');
+      background: theme('colors.primary.600');
     }
     &::-webkit-scrollbar-track {
       border-radius: 0.25rem;
