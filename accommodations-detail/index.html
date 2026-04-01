@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./accommodations-detail.css" />
+    <title>latte-bnb | 숙소 상세</title>
+  </head>
+  <body>
+    <nav class="top-nav">
+      <button class="btn-back" onclick="history.back()"><</button>
+    </nav>
+
+    <section class="accommodation-thumb">
+      <img
+        class="accommodation-thumb-img"
+        src="/docs/images/demo_room.png"
+        alt="썸네일 이미지" />
+    </section>
+
+    <section class="accommodation-info">
+      <h1>멋사 부트캠프 하우스 # 멋쟁이사자</h1>
+      <p class="accommodation-info-address">
+        서울 종로구 종로 3길 17 (청진동, D타워) 16,17층
+      </p>
+      <p class="accommodation-info-desc">
+        최대 인원 4명 · 침실 2개 · 침대 2개 · 욕실 1개
+      </p>
+      <p class="accommodation-info-rating">★ 5.0 · 후기 3개</p>
+    </section>
+
+    <section class="host">
+      <div class="host-profile"></div>
+      <span class="host-name">호스트: 라떼 님</span>
+    </section>
+
+    <section class="accommodation-desc">
+      <p class="accommodation-desc-text">
+        아늑하고 세련된 분위기를 갖춘 이 공간은 여행 중에도 집처럼 편안한 휴식을
+        제공합니다. 따뜻한 조명과 감각적인 인테리어가 어우러져 머무는 동안 기분
+        좋은 시간을 보낼 수 있으며, 깔끔하게 관리된 침구와 쾌적한 환경으로
+        누구나 만족스러운 숙박 경험을 누릴 수 있습니다. 넉넉한 공간 구성으로
+        혼자만의 여유로운 시간을 보내기에도 좋고, 친구나 가족과 함께 머물기에도
+        적합합니다. 숙소 주변에는 다양한 맛집과 카페, 편의시설이 가까이 위치해
+        있어 일상적인 편리함을 그대로 누릴 수 있으며...
+      </p>
+      <button class="btn-view-more" id="btn-desc-more">더 보기</button>
+    </section>
+
+    <div class="modal-overlay" id="modal-desc">
+      <div class="modal-panel">
+        <div class="modal-header">
+          <button class="modal-back-btn" id="btn-desc-back">&lt;</button>
+          <span class="modal-title">숙소 설명</span>
+        </div>
+        <p class="modal-description">
+          아늑하고 세련된 분위기를 갖춘 이 공간은 여행 중에도 집처럼 편안한
+          휴식을 제공합니다. 따뜻한 조명과 감각적인 인테리어가 어우러져 머무는
+          동안 기분 좋은 시간을 보낼 수 있으며, 깔끔하게 관리된 침구와 쾌적한
+          환경으로 누구나 만족스러운 숙박 경험을 누릴 수 있습니다.
+          <br /><br />
+          넉넉한 공간 구성으로 혼자만의 여유로운 시간을 보내기에도 좋고, 친구나
+          가족과 함께 머물기에도 적합합니다. 숙소 주변에는 다양한 맛집과 카페,
+          편의시설이 가까이 위치해 있어 일상적인 편리함을 그대로 누릴 수
+          있습니다.
+          <br /><br />
+          교통편도 매우 편리하여 주요 관광지와의 접근성이 뛰어나며, 조용한
+          주택가에 자리 잡고 있어 밤에도 편안하게 쉴 수 있습니다. 체크인부터
+          체크아웃까지 호스트가 친절하게 안내해 드리며, 필요한 것이 있으면
+          언제든 연락 주세요.
+        </p>
+      </div>
+    </div>
+
+    <section class="review">
+      <p class="review-title">★ · 후기 3개</p>
+      <div class="review-scroll">
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-profile"></div>
+            <span class="review-name">동근</span>
+          </div>
+          <p class="review-stars">★★★★★</p>
+          <p class="review-text">
+            위치도 좋고 숙소도 깔끔해서 너무 만족스러웠어요. 호스트분도
+            친절하시고 체크인 과정도 매끄러웠습니다. 다음에 또 방문하고 싶어요!
+          </p>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-profile"></div>
+            <span class="review-name">선우</span>
+          </div>
+          <p class="review-stars">★★★★☆</p>
+          <p class="review-text">
+            인테리어가 감성적이고 침구가 정말 편했습니다. 주변에 맛집도 많아서
+            좋았어요. 다만 주차 공간이 조금 좁은 게 아쉬웠습니다.
+          </p>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-profile"></div>
+            <span class="review-name">효진</span>
+          </div>
+          <p class="review-stars">★★★★★</p>
+          <p class="review-text">
+            가족 여행으로 방문했는데 공간이 넉넉하고 아이들도 좋아했어요.
+            깨끗하고 조용한 환경이라 푹 쉴 수 있었습니다. 강력 추천합니다!
+          </p>
+        </div>
+      </div>
+      <button class="btn-view-more" id="btn-review-more">더 보기</button>
+    </section>
+
+    <div class="modal-overlay" id="modal-review">
+      <div class="modal-panel">
+        <div class="modal-header">
+          <button class="modal-back-btn" id="btn-review-back"><</button>
+          <span class="modal-title">후기 3개</span>
+        </div>
+        <div class="review-list">
+          <!-- 리뷰 목록 카드들(일단 임의로 암거나 넣어뒀습니다) -->
+          <div class="review-card-full">
+            <div class="review-header">
+              <div class="review-profile"></div>
+              <span class="review-name">동근</span>
+            </div>
+            <p class="review-stars">★★★★★</p>
+            <p class="review-text-full">
+              위치도 좋고 숙소도 깔끔해서 너무 만족스러웠어요. 호스트분도
+              친절하시고 체크인 과정도 매끄러웠습니다. 다음에 또 방문하고
+              싶어요!
+            </p>
+          </div>
+          <div class="review-card-full">
+            <div class="review-header">
+              <div class="review-profile"></div>
+              <span class="review-name">선우</span>
+            </div>
+            <p class="review-stars">★★★★★</p>
+            <p class="review-text-full">
+              가족 여행으로 방문했는데 공간이 넉넉하고 아이들도 좋아했어요.
+              깨끗하고 조용한 환경이라 푹 쉴 수 있었습니다. 강력 추천합니다!
+            </p>
+          </div>
+          <div class="review-card-full">
+            <div class="review-header">
+              <div class="review-profile"></div>
+              <span class="review-name">효진</span>
+            </div>
+            <p class="review-stars">★★★★☆</p>
+            <p class="review-text-full">
+              인테리어가 감성적이고 침구가 정말 편했습니다. 주변에 맛집도 많아서
+              좋았어요. 다만 주차 공간이 조금 좁은 게 아쉬웠습니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="reservation">
+      <button class="reservation-btn" id="btn-reservation">예약하기</button>
+    </section>
+
+    <script src="./accommodations-detail.js"></script>
+  </body>
+</html>
