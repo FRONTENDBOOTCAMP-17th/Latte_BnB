@@ -8,7 +8,7 @@
   </head>
   <body>
     <main
-      class="min-w-100 h-screen bg-gradient-to-t grid grid-cols-1 auto-rows-min from-primary-50 via-primary-400 to-primary-300">
+      class="min-w-100 min-h-screen bg-gradient-to-t grid grid-cols-1 auto-rows-min from-primary-200 via-primary-400 to-primary-300">
       <a
         href="/"
         id="logo"
@@ -32,78 +32,138 @@
         </svg>
         <p class="font-semibold text-2xl text-white">lattebnb</p>
       </a>
-      <form method="post" class="self-start">
-        <fieldset>
-          <legend>숙소 정보를 입력하세요.</legend>
-          <div>
-            <label for="title">숙소 이름</label>
-            <input type="text" name="title" id="title" />
+      <form method="post" class="self-start p-5">
+        <fieldset
+          class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <legend class="font-semibold text-white text-2xl">
+            숙소 정보 입력
+          </legend>
+          <div class="flex flex-col md:col-start-1 md:-col-end-1 lg:col-end-3">
+            <label for="title" class="adminLabel">숙소 이름</label>
+            <input type="text" name="title" id="title" class="adminInputText" />
           </div>
-          <div>
-            <label for="thumbnail">대표 이미지</label>
+          <div class="flex flex-col lg:row-start-2">
+            <label for="thumbnail" class="adminLabel">대표 이미지</label>
             <input
               type="file"
               name="thumbnail"
               id="thumbnail"
               accept="image/*"
               class="hidden" />
-            <button type="button">썸네일 추가</button>
-            <div id="thumbnailPreview"></div>
+            <div id="thumbnailPreview">
+              <button
+                type="button"
+                class="bg-shark-400 w-full max-w-90 aspect-square">
+                썸네일 추가
+              </button>
+            </div>
           </div>
-          <div>
-            <label for="region">지역</label>
-            <input type="text" name="region" id="region" />
-            <label for="address">상세 주소</label>
-            <input type="text" name="address" id="address" />
+          <div class="flex flex-col lg:row-start-2 lg:col-start-3">
+            <label for="region" class="adminLabel">지역</label>
+            <input
+              type="text"
+              name="region"
+              id="region"
+              class="adminInputText" />
+            <label for="address" class="adminLabel">상세 주소</label>
+            <input
+              type="text"
+              name="address"
+              id="address"
+              class="adminInputText" />
           </div>
-          <div>
-            <label for="">최대 수용 인원</label>
-            <input type="number" name="maxGuest" id="maxGuest" />
+          <div
+            class="flex flex-col md:col-start-2 md:row-start-3 lg:row-start-2 lg:col-start-4 lg:self-start">
+            <label for="maxGuest" class="adminLabel">최대 수용 인원</label>
+            <input
+              type="number"
+              name="maxGuest"
+              id="maxGuest"
+              class="adminInputNumber" />
           </div>
-          <div>
-            <label for="description">숙소 설명</label>
-            <textarea name="description" id="description"></textarea>
+          <div
+            class="flex flex-col lg:row-start-2 lg:col-start-3 lg:col-span-2 lg:self-end lg:h-1/2">
+            <label for="description" class="adminLabel">숙소 설명</label>
+            <textarea
+              name="description"
+              id="description"
+              class="adminInputText resize-none h-full"></textarea>
           </div>
-          <div>
-            <label for="adultPrice">성인 1박 요금</label>
-            <input type="text" name="adultPrice" id="adultPrice" />
-            <label for="childPrice">어린이 1박 요금</label>
-            <input type="text" name="childPrice" id="childPrice" />
+          <div class="flex flex-col lg:row-start-3">
+            <label for="adultPrice" class="adminLabel">성인 1박 요금</label>
+            <input
+              type="text"
+              name="adultPrice"
+              id="adultPrice"
+              class="adminInputText" />
+            <label for="childPrice" class="adminLabel">어린이 1박 요금</label>
+            <input
+              type="text"
+              name="childPrice"
+              id="childPrice"
+              class="adminInputText" />
+            <label for="serviceFee" class="adminLabel">서비스 요금</label>
+            <input
+              type="text"
+              name="serviceFee"
+              id="serviceFee"
+              class="adminInputText" />
           </div>
-          <div>
-            <label for="serviceFee">서비스 요금</label>
-            <input type="text" name="serviceFee" id="serviceFee" />
+          <div
+            class="flex flex-col md:col-start-2 md:row-start-3 md:self-end lg:row-start-2 lg:col-start-4 lg:self-start lg:translate-y-full">
+            <label for="minNights" class="adminLabel">최소 숙박 가능일</label>
+            <input
+              type="number"
+              name="minNights"
+              id="minNights"
+              class="adminInputNumber" />
           </div>
-          <div>
-            <label for="minNights">최소 숙박 가능일</label>
-            <input type="text" name="minNights" id="minNights" />
+          <div
+            class="flex flex-col justify-self-start lg:flex-row lg:self-center gap-5 lg:col-span-2">
+            <div>
+              <label for="checkInTime" class="adminLabel">체크인 시간</label>
+              <input type="time" name="checkInTime" id="checkInTime" />
+            </div>
+            <div>
+              <label for="checkOutTime" class="adminLabel">체크아웃 시간</label>
+              <input type="time" name="checkOutTime" id="checkOutTime" />
+            </div>
           </div>
-          <div>
-            <label for="checkInTime">체크인 시간</label>
-            <input type="time" name="checkInTime" id="checkInTime" />
-            <label for="checkOutTime">체크아웃 시간</label>
-            <input type="time" name="checkOutTime" id="checkOutTime" />
-          </div>
-          <div>
-            <label for="images">숙소 이미지(다중 선택 가능)</label>
+          <div class="flex flex-col md:row-start-2 md:col-start-2">
+            <label for="images" class="adminLabel"
+              >숙소 이미지(다중 선택 가능)</label
+            >
             <input
               type="file"
               name="images"
               id="images"
               multiple
               class="hidden" />
-            <button type="button">숙소 이미지 추가</button>
-            <div id="imagesPreview"></div>
+            <div
+              id="imagesPreview"
+              class="imageContainer w-full flex flex-nowrap gap-5 overflow-x-auto px-2 py-5 bg-primary-50/30 rounded-xl">
+              <div
+                class="flex-1 bg-shark-400 min-w-70 aspect-square shadow-lg"></div>
+              <button
+                type="button"
+                class="flex-1 bg-shark-400 min-w-70 aspect-square">
+                숙소 이미지 추가
+              </button>
+            </div>
           </div>
-          <div>
-            <p>예약 불가 날짜</p>
+          <div class="flex flex-col lg:row-start-3">
+            <p class="adminLabel">예약 불가 날짜</p>
             <span>
               하루만 지정하고 싶은 경우 시작일, 종료일을 동일하게 지정
             </span>
-            <label for="startDate">시작일</label>
-            <input type="date" name="startDate" id="startDate" />
-            <label for="endDate">종료일</label>
-            <input type="date" name="endDate" id="endDate" />
+            <div>
+              <label for="startDate" class="adminLabel">시작일</label>
+              <input type="date" name="startDate" id="startDate" />
+            </div>
+            <div>
+              <label for="endDate" class="adminLabel">종료일</label>
+              <input type="date" name="endDate" id="endDate" />
+            </div>
           </div>
         </fieldset>
       </form>

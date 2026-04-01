@@ -83,8 +83,32 @@
     box-shadow: 0 0 0 1000px theme('colors.primary.200') inset;
     transition: background-color 9999s ease-out 0s;
   }
+
   body::-webkit-scrollbar {
     width: 0;
     background: transparent;
+  }
+
+  .imageContainer {
+    &::-webkit-scrollbar {
+      height: 0.5rem;
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 0.25rem;
+      background: theme('colors.primary.400');
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 0.25rem;
+      background: theme('colors.primary.300');
+    }
+  }
+
+  .adminInputText,
+  .adminInputNumber {
+    @apply border-shark-50 text-white border-1 rounded-md px-4 py-2 focus:outline-primary-500 placeholder:text-shark-100 my-2;
+  }
+  .adminLabel {
+    @apply font-semibold text-white text-lg;
   }
 }
