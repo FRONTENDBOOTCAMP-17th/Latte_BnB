@@ -94,19 +94,25 @@
               class="adminInputText resize-none min-h-40 h-full"></textarea>
           </div>
           <div class="flex flex-col lg:row-start-3">
-            <label for="adultPrice" class="adminLabel">성인 1박 요금</label>
+            <label for="adultPrice" class="adminLabel flex justify-between"
+              ><span>성인 1박 요금</span><span>(단위: 원)</span></label
+            >
             <input
               type="text"
               name="adultPrice"
               id="adultPrice"
               class="adminInputText" />
-            <label for="childPrice" class="adminLabel">어린이 1박 요금</label>
+            <label for="childPrice" class="adminLabel flex justify-between"
+              ><span>어린이 1박 요금</span><span>(단위: 원)</span></label
+            >
             <input
               type="text"
               name="childPrice"
               id="childPrice"
               class="adminInputText" />
-            <label for="serviceFee" class="adminLabel">서비스 요금</label>
+            <label for="serviceFee" class="adminLabel flex justify-between"
+              ><span>서비스 요금</span><span>(단위: 원)</span></label
+            >
             <input
               type="text"
               name="serviceFee"
@@ -154,18 +160,29 @@
               </button>
             </div>
           </div>
-          <div class="flex flex-col lg:row-start-3">
-            <p class="adminLabel">예약 불가 날짜</p>
-            <span>
+          <div
+            class="grid grid-cols-2 grid-rows-[repeat(4,min-content)] gap-2 lg:row-start-3">
+            <p class="adminLabel col-start-1 -col-end-1">예약 불가 날짜</p>
+            <span class="text-xs text-shark-700 col-start-1 -col-end-1">
               하루만 지정하고 싶은 경우 시작일, 종료일을 동일하게 지정
             </span>
-            <div>
+            <div class="w-fit">
               <label for="startDate" class="adminLabel">시작일</label>
-              <input type="date" name="startDate" id="startDate" />
+              <input
+                type="date"
+                name="startDate"
+                id="startDate"
+                max="9999-12-31"
+                class="adminInputDate" />
             </div>
-            <div>
+            <div class="w-fit">
               <label for="endDate" class="adminLabel">종료일</label>
-              <input type="date" name="endDate" id="endDate" />
+              <input
+                type="date"
+                name="endDate"
+                id="endDate"
+                max="9999-12-31"
+                class="adminInputDate" />
             </div>
           </div>
         </fieldset>
