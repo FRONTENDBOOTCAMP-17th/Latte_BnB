@@ -146,4 +146,12 @@
   .adminLabel {
     @apply font-semibold text-white text-lg;
   }
+  .adminThumbnailUpload,
+  .adminImagesUpload {
+    @apply bg-shark-700/20 w-full max-w-90 rounded-2xl aspect-square hover:bg-shark-700/15;
+  }
+
+  .adminThumbnailModify {
+    @apply w-full h-fit bg-primary-500 rounded-2xl p-1 my-2 hover:bg-primary-500/70;
+  }
 }
