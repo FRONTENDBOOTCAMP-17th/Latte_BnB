@@ -9,7 +9,8 @@
   <body>
     <div
       id="toast"
-      class="border-2 border-primary-800 rounded-2xl p-4 top-4/5 left-1/2 -translate-x-1/2">
+      class="border-2 border-primary-800 rounded-2xl p-4 top-4/5 left-1/2 -translate-x-1/2"
+      popover>
       <p id="toastMessage" class="font-semibold"></p>
       <p id="toastDetail" class="text-sm"></p>
     </div>
@@ -129,7 +130,8 @@
             <div
               class="numberInput flex items-center"
               data-name="maxGuest"
-              data-id="maxGuest"></div>
+              data-id="maxGuest"
+              data-min="1"></div>
           </div>
           <div
             class="flex flex-col lg:row-start-2 lg:col-start-3 lg:col-span-2 lg:self-end lg:h-2/3 lg:row-span-2">
@@ -171,7 +173,8 @@
             <div
               class="numberInput flex items-center"
               data-name="minNights"
-              data-id="minNights"></div>
+              data-id="minNights"
+              data-min="1"></div>
           </div>
           <div
             class="w-full grid grid-cols-2 lg:grid-cols-4 justify-self-start lg:self-center gap-5 lg:col-span-2">

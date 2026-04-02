@@ -2,11 +2,15 @@ import '../../src/style.css';
 import numberInput from '../../src/components/numberInput';
 import toast from '../../src/components/toast.js';
 import { PreviewImage } from '../../src/components/previewImage.js';
+import {
+  addAccommodation,
+  buildRequestFormData,
+  uploadImage,
+} from './addAccommodation.js';
 
 let uploadThumbnailBtn = null;
 let deleteThumbnailBtn = null;
 let thumbnailInput = null;
-let thumbnailPreview = null;
 let preview = null;
 let uploadImagesBtn = null;
 let imagesInput = null;
@@ -21,6 +25,7 @@ let addForm = null;
 
 function handleThumbnail(e) {
   if (e.target.files && e.target.files[0]) {
+    thumbnailFile = e.target.files[0];
     preview.src = URL.createObjectURL(e.target.files[0]);
     preview.classList.remove('hidden');
     deleteThumbnailBtn.classList.remove('hidden');
@@ -48,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
   uploadThumbnailBtn = document.getElementById('uploadThumbnail');
   deleteThumbnailBtn = document.getElementById('deleteThumbnail');
   thumbnailInput = document.getElementById('thumbnail');
-  thumbnailPreview = document.getElementById('thumbnailPreview');
   preview = document.getElementById('preview');
   uploadImagesBtn = document.getElementById('uploadImagesBtn');
   imagesInput = document.getElementById('images');
@@ -94,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  addForm.addEventListener('submit', (e) => {
+  addForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     let showMessage = false;
     let message = [];
@@ -109,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
       message.push('지역');
     }
 
-    if (addForm.maxGuest.value === 0) {
+    if (addForm.maxGuest.value === '0') {
       showMessage = true;
       message.push('최대 수용 인원');
     }
@@ -131,6 +135,46 @@ document.addEventListener('DOMContentLoaded', () => {
         5,
       );
       return;
+    }
+
+    let requestData = buildRequestFormData(addForm);
+
+    if (thumbnailFile !== null) {
+      console.log('대표 이미지 존재');
+      try {
+        const thumbnailUrl = await uploadImage(thumbnailFile);
+        requestData.thumbnailUrl = thumbnailUrl;
+      } catch (error) {
+        console.log(error.message);
+        toast.warn('썸네일 에러', error.message, 5);
+      }
+    }
+
+    if (imageMap.size > 0) {
+      console.log('추가 이미지 존재');
+      requestData.images = [];
+      try {
+        for (const value of imageMap.values()) {
+          const imageUrl = await uploadImage(value.file);
+          requestData.images.push({
+            url: imageUrl,
+            title: value.object.getTitle(),
+            description: value.object.getDescription(),
+          });
+        }
+      } catch (error) {
+        console.log(error.message);
+        toast.warn('이미지 에러', error.message, 5);
+      }
+    }
+
+    console.log(requestData);
+
+    const result = await addAccommodation(requestData);
+
+    if (result.success) {
+      console.log(result.data);
+      toast.success('숙소 추가 성공', result.message, 5);
     }
   });
 
