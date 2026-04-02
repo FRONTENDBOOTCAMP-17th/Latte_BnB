@@ -1,15 +1,17 @@
 @import '../src/style.css';
 
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 body {
   background-color: #fff;
   color: var(--color-shark-800);
   padding-bottom: 80px;
   margin: 0;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 .top-nav {
@@ -39,12 +41,10 @@ html {
 
 .accommodation-thumb {
   position: relative;
-}
-
-.accommodation-thumb {
   width: 100%;
   aspect-ratio: 4 / 3;
   background-color: var(--color-shark-200);
+  max-height: 400px;
 }
 
 .accommodation-thumb-img {
@@ -121,7 +121,7 @@ html {
   text-align: left;
 }
 
-/* ================================ 더 보기 버튼 ====================== */
+
 .btn-view-more {
   width: 80%;
   background-color: var(--color-shark-300);
@@ -135,7 +135,74 @@ html {
   margin-top: 12px;
 }
 
-/* ==================== 리뷰 ====================== */
+
+.place {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-shark-200);
+}
+
+.place-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.place-gallery {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.place-item {
+  min-width: 200px;
+  scroll-snap-align: start;
+  margin: 0;
+}
+
+.place-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.place-caption {
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
+}
+
+.place-caption-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-shark-800);
+}
+
+.place-caption-desc {
+  font-size: 13px;
+  color: var(--color-shark-500);
+}
+
+
+.place-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.place-card {
+  margin: 0;
+}
+
+.place-card-img {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+
 .review {
   padding: 16px 24px;
   display: flex;
@@ -204,7 +271,7 @@ html {
   overflow: hidden;
 }
 
-/* ================================ 모달 ====================== */
+
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -288,22 +355,35 @@ html {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
+  right: 0;
   padding: 12px 24px;
   background-color: #fff;
   border-top: 1px solid var(--color-shark-200);
   display: flex;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.reservation-price {
+  font-size: 14px;
+  color: var(--color-shark-600);
+  margin: 0;
+}
+
+.reservation-price-amount {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-shark-800);
 }
 
 .reservation-btn {
-  width: 80%;
   background-color: var(--color-primary-500);
   text-align: center;
   color: white;
-  padding: 1rem;
+  padding: 12px 32px;
   border-radius: 0.5rem;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   border: none;
   cursor: pointer;
   font-weight: 700;
