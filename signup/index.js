@@ -104,7 +104,7 @@ lattebtn.addEventListener('click', async () => {
       alert(`회원가입이 완료되었습니다!`);
     }
 
-    location.href = `../index.html`;
+    location.href = `../`;
   } catch (e) {
     result5.textContent = `형식에 맞지 않습니다.\n회원 정보를 다시 입력해주세요.`;
     result5.style.color = 'red';
