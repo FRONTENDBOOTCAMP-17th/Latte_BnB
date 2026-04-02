@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./profile.css" />
+    <title>latte-bnb | 프로필</title>
+  </head>
+
+  <body>
+    <main class="profile-wrapper">
+      <header class="profile-header">
+        <h1>프로필</h1>
+      </header>
+
+      <section class="profile-card-section">
+        <div class="profile-card">
+          <div class="profile-card-left">
+            <img id="avatar" class="profile-avatar" alt="프로필 아바타" />
+          </div>
+          <div class="profile-card-right">
+            <div class="profile-content">
+              <p id="name"></p>
+              <p id="role"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <ul class="profile-accordion-section">
+        <li class="profile-accordion-item">
+          <div class="profile-accordion-header">
+            <h3>개인정보 처리 방침</h3>
+            <span class="profile-accordion-icon open">+</span>
+            <span class="profile-accordion-icon close">-</span>
+          </div>
+          <div class="profile-accordion-content">
+            <p>
+              라떼비앤비는 이용자의 개인정보를 관련 법령에 따라 안전하게
+              처리합니다. 수집하는 항목은 이름, 이메일, 연락처 등 서비스 제공에
+              필요한 최소한의 정보이며, 수집 목적 달성 후에는 지체 없이
+              파기합니다. 법령에 의해 보관이 필요한 경우 해당 기간 동안만
+              보관하며, 이용자의 동의 없이 제3자에게 개인정보를 제공하지
+              않습니다. 이용자는 언제든지 자신의 개인정보에 대한 열람, 수정,
+              삭제를 요청할 수 있습니다.
+            </p>
+          </div>
+        </li>
+
+        <li class="profile-accordion-item">
+          <div class="profile-accordion-header">
+            <h3>서비스 이용 약관</h3>
+            <span class="profile-accordion-icon open">+</span>
+            <span class="profile-accordion-icon close">-</span>
+          </div>
+          <div class="profile-accordion-content">
+            <p>
+              본 약관은 라떼비앤비가 제공하는 숙소 예약 서비스의 이용 조건 및
+              절차에 관한 사항을 규정합니다. 이용자는 회원가입 시 본 약관에
+              동의한 것으로 간주되며, 서비스 이용 중 관련 법령 및 약관을
+              준수해야 합니다. 예약 취소 및 환불은 숙소별 정책에 따르며, 부정
+              이용이 확인될 경우 서비스 이용이 제한될 수 있습니다. 약관의 변경
+              사항은 서비스 내 공지를 통해 안내드리며, 변경 후에도 서비스를 계속
+              이용하실 경우 변경된 약관에 동의한 것으로 봅니다.
+            </p>
+          </div>
+        </li>
+
+        <li class="profile-accordion-item">
+          <div class="profile-accordion-header">
+            <h3>회사 세부정보</h3>
+            <span class="profile-accordion-icon open">+</span>
+            <span class="profile-accordion-icon close">-</span>
+          </div>
+          <div class="profile-accordion-content">
+            <p>
+              상호명: 라떼비앤비(Latte BnB) | 대표 : 이동근 이선우 방효진 |
+              주소: 서울특별시 종로구 종로3길 17, D1동 16, 17층(청진동, D타워)
+              멋쟁이사자처럼
+            </p>
+          </div>
+        </li>
+      </ul>
+
+      <hr class="divider" />
+
+      <section class="profile-button-section">
+        <button id="logoutBtn" class="btn-logout">로그아웃</button>
+        <button id="withdrawBtn" class="btn-withdraw">회원탈퇴</button>
+      </section>
+    </main>
+
+    <div id="withdrawModal" class="modal-overlay" hidden>
+      <div class="modal">
+        <h3>회원 탈퇴하기</h3>
+        <p>
+          회원 탈퇴를 위해 비밀번호를 입력해주세요.
+          <input id="withdrawPassword" type="password" placeholder="비밀번호" />
+        </p>
+
+        <div class="modal-buttons">
+          <button id="withdrawCancel" class="btn-modal-cancel">취소</button>
+          <button id="withdrawOk" class="btn-modal-ok">탈퇴</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./profile.js"></script>
+  </body>
+</html>
