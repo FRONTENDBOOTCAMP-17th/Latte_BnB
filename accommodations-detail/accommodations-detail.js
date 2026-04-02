@@ -7,7 +7,9 @@ const params = new URLSearchParams(location.search);
 const accommodationId = params.get('id') || '1';
 
 async function fetchAccommodation() {
-  const res = await fetch(`${API_BASE}/accommodations/${accommodationId}`);
+  const res = await fetch(`${API_BASE}/accommodations/${accommodationId}`, {
+    method: 'GET',
+  });
 
   if (!res.ok) {
     alert('숙소 정보를 불러올 수 없습니다.');
@@ -38,10 +40,10 @@ async function fetchAccommodation() {
       gallery.appendChild(figure);
 
       const card = document.createElement('figure');
-      card.className = 'm-0';
+      card.className = 'm-0 flex flex-col items-center';
       card.innerHTML =
-        `<img src="${img.url}" alt="${img.title || '숙소 이미지'}" class="w-full rounded-lg object-cover" />` +
-        `<figcaption class="flex flex-col mt-1.5">` +
+        `<img src="${img.url}" alt="${img.title || '숙소 이미지'}" class="w-full md:w-1/2 rounded-lg object-cover" />` +
+        `<figcaption class="flex flex-col mt-1.5 w-full md:w-1/2">` +
         `<span class="text-sm font-semibold text-shark-800">${img.title || ''}</span>` +
         `<span class="text-[13px] text-shark-500">${img.description || ''}</span>` +
         `</figcaption>`;
@@ -115,6 +117,16 @@ document.getElementById('btn-reservation').addEventListener('click', () => {
   const serviceFee = Number(btn.dataset.serviceFee).toLocaleString();
 
   alert(`예약하기 화면으로 넘어갈 예정!!`);
+});
+
+document.querySelectorAll('.scroll-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const target = document.getElementById(btn.dataset.target);
+    const amount = target.clientWidth * 0.7;
+    target.scrollBy({
+      left: btn.dataset.dir === 'left' ? -amount : amount,
+    });
+  });
 });
 
 document.body.append(buildFooter());

@@ -7,142 +7,160 @@
     <title>latte-bnb | 숙소 상세</title>
   </head>
   <body class="bg-white text-shark-800 pb-20 m-0 overflow-x-hidden">
-    <nav class="absolute top-4 left-4 z-10">
-      <button
-        class="w-9 h-9 rounded-full border-none bg-white cursor-pointer flex items-center justify-center shadow-md"
-        onclick="location.href = '/'">
-        &lt;
-      </button>
-    </nav>
+    <div class="max-w-3xl mx-auto relative">
+      <nav class="absolute top-4 left-4 z-10">
+        <button
+          class="w-9 h-9 rounded-full border-none bg-white cursor-pointer flex items-center justify-center shadow-md"
+          onclick="location.href = '/'">
+          <
+        </button>
+      </nav>
 
-    <section class="relative w-full aspect-[4/3] bg-shark-200 max-h-[400px]">
-      <img
-        class="accommodation-thumb-img w-full h-full object-cover"
-        src=""
-        alt="썸네일 이미지" />
-    </section>
+      <section class="relative w-full aspect-[4/3] bg-shark-200 max-h-[400px]">
+        <img
+          class="accommodation-thumb-img w-full h-full object-cover"
+          src=""
+          alt="썸네일 이미지" />
+      </section>
 
-    <section class="px-6 pt-6 pb-4 text-center border-b border-shark-200">
-      <h1 id="title" class="text-2xl font-bold mb-2"></h1>
-      <p class="text-base text-shark-500 mb-1" id="address"></p>
-      <p class="text-base text-shark-500 mb-2" id="details"></p>
-      <p class="mt-5 text-base font-semibold text-center">★ 5.0 · 후기 3개</p>
-    </section>
+      <section class="px-6 pt-6 pb-4 text-center border-b border-shark-200">
+        <h1 id="title" class="text-2xl font-bold mb-2"></h1>
+        <p class="text-base text-shark-500 mb-1" id="address"></p>
+        <p class="text-base text-shark-500 mb-2" id="details"></p>
+        <p class="mt-5 text-base font-semibold text-center">★ 5.0 · 후기 3개</p>
+      </section>
 
-    <section
-      class="px-6 py-4 flex items-center gap-3 border-b border-shark-200">
-      <div class="w-10 h-10 rounded-full bg-primary-300"></div>
-      <span class="text-base font-semibold">호스트: 라떼 님</span>
-    </section>
+      <section
+        class="px-6 py-4 flex items-center gap-3 border-b border-shark-200">
+        <div class="w-10 h-10 rounded-full bg-primary-300"></div>
+        <span class="text-base font-semibold">호스트: 라떼 님</span>
+      </section>
 
-    <section
-      class="px-6 py-4 flex flex-col items-center border-b border-shark-200">
-      <p
-        class="text-base text-shark-600 leading-[1.7] text-left"
-        id="description"></p>
-      <button
-        class="w-4/5 bg-shark-300 text-center text-[#111] p-4 rounded-lg text-xl border-none cursor-pointer mt-3"
-        id="btn-desc-more">
-        더 보기
-      </button>
-    </section>
-
-    <div
-      class="fixed inset-0 z-50 bg-black/50 opacity-0 invisible transition-opacity duration-300 [&.active]:opacity-100 [&.active]:visible"
-      id="modal-desc">
-      <div
-        class="absolute inset-0 bg-white overflow-y-auto px-8 py-6 pb-12 translate-y-full transition-transform duration-400 ease-[cubic-bezier(0.22,0.61,0.36,1)] [.active>&]:translate-y-0">
-        <div class="flex items-center mb-6">
-          <button
-            class="bg-transparent border-none text-shark-800 cursor-pointer p-0"
-            id="btn-desc-back">
-            &lt;
-          </button>
-          <span class="text-lg font-bold ml-3">숙소 설명</span>
-        </div>
+      <section
+        class="px-6 py-4 flex flex-col items-center border-b border-shark-200">
         <p
-          class="text-base text-shark-600 leading-[1.7]"
-          id="description-full"></p>
-      </div>
-    </div>
+          class="text-base text-shark-600 leading-[1.7] text-left"
+          id="description"></p>
+        <button
+          class="w-4/5 bg-shark-300 text-center text-[#111] p-4 rounded-lg text-xl border-none cursor-pointer mt-3"
+          id="btn-desc-more">
+          더 보기
+        </button>
+      </section>
 
-    <section class="px-6 py-4 border-b border-shark-200">
-      <p class="text-lg font-bold mb-4">숙박 장소</p>
       <div
-        class="flex gap-3 overflow-x-auto snap-x snap-mandatory"
-        id="place-gallery"></div>
-    </section>
+        class="fixed inset-0 z-50 bg-black/50 opacity-0 invisible transition-opacity duration-300 [&.active]:opacity-100 [&.active]:visible"
+        id="modal-desc">
+        <div
+          class="absolute inset-0 max-w-3xl mx-auto bg-white overflow-y-auto px-8 py-6 pb-12 translate-y-full transition-transform duration-400 ease-[cubic-bezier(0.22,0.61,0.36,1)] [.active>&]:translate-y-0">
+          <div class="flex items-center mb-6">
+            <button
+              class="bg-transparent border-none text-shark-800 cursor-pointer p-0"
+              id="btn-desc-back">
+              <
+            </button>
+            <span class="text-lg font-bold ml-3">숙소 설명</span>
+          </div>
+          <p
+            class="text-base text-shark-600 leading-[1.7]"
+            id="description-full"></p>
+        </div>
+      </div>
 
-    <div
-      class="fixed inset-0 z-50 bg-black/50 opacity-0 invisible transition-opacity duration-300 [&.active]:opacity-100 [&.active]:visible"
-      id="modal-place">
+      <section class="px-6 py-4 border-b border-shark-200">
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-lg font-bold m-0">숙박 장소</p>
+          <div class="flex gap-2">
+            <button class="scroll-btn w-8 h-8 rounded-full border border-shark-300 bg-white cursor-pointer flex items-center justify-center" data-target="place-gallery" data-dir="left">&lt;</button>
+            <button class="scroll-btn w-8 h-8 rounded-full border border-shark-300 bg-white cursor-pointer flex items-center justify-center" data-target="place-gallery" data-dir="right">&gt;</button>
+          </div>
+        </div>
+        <div
+          class="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth"
+          id="place-gallery"></div>
+      </section>
+
       <div
-        class="absolute inset-0 bg-white overflow-y-auto px-8 py-6 pb-12 translate-y-full transition-transform duration-400 ease-[cubic-bezier(0.22,0.61,0.36,1)] [.active>&]:translate-y-0">
-        <div class="flex items-center mb-6">
-          <button
-            class="bg-transparent border-none text-shark-800 cursor-pointer p-0"
-            id="btn-place-back">
-            &lt;
-          </button>
-          <span class="text-lg font-bold ml-3">숙박 장소</span>
+        class="fixed inset-0 z-50 bg-black/50 opacity-0 invisible transition-opacity duration-300 [&.active]:opacity-100 [&.active]:visible"
+        id="modal-place">
+        <div
+          class="absolute inset-0 max-w-3xl mx-auto bg-white overflow-y-auto px-8 py-6 pb-12 translate-y-full transition-transform duration-400 ease-[cubic-bezier(0.22,0.61,0.36,1)] [.active>&]:translate-y-0">
+          <div class="flex items-center mb-6">
+            <button
+              class="bg-transparent border-none text-shark-800 cursor-pointer p-0"
+              id="btn-place-back">
+              <
+            </button>
+            <span class="text-lg font-bold ml-3">숙박 장소</span>
+          </div>
+          <div class="flex flex-col gap-6" id="place-list"></div>
         </div>
-        <div class="flex flex-col gap-6" id="place-list"></div>
       </div>
-    </div>
 
-    <section class="px-6 py-4 flex flex-col items-center">
-      <p class="text-lg font-bold mb-4 self-start">★ · 후기 3개</p>
-      <div class="flex gap-4 overflow-x-auto w-full snap-x snap-mandatory">
-        <div class="min-w-60 border border-shark-200 rounded-lg p-4 snap-start">
-          <div class="flex items-center gap-2 mb-2">
-            <div class="w-8 h-8 rounded-full bg-primary-300"></div>
-            <span class="text-base font-semibold">동근</span>
+      <section class="px-6 py-4 flex flex-col items-center">
+        <div class="flex items-center justify-between w-full mb-4">
+          <p class="text-lg font-bold m-0">★ · 후기 3개</p>
+          <div class="flex gap-2">
+            <button class="scroll-btn w-8 h-8 rounded-full border border-shark-300 bg-white cursor-pointer flex items-center justify-center" data-target="review-scroll" data-dir="left">&lt;</button>
+            <button class="scroll-btn w-8 h-8 rounded-full border border-shark-300 bg-white cursor-pointer flex items-center justify-center" data-target="review-scroll" data-dir="right">&gt;</button>
           </div>
-          <p class="text-sm text-shark-400 mb-2">★★★★★</p>
-          <p class="text-base text-shark-600 line-clamp-4">
-            위치도 좋고 숙소도 깔끔해서 너무 만족스러웠어요. 호스트분도
-            친절하시고 체크인 과정도 매끄러웠습니다. 다음에 또 방문하고 싶어요!
-          </p>
         </div>
-        <div class="min-w-60 border border-shark-200 rounded-lg p-4 snap-start">
-          <div class="flex items-center gap-2 mb-2">
-            <div class="w-8 h-8 rounded-full bg-primary-300"></div>
-            <span class="text-base font-semibold">선우</span>
+        <div class="flex gap-4 overflow-x-auto w-full snap-x snap-mandatory scroll-smooth" id="review-scroll">
+          <div
+            class="min-w-60 border border-shark-200 rounded-lg p-4 snap-start">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-8 h-8 rounded-full bg-primary-300"></div>
+              <span class="text-base font-semibold">동근</span>
+            </div>
+            <p class="text-sm text-shark-400 mb-2">★★★★★</p>
+            <p class="text-base text-shark-600 line-clamp-4">
+              위치도 좋고 숙소도 깔끔해서 너무 만족스러웠어요. 호스트분도
+              친절하시고 체크인 과정도 매끄러웠습니다. 다음에 또 방문하고
+              싶어요!
+            </p>
           </div>
-          <p class="text-sm text-shark-400 mb-2">★★★★☆</p>
-          <p class="text-base text-shark-600 line-clamp-4">
-            인테리어가 감성적이고 침구가 정말 편했습니다. 주변에 맛집도 많아서
-            좋았어요. 다만 주차 공간이 조금 좁은 게 아쉬웠습니다.
-          </p>
-        </div>
-        <div class="min-w-60 border border-shark-200 rounded-lg p-4 snap-start">
-          <div class="flex items-center gap-2 mb-2">
-            <div class="w-8 h-8 rounded-full bg-primary-300"></div>
-            <span class="text-base font-semibold">효진</span>
+          <div
+            class="min-w-60 border border-shark-200 rounded-lg p-4 snap-start">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-8 h-8 rounded-full bg-primary-300"></div>
+              <span class="text-base font-semibold">선우</span>
+            </div>
+            <p class="text-sm text-shark-400 mb-2">★★★★★</p>
+            <p class="text-base text-shark-600 line-clamp-4">
+              가족 여행으로 방문했는데 공간이 넉넉하고 아이들도 좋아했어요.
+              깨끗하고 조용한 환경이라 푹 쉴 수 있었습니다. 강력 추천합니다!
+            </p>
           </div>
-          <p class="text-sm text-shark-400 mb-2">★★★★★</p>
-          <p class="text-base text-shark-600 line-clamp-4">
-            가족 여행으로 방문했는데 공간이 넉넉하고 아이들도 좋아했어요.
-            깨끗하고 조용한 환경이라 푹 쉴 수 있었습니다. 강력 추천합니다!
-          </p>
+          <div
+            class="min-w-60 border border-shark-200 rounded-lg p-4 snap-start">
+            <div class="flex items-center gap-2 mb-2">
+              <div class="w-8 h-8 rounded-full bg-primary-300"></div>
+              <span class="text-base font-semibold">효진</span>
+            </div>
+            <p class="text-sm text-shark-400 mb-2">★★★★☆</p>
+            <p class="text-base text-shark-600 line-clamp-4">
+              인테리어가 감성적이고 침구가 정말 편했습니다. 주변에 맛집도 많아서
+              좋았어요. 다만 주차 공간이 조금 좁은 게 아쉬웠습니다.
+            </p>
+          </div>
         </div>
-      </div>
-      <button
-        class="w-4/5 bg-shark-300 text-center text-[#111] p-4 rounded-lg text-xl border-none cursor-pointer mt-3"
-        id="btn-review-more">
-        더 보기
-      </button>
-    </section>
+        <button
+          class="w-4/5 bg-shark-300 text-center text-[#111] p-4 rounded-lg text-xl border-none cursor-pointer mt-3"
+          id="btn-review-more">
+          더 보기
+        </button>
+      </section>
+    </div>
     <div
       class="fixed inset-0 z-50 bg-black/50 opacity-0 invisible transition-opacity duration-300 [&.active]:opacity-100 [&.active]:visible"
       id="modal-review">
       <div
-        class="absolute inset-0 bg-white overflow-y-auto px-8 py-6 pb-12 translate-y-full transition-transform duration-400 ease-[cubic-bezier(0.22,0.61,0.36,1)] [.active>&]:translate-y-0">
+        class="absolute inset-0 max-w-3xl mx-auto bg-white overflow-y-auto px-8 py-6 pb-12 translate-y-full transition-transform duration-400 ease-[cubic-bezier(0.22,0.61,0.36,1)] [.active>&]:translate-y-0">
         <div class="flex items-center mb-6">
           <button
             class="bg-transparent border-none text-shark-800 cursor-pointer p-0"
             id="btn-review-back">
-            &lt;
+            <
           </button>
           <span class="text-lg font-bold ml-3">후기 3개</span>
         </div>
@@ -186,7 +204,7 @@
     </div>
 
     <section
-      class="fixed bottom-0 left-0 right-0 px-6 py-3 bg-white border-t border-shark-200 flex items-center justify-between box-border">
+      class="fixed bottom-0 left-0 right-0 max-w-3xl mx-auto px-6 py-3 bg-white border-t border-shark-200 flex items-center justify-between box-border">
       <p class="text-sm text-shark-600 m-0" id="reservation-price"></p>
       <button
         class="bg-primary-500 text-center text-white px-8 py-3 rounded-lg text-lg border-none cursor-pointer font-bold"
