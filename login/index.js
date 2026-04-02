@@ -21,6 +21,12 @@ pw.addEventListener('keydown', (event) => {
   }
 });
 
+const gosignup = document.getElementById('goSignup');
+
+gosignup.addEventListener('click', (e) => {
+  alert(`회원가입 페이지로 이동합니다.`);
+});
+
 loginbtn.addEventListener('click', async () => {
   const result1 = document.getElementById('result1');
   const result2 = document.getElementById('result2');
@@ -72,7 +78,7 @@ loginbtn.addEventListener('click', async () => {
     const personalData = data.data;
     localStorage.setItem('accessToken', personalData.accessToken);
 
-    location.href = `../index.html`;
+    location.href = `../`;
   } catch (e) {
     result3.textContent = '아이디 또는 비밀번호를 다시 입력해주세요.';
     result3.style.color = 'red';
