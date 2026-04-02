@@ -1,4 +1,7 @@
-const API_BASE = 'https://api.fullstackfamily.com/api/lattebnb/v1';
+import { buildFooter } from '../src/components/footer.js';
+import constants from '../src/constants.js';
+
+const API_BASE = constants.API_BASE_URL;
 
 const params = new URLSearchParams(location.search);
 const accommodationId = params.get('id') || '1';
@@ -25,22 +28,22 @@ async function fetchAccommodation() {
   if (data.images && data.images.length > 0) {
     data.images.forEach((img) => {
       const figure = document.createElement('figure');
-      figure.className = 'place-item';
+      figure.className = 'min-w-50 snap-start m-0';
       figure.innerHTML =
-        `<img src="${img.url}" alt="${img.title || '숙소 이미지'}" class="place-img" />` +
-        `<figcaption class="place-caption">` +
-        `<span class="place-caption-title">${img.title || ''}</span>` +
-        `<span class="place-caption-desc">${img.description || ''}</span>` +
+        `<img src="${img.url}" alt="${img.title || '숙소 이미지'}" class="w-full aspect-[4/3] object-cover rounded-lg" />` +
+        `<figcaption class="flex flex-col mt-1.5">` +
+        `<span class="text-sm font-semibold text-shark-800">${img.title || ''}</span>` +
+        `<span class="text-[13px] text-shark-500">${img.description || ''}</span>` +
         `</figcaption>`;
       gallery.appendChild(figure);
 
       const card = document.createElement('figure');
-      card.className = 'place-card';
+      card.className = 'm-0';
       card.innerHTML =
-        `<img src="${img.url}" alt="${img.title || '숙소 이미지'}" class="place-card-img" />` +
-        `<figcaption class="place-caption">` +
-        `<span class="place-caption-title">${img.title || ''}</span>` +
-        `<span class="place-caption-desc">${img.description || ''}</span>` +
+        `<img src="${img.url}" alt="${img.title || '숙소 이미지'}" class="w-full rounded-lg object-cover" />` +
+        `<figcaption class="flex flex-col mt-1.5">` +
+        `<span class="text-sm font-semibold text-shark-800">${img.title || ''}</span>` +
+        `<span class="text-[13px] text-shark-500">${img.description || ''}</span>` +
         `</figcaption>`;
       placeList.appendChild(card);
     });
@@ -71,7 +74,7 @@ async function fetchAccommodation() {
   btn.dataset.serviceFee = data.pricing.serviceFee;
 
   document.getElementById('reservation-price').innerHTML =
-    `<span class="reservation-price-amount">₩${data.pricing.adultPrice.toLocaleString()}</span> / 1박`;
+    `<span class="text-lg font-bold text-shark-800">₩${data.pricing.adultPrice.toLocaleString()}</span> / 1박`;
 }
 
 fetchAccommodation();
@@ -113,3 +116,5 @@ document.getElementById('btn-reservation').addEventListener('click', () => {
 
   alert(`예약하기 화면으로 넘어갈 예정!!`);
 });
+
+document.body.append(buildFooter());
