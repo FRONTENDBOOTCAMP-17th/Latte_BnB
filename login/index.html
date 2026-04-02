@@ -6,130 +6,62 @@
     <link rel="stylesheet" href="../src/style.css" />
     <script type="module" src="./index.js"></script>
     <title>로그인 페이지</title>
-    <style>
-      #login {
-        display: flex;
-        flex-flow: wrap column;
-        justify-content: center;
-        min-width: 400px;
-        margin: 2rem;
-        padding-block-start: 1rem;
-      }
-
-      #loginDes {
-        display: flex;
-        justify-content: center;
-        margin-block-end: 3rem;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--color-shark-700);
-      }
-
-      #loginData {
-        display: grid;
-        grid-template-columns: 6rem 1fr;
-        grid-template-rows: repeat(4, 45px);
-        row-gap: 0.5rem;
-      }
-
-      #id,
-      #pw {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: var(--color-shark-400);
-        letter-spacing: 0.2rem;
-      }
-
-      #loginId,
-      #loginPw {
-        padding: 0.75rem;
-        margin-inline-end: 2rem;
-        border: 1px solid var(--color-shark-400);
-        border-radius: 1rem;
-      }
-
-      #result1,
-      #result2 {
-        display: flex;
-        font-size: 0.75rem;
-        font-weight: 700;
-      }
-
-      #result3 {
-        display: flex;
-        justify-content: center;
-        font-size: 0.75rem;
-        font-weight: 700;
-      }
-
-      #loginbtn {
-        display: flex;
-        justify-content: center;
-        align-self: center;
-        cursor: pointer;
-        inline-size: 10rem;
-        margin-block: 1rem;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        background-color: var(--color-primary-300);
-        color: var(--color-white);
-        transition-duration: 500ms;
-      }
-
-      #loginbtn:hover {
-        background-color: var(--color-white);
-        color: var(--color-primary-300);
-        box-shadow: 0 0 0 2px var(--color-primary-300);
-      }
-
-      #noId {
-        display: flex;
-        flex-flow: nowrap row;
-        justify-content: center;
-      }
-
-      #noId a {
-        text-decoration: underline;
-      }
-
-      @media (min-width: 768px) {
-        #login {
-          width: 450px;
-          justify-self: center;
-        }
-      }
-
-      @media (min-width: 1920px) {
-        #login {
-          width: 600px;
-          justify-self: center;
-        }
-      }
-    </style>
   </head>
-  <body>
-    <div id="login">
-      <p id="loginDes">로그인 또는 회원가입</p>
-      <div id="loginData">
-        <label id="id" for="loginId">아이디</label>
-        <input type="text" id="loginId" placeholder="아이디를 입력해주세요." />
-        <p></p>
-        <p id="result1"></p>
+  <body class="bg-white text-shark-700">
+    <div
+      id="login"
+      class="mx-auto my-8 flex min-w-100 max-w-150 flex-col justify-center pt-4 md:w-112.5 2xl:w-150">
+      <p
+        id="loginDes"
+        class="mb-12 flex justify-center text-center text-2xl font-bold text-shark-700">
+        로그인 또는 회원가입
+      </p>
+      <div id="loginData" class="grid grid-cols-[6rem_1fr] grid-rows-4 gap-y-2">
+        <label
+          id="id"
+          for="loginId"
+          class="flex h-11.25 items-center justify-center tracking-[0.2rem] text-shark-400"
+          >아이디</label
+        >
+        <input
+          type="text"
+          id="loginId"
+          placeholder="아이디를 입력해주세요."
+          class="mr-8 h-11.25 rounded-2xl border border-shark-400 px-3 py-3 outline-none transition focus:border-primary-300 focus:ring-2 focus:ring-primary-200" />
+        <p class="h-11.25"></p>
+        <p id="result1" class="flex h-11.25 items-center text-xs font-bold"></p>
 
-        <label id="pw" for="loginPw">비밀번호</label>
+        <label
+          id="pw"
+          for="loginPw"
+          class="flex h-11.25 items-center justify-center tracking-[0.2rem] text-shark-400"
+          >비밀번호</label
+        >
         <input
           type="password"
           id="loginPw"
-          placeholder="비밀번호를 입력해주세요." />
-        <p></p>
-        <p id="result2"></p>
+          placeholder="비밀번호를 입력해주세요."
+          class="mr-8 h-11.25 rounded-2xl border border-shark-400 px-3 py-3 outline-none transition focus:border-primary-300 focus:ring-2 focus:ring-primary-200" />
+        <p class="h-11.25"></p>
+        <p id="result2" class="flex h-11.25 items-center text-xs font-bold"></p>
       </div>
-      <p id="result3"></p>
-      <button type="submit" id="loginbtn">로그인</button>
-      <p id="noId">
+      <p
+        id="result3"
+        class="flex justify-center text-center text-xs font-bold"></p>
+      <button
+        type="submit"
+        id="loginbtn"
+        class="my-4 inline-flex w-40 cursor-pointer self-center rounded-lg bg-primary-300 px-4 py-4 text-center text-white transition duration-500 hover:bg-white hover:text-primary-300 hover:ring-2 hover:ring-primary-300">
+        로그인
+      </button>
+      <p id="noId" class="flex justify-center text-center text-shark-700">
         아직 계정이 없으신가요? &nbsp;
-        <a id="goSignup" href="../signup/index.html">회원가입</a>
+        <a
+          id="goSignup"
+          href="../signup/index.html"
+          class="underline underline-offset-2">
+          회원가입
+        </a>
       </p>
     </div>
   </body>
