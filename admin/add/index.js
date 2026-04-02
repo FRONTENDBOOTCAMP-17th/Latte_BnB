@@ -1,5 +1,6 @@
 import '../../src/style.css';
 import numberInput from '../../src/components/numberInput';
+import toast from '../../src/components/toast.js';
 import { PreviewImage } from '../../src/components/previewImage.js';
 
 let uploadThumbnailBtn = null;
@@ -16,6 +17,7 @@ let modal = null;
 let imageTitle = null;
 let imageDescription = null;
 let selectedImage = null;
+let addForm = null;
 
 function handleThumbnail(e) {
   if (e.target.files && e.target.files[0]) {
@@ -55,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
   imageTitle = document.getElementById('imageTitle');
   imageDescription = document.getElementById('imageDescription');
   selectedImage = document.getElementById('selectedImage');
+  addForm = document.getElementById('addForm');
 
   uploadThumbnailBtn.addEventListener('click', () => {
     thumbnailInput.click();
@@ -88,6 +91,46 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         imagesPreview.insertBefore(previewImage.getElement(), uploadImagesBtn);
       });
+    }
+  });
+
+  addForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let showMessage = false;
+    let message = [];
+
+    if (addForm.title.value.length === 0) {
+      showMessage = true;
+      message.push('숙소 이름');
+    }
+
+    if (addForm.region.value.length === 0) {
+      showMessage = true;
+      message.push('지역');
+    }
+
+    if (addForm.maxGuest.value === 0) {
+      showMessage = true;
+      message.push('최대 수용 인원');
+    }
+
+    if (addForm.adultPrice.value.length === 0) {
+      showMessage = true;
+      message.push('성인 1박 요금');
+    }
+
+    if (addForm.childPrice.value.length === 0) {
+      showMessage = true;
+      message.push('어린이 1박 요금');
+    }
+
+    if (showMessage) {
+      toast.warn(
+        '필수 값 입력',
+        `${message.join(', ')} 필드는 필수로 입력해야합니다.`,
+        5,
+      );
+      return;
     }
   });
 
