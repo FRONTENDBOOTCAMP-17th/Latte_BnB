@@ -14,22 +14,23 @@ content.classList.remove('grid');
 content.classList.add('hidden');
 
 if (localStorage.getItem('admin_token')) {
-  const resPromise = await fetch(`${constants.API_BASE_URL}/me/profile`, {
+  const res = await fetch(`${constants.API_BASE_URL}/me/profile`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('admin_token')}`,
     },
   });
 
-  resPromise
-    .then((result) => {
-      console.log('유효한 토큰입니다.');
-      content.classList.add('grid');
-      content.classList.remove('hidden');
-    })
-    .catch((error) => {
-      location.replace('/admin/login/');
-    });
+  if (!res.ok) {
+    location.replace('/admin/login/');
+  }
+
+  const { success } = await res.json();
+  if (success) {
+    console.log('유효한 토큰입니다.');
+    content.classList.add('grid');
+    content.classList.remove('hidden');
+  }
 } else {
   location.replace('/admin/login/');
 }
