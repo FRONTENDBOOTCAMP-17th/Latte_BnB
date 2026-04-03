@@ -1,33 +1,36 @@
 import { RoomCard } from './RoomCard.js';
+import constants from './constants.js';
 
 const roomList = document.getElementById('roomList');
+let roomData = new Map();
 
-const mockCnt = 10;
-const mockData = [];
+async function fetchRooms() {
+  const res = await fetch(`${constants.API_BASE_URL}/accommodations`, {
+    method: 'GET',
+  });
 
-function fetchRooms() {
-  for (let i = 0; i < mockCnt; i++) {
-    console.log(i);
-    const room = new RoomCard({
-      id: i,
-      title: `강릉 오션뷰 펜션`,
-      location: '강릉',
-      rating: 4.5,
-      reviewCount: 100,
-      audultPricePerNight: 100000,
-      period: '3월 30일 ~ 4월 4일',
-      hostName: `호스트 이름`,
-      tumbnailUrl: '/src/assets/room_thumbnail.webp',
-    });
-    mockData.push(room);
+  const { message, data } = await res.json();
+
+  if (!res.ok) {
+    throw new Error(message);
   }
+
+  return data.accommodations;
 }
 
 function renderRooms() {
-  mockData.forEach((room) => {
-    roomList.appendChild(room.getElement());
+  for (const value of roomData.values()) {
+    roomList.appendChild(value.getElement());
+  }
+}
+
+function buildRooms(data) {
+  data.forEach((room) => {
+    roomData.set(room.id, new RoomCard(room));
   });
 }
 
-fetchRooms();
+const result = await fetchRooms();
+console.log(result);
+buildRooms(result);
 renderRooms();
