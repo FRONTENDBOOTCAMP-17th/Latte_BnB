@@ -18,7 +18,7 @@ export class PreviewImage {
     div.innerHTML = `
       <button
         type="button"
-        class="deleteImageBtn absolute text-shark-800/80 top-2 right-2 hover:text-shark-800/65">
+        class="deleteImageBtn absolute bg-shark-800 text-white top-2 right-2 hover:bg-shark-800/85 p-1 rounded-xl">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
