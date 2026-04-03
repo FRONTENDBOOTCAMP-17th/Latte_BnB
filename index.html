@@ -8,6 +8,86 @@
     <script type="module" src="./src/landing.js"></script>
   </head>
   <body>
+    <div id="hamburger">
+      <button
+        type="button"
+        class="bg-primary-500 hover:bg-primary-500/85 text-white w-10 aspect-square flex items-center justify-center rounded-[50%]">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="size-6">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+      <div
+        class="w-60 flex flex-col shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_12px_30px_rgba(0,0,0,0.08)] gap-2 py-4 rounded-xl">
+        <div class="w-full grid grid-cols-[0.5fr_1.5fr] grid-rows-2 gap-2 m-2">
+          <div
+            class="col-start-1 row-span-2 bg-shark-700 w-10 aspect-square rounded-[50%] place-self-center"></div>
+          <strong class="col-start-2 row-start-1 text-shark-800"
+            >이름 님</strong
+          >
+          <span class="col-start-2 row-start-2 text-shark-600 text-sm"
+            >방문을 환영합니다.</span
+          >
+        </div>
+        <hr class="w-[90%] self-center border-t-2 border-shark-200" />
+        <a
+          href=""
+          class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4"
+          ><img
+            src="./src/assets/profile.svg"
+            alt="프로필 svg 이미지"
+            class="w-6 m-2" />프로필</a
+        >
+        <a
+          href=""
+          class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4"
+          ><img
+            src="./src/assets/wish.svg"
+            alt="위시리스트 svg 이미지"
+            class="w-6 m-2" />위시 리스트</a
+        >
+        <a
+          href=""
+          class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4"
+          ><img
+            src="./src/assets/reservation.svg"
+            alt="예약목록 svg 이미지"
+            class="w-6 m-2" />내 예약 확인</a
+        >
+        <hr class="w-[90%] self-center border-t-2 border-shark-200" />
+        <button
+          type="button"
+          class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
+          <img
+            src="./src/assets/logout.svg"
+            alt="로그아웃 svg 이미지"
+            class="w-6 m-2" />로그아웃
+        </button>
+      </div>
+      <div
+        class="w-80 flex flex-col shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_12px_30px_rgba(0,0,0,0.08)] gap-2 py-4 rounded-xl">
+        <p class="text-lg font-bold text-center">
+          Latte BnB에 오신 걸 환영합니다.
+        </p>
+        <hr class="w-[90%] self-center border-t-2 border-shark-200" />
+        <a
+          href=""
+          class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
+          <img
+            src="./src/assets/login.svg"
+            alt="로그인 svg 이미지"
+            class="w-6 m-2" />로그인
+        </a>
+      </div>
+    </div>
     <main id="content" class="min-w-100 pb-20 flex flex-col items-center">
       <h1
         class="self-start scroll-m-20 text-[clamp(1.25rem,4vw,2.25rem)] font-extrabold tracking-tight break-keep py-8 mx-[clamp(1.25rem,4vw,5rem)]">
