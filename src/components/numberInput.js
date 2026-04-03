@@ -18,7 +18,8 @@ function buildHTML(root) {
   input.id = root.dataset.id;
   input.className = 'adminInputNumber rounded-none w-20 text-center';
   input.min = root.dataset.min;
-  input.value = input.min;
+  input.value = root.dataset.min;
+  input.defaultValue = root.dataset.min;
 
   minus.type = 'button';
   minus.className =
