@@ -1,8 +1,13 @@
 let prevButton = null;
 let nextButton = null;
 let currentPage = null;
+let paginationData = {};
 
 function buildPagination({ page, hasNext, hasPrev }) {
+  paginationData.page = page;
+  paginationData.hasNext = hasNext;
+  paginationData.hasPrev = hasPrev;
+
   const pagination = document.createElement('div');
   pagination.id = 'pagination';
   pagination.className =
@@ -18,7 +23,7 @@ function buildPagination({ page, hasNext, hasPrev }) {
   prevButton.className =
     'aspect-square p-1 flex items-center justify-center not-disabled:cursor-pointer text-shark-700 hover:not-disabled:text-shark-700/80 disabled:text-shark-300';
   prevButton.innerHTML = `
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none">
     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
   </svg>
   `;
@@ -30,9 +35,9 @@ function buildPagination({ page, hasNext, hasPrev }) {
   nextButton.type = 'button';
   nextButton.id = 'nextButton';
   nextButton.className =
-    'aspect-square p-1 flex items-center justify-center cursor-pointer text-shark-700 hover:text-shark-700/70';
+    'aspect-square p-1 flex items-center justify-center not-disabled:cursor-pointer text-shark-700 hover:not-disabled:text-shark-700/80 disabled:text-shark-300';
   nextButton.innerHTML = `
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 pointer-events-none">
     <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
   </svg>
   `;
@@ -44,4 +49,21 @@ function buildPagination({ page, hasNext, hasPrev }) {
   return pagination;
 }
 
-export default { buildPagination };
+function setCurrentPage(page) {
+  paginationData.page = page;
+  currentPage.textContent = page;
+}
+
+function setPrevNext({ hasPrev, hasNext }) {
+  paginationData.hasPrev = hasPrev;
+  paginationData.hasNext = hasNext;
+  prevButton.disabled = !hasPrev;
+  nextButton.disabled = !hasNext;
+}
+
+export default {
+  setCurrentPage,
+  setPrevNext,
+  buildPagination,
+  paginationData,
+};
