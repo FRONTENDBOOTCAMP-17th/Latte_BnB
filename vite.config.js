@@ -14,6 +14,7 @@ export default defineConfig({
           'accommodations-detail/index.html',
         ),
         adminLogin: resolve(__dirname, 'admin/login/index.html'),
+        adminAdd: resolve(__dirname, 'admin/add/index.html'),
         profile: resolve(__dirname, 'profile/index.html'),
       },
     },
