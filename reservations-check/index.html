@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../src/style.css" />
+    <script type="module" src="./index.js"></script>
+    <title>예약 확인 페이지</title>
+    <style>
+      #list {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 1rem 1rem 0;
+        inline-size: 100%;
+      }
+
+      #reservation-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 2rem 2rem 6rem;
+      }
+
+      #reservation-card1,
+      #reservation-card2,
+      #reservation-card3,
+      #reservation-card4,
+      #reservation-card5,
+      #reservation-card6,
+      #reservation-card7,
+      #reservation-card8 {
+        box-shadow: 0 0 0 2px var(--color-shark-300);
+        padding: 1rem;
+        border-radius: 8px;
+        inline-size: 100%;
+        margin-inline: auto;
+      }
+
+      @media (min-width: 768px) {
+        #reservation-list {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        #reservation-list {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1rem;
+        }
+
+        #nav-bar {
+          visibility: hidden;
+        }
+      }
+
+      @media (max-width: 1023px) {
+        body footer {
+          display: none;
+        }
+      }
+
+      #img1,
+      #img2,
+      #img3,
+      #img4,
+      #img5,
+      #img6,
+      #img7,
+      #img8 {
+        inline-size: 100%;
+        margin-block-end: 1rem;
+      }
+
+      #name1,
+      #name2,
+      #name3,
+      #name4,
+      #name5,
+      #name6,
+      #name7,
+      #name8 {
+        font-weight: 700;
+      }
+
+      html,
+      body {
+        overflow-x: hidden;
+      }
+
+      #nav-bar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        background: #686868;
+        position: fixed;
+        inset: auto 0 0 0;
+      }
+
+      #nav-bar > #search,
+      #nav-bar > #wish,
+      #nav-bar > #rsv,
+      #nav-bar > #profile {
+        display: flex;
+        flex-flow: wrap column;
+        row-gap: 0.5rem;
+        padding-block: 0.5rem;
+      }
+
+      #search > #search1,
+      #search > #search2,
+      #wish > #wish2,
+      #rsv > #rsv2,
+      #profile > #profile2 {
+        display: flex;
+        align-self: center;
+        color: var(--color-white);
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="list">내 예약 목록</h1>
+    <div id="reservation-list">
+      <div id="reservation-card1">
+        <img id="img1" src="../docs/images/demo_room.png" alt="" />
+        <p id="name1">숙소 이름</p>
+        <p id="period1">
+          <time datetime="2026-04-02">2026-04-02</time>
+          ~
+          <time datetime="2026-04-03">2026-04-03</time>
+        </p>
+      </div>
+      <div id="reservation-card2">
+        <img id="img2" src="../docs/images/demo_room.png" alt="" />
+        <p id="name2">숙소 이름</p>
+        <p id="period2">
+          <time datetime="2026-04-02">2026-04-02</time>
+          ~
+          <time datetime="2026-04-03">2026-04-03</time>
+        </p>
+      </div>
+      <div id="reservation-card3">
+        <img id="img3" src="../docs/images/demo_room.png" alt="" />
+        <p id="name3">숙소 이름</p>
+        <p id="period3">
+          <time datetime="2026-04-02">2026-04-02</time>
+          ~
+          <time datetime="2026-04-03">2026-04-03</time>
+        </p>
+      </div>
+      <div id="reservation-card4">
+        <img id="img4" src="../docs/images/demo_room.png" alt="" />
+        <p id="name4">숙소 이름</p>
+        <p id="period4">
+          <time datetime="2026-04-02">2026-04-02</time>
+          ~
+          <time datetime="2026-04-03">2026-04-03</time>
+        </p>
+      </div>
+      <div id="reservation-card5">
+        <img id="img5" src="../docs/images/demo_room.png" alt="" />
+        <p id="name5">숙소 이름</p>
+        <p id="period5">
+          <time datetime="2026-04-02">2026-04-02</time>
+          ~
+          <time datetime="2026-04-03">2026-04-03</time>
+        </p>
+      </div>
+      <div id="reservation-card6">
+        <img id="img6" src="../docs/images/demo_room.png" alt="" />
+        <p id="name6">숙소 이름</p>
+        <p id="period6">
+          <time datetime="2026-04-02">2026-04-02</time>
+          ~
+          <time datetime="2026-04-03">2026-04-03</time>
+        </p>
+      </div>
+      <div id="reservation-card7">
+        <img id="img7" src="../docs/images/demo_room.png" alt="" />
+        <p id="name7">숙소 이름</p>
+        <p id="period7">
+          <time datetime="2026-04-02">2026-04-02</time>
+          ~
+          <time datetime="2026-04-03">2026-04-03</time>
+        </p>
+      </div>
+      <div id="reservation-card8">
+        <img id="img8" src="../docs/images/demo_room.png" alt="" />
+        <p id="name8">숙소 이름</p>
+        <p id="period8">
+          <time datetime="2026-04-02">2026-04-02</time>
+          ~
+          <time datetime="2026-04-03">2026-04-03</time>
+        </p>
+      </div>
+    </div>
+    <div id="nav-bar">
+      <div id="search">
+        <img
+          id="search1"
+          src="../src/assets/search.svg"
+          alt=""
+          width="24"
+          height="24" />
+        <p id="search2">검색</p>
+      </div>
+      <div id="wish">
+        <img id="wish1" src="../src/assets/wish.svg" alt="" />
+        <p id="wish2">위시리스트</p>
+      </div>
+      <div id="rsv">
+        <img id="rsv1" src="../src/assets/reservation.svg" alt="" />
+        <p id="rsv2">예약</p>
+      </div>
+      <div id="profile">
+        <img id="profile1" src="../src/assets/profile.svg" alt="" />
+        <p id="profile2">프로필</p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -9,9 +9,13 @@ export default defineConfig({
       input: {
         landing: resolve(__dirname, 'index.html'),
         signup: resolve(__dirname, 'signup/index.html'),
-        roomsDetail: resolve(__dirname, 'rooms-detail/index.html'),
+        accommodationsDetail: resolve(
+          __dirname,
+          'accommodations-detail/index.html',
+        ),
         adminLogin: resolve(__dirname, 'admin/login/index.html'),
         adminAdd: resolve(__dirname, 'admin/add/index.html'),
+        profile: resolve(__dirname, 'profile/index.html'),
       },
     },
   },
