@@ -13,9 +13,18 @@
         class="self-start scroll-m-20 text-[clamp(1.25rem,4vw,2.25rem)] font-extrabold tracking-tight break-keep py-8 mx-[clamp(1.25rem,4vw,5rem)]">
         특별한 추억을 남길 수 있는 공간을 찾아보세요.
       </h1>
+      <div class="self-end mx-[clamp(1.25rem,4vw,5rem)] my-4">
+        <span>정렬: </span>
+        <select id="sort">
+          <option value="dictAsc" selected>가나다 순</option>
+          <option value="dictDesc">가나다 역순</option>
+          <option value="priceAsc">가격 낮은 순</option>
+          <option value="priceDesc">가격 높은 순</option>
+        </select>
+      </div>
       <ul
         id="roomList"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 px-[clamp(20px,4vw,80px)]"></ul>
+        class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 px-[clamp(20px,4vw,80px)]"></ul>
     </main>
   </body>
 </html>
