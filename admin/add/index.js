@@ -7,6 +7,32 @@ import {
   buildRequestFormData,
   uploadImage,
 } from './addAccommodation.js';
+import constants from '../../src/constants.js';
+
+const content = document.getElementById('content');
+content.classList.remove('grid');
+content.classList.add('hidden');
+
+if (localStorage.getItem('admin_token')) {
+  const resPromise = await fetch(`${constants.API_BASE_URL}/me/profile`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('admin_token')}`,
+    },
+  });
+
+  resPromise
+    .then((result) => {
+      console.log('유효한 토큰입니다.');
+      content.classList.add('grid');
+      content.classList.remove('hidden');
+    })
+    .catch((error) => {
+      location.replace('/admin/login/');
+    });
+} else {
+  location.replace('/admin/login/');
+}
 
 let uploadThumbnailBtn = null;
 let deleteThumbnailBtn = null;
@@ -31,17 +57,31 @@ function handleThumbnail(e) {
     deleteThumbnailBtn.classList.remove('hidden');
     uploadThumbnailBtn.className = 'adminThumbnailModify';
   } else {
-    preview.src = '';
-    preview.classList.add('hidden');
-    deleteThumbnailBtn.classList.add('hidden');
-    uploadThumbnailBtn.className = 'adminThumbnailUpload';
+    resetThumbnailPreview();
   }
+}
+
+function resetThumbnailPreview() {
+  preview.src = '';
+  preview.classList.add('hidden');
+  deleteThumbnailBtn.classList.add('hidden');
+  uploadThumbnailBtn.className = 'adminThumbnailUpload';
+  thumbnailFile = null;
+}
+
+function resetImagesPreview() {
+  for (const value of imageMap.values()) {
+    value.object.getElement().remove();
+  }
+  imageMap.clear();
 }
 
 function closeModal() {
   modal.classList.add('hidden');
   imageTitle.value = '';
   imageDescription.value = '';
+  selectedImage.src = '';
+  selectedImage.removeAttribute('data-id');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -168,13 +208,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    console.log(requestData);
-
     const result = await addAccommodation(requestData);
 
     if (result.success) {
-      console.log(result.data);
       toast.success('숙소 추가 성공', result.message, 5);
+      addForm.reset();
+      resetThumbnailPreview();
+      resetImagesPreview();
     }
   });
 
