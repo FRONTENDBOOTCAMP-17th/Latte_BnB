@@ -1,6 +1,8 @@
 import { RoomCard } from './RoomCard.js';
 import constants from './constants.js';
+import pagination from './components/pagination.js';
 
+const content = document.getElementById('content');
 const roomList = document.getElementById('roomList');
 let roomData = new Map();
 
@@ -9,13 +11,13 @@ async function fetchRooms() {
     method: 'GET',
   });
 
-  const { message, data } = await res.json();
+  const { message, data, meta } = await res.json();
 
   if (!res.ok) {
     throw new Error(message);
   }
 
-  return data.accommodations;
+  return { data, meta };
 }
 
 function renderRooms() {
@@ -31,6 +33,8 @@ function buildRooms(data) {
 }
 
 const result = await fetchRooms();
-console.log(result);
-buildRooms(result);
+buildRooms(result.data.accommodations);
 renderRooms();
+
+console.log(result.meta);
+content.appendChild(pagination.buildPagination(result.meta.pagination));
