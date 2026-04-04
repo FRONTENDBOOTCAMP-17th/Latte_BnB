@@ -21,14 +21,7 @@
         margin: 2rem 2rem 6rem;
       }
 
-      #reservation-card1,
-      #reservation-card2,
-      #reservation-card3,
-      #reservation-card4,
-      #reservation-card5,
-      #reservation-card6,
-      #reservation-card7,
-      #reservation-card8 {
+      .reservation-card {
         box-shadow: 0 0 0 2px var(--color-shark-300);
         padding: 1rem;
         border-radius: 8px;
@@ -62,32 +55,25 @@
         }
       }
 
-      #img1,
-      #img2,
-      #img3,
-      #img4,
-      #img5,
-      #img6,
-      #img7,
-      #img8 {
+      .img {
         inline-size: 100%;
         margin-block-end: 1rem;
       }
 
-      #name1,
-      #name2,
-      #name3,
-      #name4,
-      #name5,
-      #name6,
-      #name7,
-      #name8 {
+      .name {
         font-weight: 700;
       }
 
       html,
       body {
+        display: flex;
+        flex-flow: wrap column;
         overflow-x: hidden;
+
+        #result {
+          font-weight: 700;
+          align-self: center;
+        }
       }
 
       #nav-bar {
@@ -98,21 +84,27 @@
         inset: auto 0 0 0;
       }
 
-      #nav-bar > #search,
-      #nav-bar > #wish,
-      #nav-bar > #rsv,
-      #nav-bar > #profile {
+      #search,
+      #wish,
+      #rsv,
+      #profile {
         display: flex;
         flex-flow: wrap column;
         row-gap: 0.5rem;
         padding-block: 0.5rem;
+
+        @media (max-width: 1023px) {
+          box-shadow:
+            -10px 0 10px -8px rgba(0, 0, 0, 0.2),
+            10px 0 10px -8px rgba(0, 0, 0, 0.2);
+        }
       }
 
-      #search > #search1,
-      #search > #search2,
-      #wish > #wish2,
-      #rsv > #rsv2,
-      #profile > #profile2 {
+      #search1,
+      #search2,
+      #wish2,
+      #rsv2,
+      #profile2 {
         display: flex;
         align-self: center;
         color: var(--color-white);
@@ -121,80 +113,8 @@
   </head>
   <body>
     <h1 id="list">내 예약 목록</h1>
-    <div id="reservation-list">
-      <div id="reservation-card1">
-        <img id="img1" src="../docs/images/demo_room.png" alt="" />
-        <p id="name1">숙소 이름</p>
-        <p id="period1">
-          <time datetime="2026-04-02">2026-04-02</time>
-          ~
-          <time datetime="2026-04-03">2026-04-03</time>
-        </p>
-      </div>
-      <div id="reservation-card2">
-        <img id="img2" src="../docs/images/demo_room.png" alt="" />
-        <p id="name2">숙소 이름</p>
-        <p id="period2">
-          <time datetime="2026-04-02">2026-04-02</time>
-          ~
-          <time datetime="2026-04-03">2026-04-03</time>
-        </p>
-      </div>
-      <div id="reservation-card3">
-        <img id="img3" src="../docs/images/demo_room.png" alt="" />
-        <p id="name3">숙소 이름</p>
-        <p id="period3">
-          <time datetime="2026-04-02">2026-04-02</time>
-          ~
-          <time datetime="2026-04-03">2026-04-03</time>
-        </p>
-      </div>
-      <div id="reservation-card4">
-        <img id="img4" src="../docs/images/demo_room.png" alt="" />
-        <p id="name4">숙소 이름</p>
-        <p id="period4">
-          <time datetime="2026-04-02">2026-04-02</time>
-          ~
-          <time datetime="2026-04-03">2026-04-03</time>
-        </p>
-      </div>
-      <div id="reservation-card5">
-        <img id="img5" src="../docs/images/demo_room.png" alt="" />
-        <p id="name5">숙소 이름</p>
-        <p id="period5">
-          <time datetime="2026-04-02">2026-04-02</time>
-          ~
-          <time datetime="2026-04-03">2026-04-03</time>
-        </p>
-      </div>
-      <div id="reservation-card6">
-        <img id="img6" src="../docs/images/demo_room.png" alt="" />
-        <p id="name6">숙소 이름</p>
-        <p id="period6">
-          <time datetime="2026-04-02">2026-04-02</time>
-          ~
-          <time datetime="2026-04-03">2026-04-03</time>
-        </p>
-      </div>
-      <div id="reservation-card7">
-        <img id="img7" src="../docs/images/demo_room.png" alt="" />
-        <p id="name7">숙소 이름</p>
-        <p id="period7">
-          <time datetime="2026-04-02">2026-04-02</time>
-          ~
-          <time datetime="2026-04-03">2026-04-03</time>
-        </p>
-      </div>
-      <div id="reservation-card8">
-        <img id="img8" src="../docs/images/demo_room.png" alt="" />
-        <p id="name8">숙소 이름</p>
-        <p id="period8">
-          <time datetime="2026-04-02">2026-04-02</time>
-          ~
-          <time datetime="2026-04-03">2026-04-03</time>
-        </p>
-      </div>
-    </div>
+    <ul id="reservation-list"></ul>
+    <p id="result"></p>
     <div id="nav-bar">
       <div id="search">
         <img
@@ -218,5 +138,95 @@
         <p id="profile2">프로필</p>
       </div>
     </div>
+
+    <script>
+      const rsvList = document.getElementById('reservation-list');
+      const result = document.getElementById('result');
+      const token = localStorage.getItem('accessToken');
+
+      async function loadReservation() {
+        try {
+          const res = await fetch(
+            'https://api.fullstackfamily.com/api/lattebnb/v1/me/reservations',
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+              },
+            },
+          );
+
+          if (!res.ok) {
+            throw new Error('HTTP 오류: ' + res.stauts);
+          }
+
+          const rsvData = await res.json();
+          const rsv = rsvData.data.reservations;
+          const amdData = rsv.accommodation;
+          const schData = rsv.schedule;
+
+          if (rsv.length === 0) {
+            result.textContent = '예약 내역이 없습니다.';
+            return;
+          }
+
+          rsvList.textContent = '';
+
+          for (let i = 0; i < rsv.length; i++) {
+            const amd = amdData[i];
+            const sch = schData[i];
+
+            const resDiv = document.createElement('div');
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'reservation-card';
+            const cardImg = document.createElement('img');
+            cardImg.className = 'img';
+            const cardName = document.createElement('p');
+            cardName.className = 'name';
+            const cardPeriod = document.createElement('p');
+
+            cardImg.src = amd.thumbnailUrl;
+            cardName.textContent = amd.title;
+            cardPeriod.textContent = sch.checkInDate + '~' + sch.checkOutDate;
+
+            cardDiv.appendChild(cardImg);
+            cardDiv.appendChild(cardName);
+            cardDiv.appendChild(cardPeriod);
+            resDiv.appendChild(cardDiv);
+            rsvList.appendChild(resDiv);
+
+            localStorage.setItem(rsv.status);
+            console.log(rsv.status);
+          }
+        } catch (e) {
+          result.textContent = '에러 발생: ' + e.message;
+          result.sytle.color = 'red';
+        }
+      }
+
+      loadReservation();
+
+      const search = document.getElementById('search');
+      const wish = document.getElementById('wish');
+      const rsv = document.getElementById('rsv');
+      const profile = document.getElementById('profile');
+
+      search.addEventListener('click', () => {
+        location.href = `../index.html`;
+      });
+
+      wish.addEventListener('click', () => {
+        location.href = `../index.html`;
+      });
+
+      rsv.addEventListener('click', () => {
+        location.href = `./`;
+      });
+
+      profile.addEventListener('click', () => {
+        location.href = `../profile/index.html`;
+      });
+    </script>
   </body>
 </html>
