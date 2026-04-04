@@ -65,13 +65,13 @@ function buildMessage(message, details = '') {
 
   toastMessageNode = document.querySelector('#toastMessage');
   if (toastMessageNode === null) {
-    toastMessageNode = buildMessage();
+    toastMessageNode = buildMessageNode();
     toastNode.appendChild(toastMessageNode);
   }
 
   toastDetailNode = document.querySelector('#toastDetail');
   if (toastDetailNode === null && details) {
-    toastDetailNode = buildDetail();
+    toastDetailNode = buildDetailNode();
     toastNode.appendChild(toastDetailNode);
   }
 
