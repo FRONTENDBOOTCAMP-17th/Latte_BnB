@@ -113,7 +113,7 @@ function updatePricing() {
     adultTotal + childTotal + pricing.serviceFee,
   );
 }
-
+// =============
 async function submitCalendarDate() {
   const checkin = getCheckinDate();
   const checkout = getCheckoutDate();
@@ -172,19 +172,20 @@ async function submitCalendarDate() {
     console.error(e);
   }
 }
+// =========================
 
 const calModal = document.getElementById('modal-calendar');
 const guestModal = document.getElementById('modal-guest');
 
 document.getElementById('btn-date').addEventListener('click', () => {
-  calModal.hidden = false;
+  calModal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 });
 
 document
   .getElementById('modal-calendar-cancel')
   .addEventListener('click', () => {
-    calModal.hidden = true;
+    calModal.style.display = '';
     document.body.style.overflow = '';
   });
 
@@ -194,7 +195,7 @@ document.getElementById('modal-calendar-save').addEventListener('click', () => {
     return;
   }
 
-  calModal.hidden = true;
+  calModal.style.display = '';
   document.body.style.overflow = '';
 
   updateDateBtn();
@@ -202,17 +203,17 @@ document.getElementById('modal-calendar-save').addEventListener('click', () => {
 });
 
 document.getElementById('btn-guest').addEventListener('click', () => {
-  guestModal.hidden = false;
+  guestModal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 });
 
 document.getElementById('modal-guest-cancel').addEventListener('click', () => {
-  guestModal.hidden = true;
+  guestModal.style.display = '';
   document.body.style.overflow = '';
 });
 
 document.getElementById('modal-guest-save').addEventListener('click', () => {
-  guestModal.hidden = true;
+  guestModal.style.display = '';
   document.body.style.overflow = '';
 
   let guestText = `성인 ${adults}명`;

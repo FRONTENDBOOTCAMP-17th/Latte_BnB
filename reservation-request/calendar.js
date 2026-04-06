@@ -81,16 +81,17 @@ function buildCalendar() {
   const currentDate = new Date(firstDate);
   while (currentDate <= lastDate) {
     const cell = row.insertCell();
+    cell.classList.add('h-11', 'text-sm');
     const date = new Date(currentDate);
     date.setHours(0, 0, 0, 0);
 
     cell.textContent = currentDate.getDate();
 
     if (checkin && date.getTime() === checkin.getTime()) {
-      cell.classList.add('cal-date-selected');
+      cell.classList.add('bg-primary-300', 'font-bold', 'rounded-lg', 'outline', 'outline-1', 'outline-shark-500');
     }
     if (checkout && date.getTime() === checkout.getTime()) {
-      cell.classList.add('cal-date-selected');
+      cell.classList.add('bg-primary-300', 'font-bold', 'rounded-lg', 'outline', 'outline-1', 'outline-shark-500');
     }
 
     if (checkin && checkout) {
@@ -98,16 +99,16 @@ function buildCalendar() {
       const rangeEnd = checkin < checkout ? checkout : checkin;
 
       if (date > rangeStart && date < rangeEnd) {
-        cell.classList.add('cal-date-range');
+        cell.classList.add('bg-primary-50');
       }
     }
 
     if (date < today) {
-      cell.classList.add('cal-date-past');
+      cell.classList.add('text-shark-300', 'pointer-events-none');
     } else if (isBlocked(date)) {
-      cell.classList.add('cal-date-blocked');
+      cell.classList.add('text-shark-300', 'pointer-events-none');
     } else {
-      cell.classList.add('cal-date-available');
+      cell.classList.add('cursor-pointer', 'hover:bg-shark-200', 'hover:rounded-lg');
       cell.onclick = () => {
         const isCheckin = checkin && date.getTime() === checkin.getTime();
         const isCheckout = checkout && date.getTime() === checkout.getTime();
