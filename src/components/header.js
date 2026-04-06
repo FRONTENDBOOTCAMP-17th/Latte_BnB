@@ -1,4 +1,5 @@
 import hamburger from './hamburger';
+import navigation from './navigation';
 
 export function buildHeader() {
   const header = document.createElement('header');
@@ -31,6 +32,7 @@ export function buildHeader() {
   </div>`;
 
   header.appendChild(hamburger.buildHamburger());
+  header.appendChild(navigation.buildNavigation());
 
   const profilePromise = hamburger.checkAuth();
 
@@ -39,6 +41,7 @@ export function buildHeader() {
       .getElementsByClassName('hamburger')[0]
       .appendChild(hamburger.buildMenu(result));
     hamburger.attachEvent();
+    navigation.buildMenu(result);
   });
 
   return header;
