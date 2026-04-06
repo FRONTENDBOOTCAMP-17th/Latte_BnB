@@ -45,11 +45,11 @@ async function checkAuth() {
   try {
     const data = await getProfile(token);
 
-    if (data !== null) {
+    if (data) {
       return { isAuth: true, data };
     }
-    return { isAuth: false, data: null };
   } catch (error) {
+    console.log(error.message + '\n프로필 조회 실패');
     return { isAuth: false, data: null };
   }
 }
@@ -62,11 +62,11 @@ async function getProfile(token) {
     },
   });
 
-  const { message, data } = await res.json();
-
   if (!res.ok) {
-    throw new Error(message);
+    throw new Error('HTTP 에러: ' + res.status);
   }
+
+  const { data } = await res.json();
 
   return data;
 }
