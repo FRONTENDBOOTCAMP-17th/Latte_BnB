@@ -44,8 +44,8 @@ export class RoomCard {
         <a href="/accommodations-detail/?id=${this.#id}">
           <img src='${this.#thumbnailUrl}' alt='대표 이미지' class="accommodationThumbnail w-full h-46 object-cover"/>
           <div class="p-4 pt-2 grid grid-cols-2 grid-rows-[repeat(3,minmax(56px,1fr))] gap-1">
-            <p class="accommodationTitle text-lg col-satrt-1"></p>
-            <p class="accommodationPrice text-xl font-semibold col-start-2 justify-self-end">
+            <p class="accommodationTitle text-lg col-start-1 line-clamp-2"></p>
+            <p class="accommodationPrice text-xl break-keep text-end font-semibold col-start-2 justify-self-end">
             </p>
             <p class="accommodationMaxGuest text-sm row-start-3 col-start-1 self-start"></p>
             <p class="accommodationLocation text-sm row-start-3 col-start-1 self-end"></p>
@@ -120,14 +120,14 @@ export class RoomCard {
     location = this.#location,
     maxGuest = this.#maxGuest,
     pricing = this.#pricing,
-    tumbnailUrl = this.#thumbnailUrl,
+    thumbnailUrl = this.#thumbnailUrl,
   } = {}) {
     this.#id = id;
     this.#title = title;
     this.#location = location;
     this.#maxGuest = maxGuest;
     this.#pricing = pricing;
-    this.#thumbnailUrl = tumbnailUrl;
+    this.#thumbnailUrl = thumbnailUrl;
     this.#syncDOM();
   }
 

@@ -15,10 +15,10 @@ function buildMenu(result) {
     <a href="/" class="flex flex-col items-center justify-center text-sm">
       <img src="/src/assets/search.svg" alt="nav search svg" class="w-6" />검색
     </a>
-    <a href="" class="flex flex-col items-center justify-center text-sm">
+    <a href="/wishlist/" class="flex flex-col items-center justify-center text-sm">
       <img src="/src/assets/wish.svg" alt="nav wish svg" class="w-6" />위시리스트
     </a>
-    <a href="" class="flex flex-col items-center justify-center text-sm">
+    <a href="/reservations-check/" class="flex flex-col items-center justify-center text-sm">
       <img src="/src/assets/reservation.svg" alt="nav reservation svg" class="w-6" />내 예약
     </a>
     <a href="/profile/" class="flex flex-col items-center justify-center text-sm">
@@ -30,7 +30,7 @@ function buildMenu(result) {
     <a href="/" class="flex flex-col items-center justify-center text-sm">
       <img src="/src/assets/search.svg" alt="nav search svg" class="w-6" />검색
     </a>
-    <a href="/login" class="flex flex-col items-center justify-center text-sm">
+    <a href="/wishlist/" class="flex flex-col items-center justify-center text-sm">
       <img src="/src/assets/wish.svg" alt="nav wish svg" class="w-6" />위시리스트
     </a>
     <a href="/login/" class="flex flex-col items-center justify-center text-sm">

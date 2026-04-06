@@ -63,6 +63,9 @@ function handleThumbnail(e) {
 }
 
 function resetThumbnailPreview() {
+  if (preview.src) {
+    URL.revokeObjectURL(preview.src);
+  }
   preview.src = '';
   preview.classList.add('hidden');
   deleteThumbnailBtn.classList.add('hidden');
@@ -72,6 +75,10 @@ function resetThumbnailPreview() {
 
 function resetImagesPreview() {
   for (const value of imageMap.values()) {
+    const src = value.object.getSrc();
+    if (src) {
+      URL.revokeObjectURL(src);
+    }
     value.object.getElement().remove();
   }
   imageMap.clear();

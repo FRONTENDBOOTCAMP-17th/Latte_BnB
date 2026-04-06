@@ -1,5 +1,5 @@
-let hamburgurBtn = null;
-let hamburgurMenu = null;
+let hamburgerBtn = null;
+let hamburgerMenu = null;
 
 function buildHamburger() {
   const div = document.createElement('div');
@@ -12,7 +12,7 @@ function buildHamburger() {
     </svg>
   </button>
   `;
-  hamburgurBtn = div;
+  hamburgerBtn = div;
   return div;
 }
 
@@ -46,7 +46,7 @@ function buildMenu(result) {
     `;
     div.getElementsByTagName('strong')[0].textContent =
       `${result.data.name} 님`;
-    hamburgurMenu = div;
+    hamburgerMenu = div;
     return div;
   } else {
     div.classList.add('w-80');
@@ -59,15 +59,15 @@ function buildMenu(result) {
       <img src="/src/assets/login.svg" alt="로그인 svg 이미지" class="w-6 m-2" />로그인
     </a>
     `;
-    hamburgurMenu = div;
+    hamburgerMenu = div;
     return div;
   }
 }
 
 function attachEvent() {
-  hamburgurBtn.addEventListener('click', (e) => {
-    hamburgurMenu.classList.toggle('hidden');
-    hamburgurMenu.classList.toggle('flex');
+  hamburgerBtn.addEventListener('click', (e) => {
+    hamburgerMenu.classList.toggle('hidden');
+    hamburgerMenu.classList.toggle('flex');
   });
 }
 

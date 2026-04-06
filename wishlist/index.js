@@ -3,8 +3,6 @@ import constants from '../src/constants.js';
 import pagination from '../src/components/pagination.js';
 
 const content = document.getElementById('content');
-content.classList.add('hidden');
-content.classList.remove('flex');
 
 const token = localStorage.getItem('accessToken');
 if (token) {
