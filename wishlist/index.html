@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>latte-bnb | 위시리스트</title>
+    <script type="module" src="../src/main.js"></script>
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body data-header="true" data-footer="true" data-nav="true">
+    <div
+      id="toast"
+      class="border-2 rounded-2xl p-4 top-4/5 left-1/2 -translate-x-1/2"
+      popover>
+      <p id="toastMessage" class="font-semibold"></p>
+      <p id="toastDetail" class="text-sm"></p>
+    </div>
+    <main id="content" class="min-w-100 pb-20 flex flex-col items-center">
+      <h1
+        class="self-start scroll-m-20 text-[clamp(1.25rem,4vw,2.25rem)] font-extrabold tracking-tight break-keep py-8 mx-[clamp(1.25rem,4vw,5rem)]">
+        내가 찜 해놓은 숙소 목록
+      </h1>
+      <ul
+        id="roomList"
+        class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 px-[clamp(20px,4vw,80px)]"></ul>
+    </main>
+  </body>
+</html>
