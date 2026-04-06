@@ -1,3 +1,6 @@
+import hamburger from './hamburger';
+import navigation from './navigation';
+
 export function buildHeader() {
   const header = document.createElement('header');
 
@@ -20,21 +23,26 @@ export function buildHeader() {
     <p class="font-semibold text-2xl">lattebnb</p>
   </a>
   <div class="lg:ml-auto max-w-xl w-full relative">
-    <input type="text" id="searchInput" class="w-full h-10 lg:h-15 bg-white text-shark-800 px-4 py-2 rounded-3xl lg:rounded-4xl shadow-md placeholder:text-shark-600 placeholder:font-medium placeholder:text-center placeholder:bg-[url(./src/assets/search.svg)] placeholder:bg-no-repeat placeholder:bg-[calc(50%-6rem)_0%]" placeholder="특별한 공간 탐색하기" />
+    <input type="text" id="searchInput" class="w-full h-10 lg:h-15 bg-white text-shark-800 px-4 py-2 rounded-3xl lg:rounded-4xl shadow-md placeholder:text-shark-600 placeholder:font-medium placeholder:text-center placeholder:bg-[url(./src/assets/search.svg)] placeholder:bg-no-repeat placeholder:bg-[calc(50%-6rem)_75%] placeholder:bg-size-[16px_16px]" placeholder="특별한 공간 탐색하기" />
     <button id="searchBtn" type="button" class="bg-primary-500 hover:bg-primary-500/85 text-white absolute p-2 right-1 lg:right-2 top-1/2 -translate-y-1/2 rounded-[50%]">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 lg:size-6 pointer-events-none">
         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
       </svg>
     </button>
-  </div>
-  <div class="hidden lg:flex lg:items-center lg:justify-center lg:w-10 lg:aspect-square lg:bg-negative-500 lg:text-white lg:rounded-[50%] lg:ml-auto lg:mr-4">
-    <span>A</span>
-  </div>
-  <div class="hidden lg:flex lg:w-10 lg:aspect-square lg:bg-shark-200 lg:text-shark-700 lg:rounded-[50%] lg:items-center lg:justify-center lg:cursor-pointer">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-    </svg>
   </div>`;
+
+  header.appendChild(hamburger.buildHamburger());
+  header.appendChild(navigation.buildNavigation());
+
+  const profilePromise = hamburger.checkAuth();
+
+  profilePromise.then((result) => {
+    header
+      .getElementsByClassName('hamburger')[0]
+      .appendChild(hamburger.buildMenu(result));
+    hamburger.attachEvent();
+    navigation.buildMenu(result);
+  });
 
   return header;
 }
