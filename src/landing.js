@@ -61,6 +61,30 @@ async function fetchSearch(query) {
   return { data, meta };
 }
 
+async function checkWished() {
+  const accommodationIds = [...roomData.keys()];
+  const res = await fetch(`${constants.API_BASE_URL}/me/wishlist/check`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    },
+    body: JSON.stringify({ accommodationIds: accommodationIds }),
+  });
+
+  const { success, message, data } = await res.json();
+
+  if (!success) {
+    console.log('찜 일괄 체크 실패');
+    console.log(message);
+    return;
+  }
+
+  for (let id of data.wishlistedAccommodationIds) {
+    roomData.get(id).setWish(true);
+  }
+}
+
 function renderRooms() {
   roomList.replaceChildren();
   for (const value of roomData.values()) {
@@ -68,11 +92,12 @@ function renderRooms() {
   }
 }
 
-function buildRooms(data) {
+async function buildRooms(data) {
   roomData.clear();
   data.forEach((room) => {
     roomData.set(room.id, new RoomCard(room));
   });
+  await checkWished();
 }
 
 async function changePage() {

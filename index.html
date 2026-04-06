@@ -8,6 +8,13 @@
     <script type="module" src="./src/landing.js"></script>
   </head>
   <body>
+    <div
+      id="toast"
+      class="border-2 rounded-2xl p-4 top-4/5 left-1/2 -translate-x-1/2"
+      popover>
+      <p id="toastMessage" class="font-semibold"></p>
+      <p id="toastDetail" class="text-sm"></p>
+    </div>
     <main id="content" class="min-w-100 pb-20 flex flex-col items-center">
       <h1
         class="self-start scroll-m-20 text-[clamp(1.25rem,4vw,2.25rem)] font-extrabold tracking-tight break-keep py-8 mx-[clamp(1.25rem,4vw,5rem)]">
