@@ -112,11 +112,7 @@ document.getElementById('btn-review-back').addEventListener('click', () => {
 });
 
 document.getElementById('btn-reservation').addEventListener('click', () => {
-  const btn = document.getElementById('btn-reservation');
-  const adultPrice = Number(btn.dataset.adultPrice).toLocaleString();
-  const serviceFee = Number(btn.dataset.serviceFee).toLocaleString();
-
-  alert(`예약하기 화면으로 넘어갈 예정!!`);
+  location.href = `/reservation-request/?id=${accommodationId}`;
 });
 
 document.querySelectorAll('.scroll-btn').forEach((btn) => {
