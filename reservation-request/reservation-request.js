@@ -5,9 +5,27 @@ const token = localStorage.getItem('accessToken');
 const params = new URLSearchParams(location.search);
 const roomId = params.get('id');
 
-if (!token) {
-  alert('로그인이 필요합니다.');
-  location.href = '/login/';
+async function checkTokenAvailable() {
+  if (!token) {
+    alert('로그인이 필요합니다.');
+    location.href = '/login/';
+    return false;
+  }
+
+  const res = await fetch(`${API_BASE}/me/profile`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (res.status === 401) {
+    alert('로그인이 필요합니다.');
+    location.href = '/login/';
+    return false;
+  }
+
+  return true;
 }
 
 let adults = 1;
@@ -269,4 +287,8 @@ document
   .getElementById('btn-submit')
   .addEventListener('click', submitCalendarDate);
 
-getRoomContext();
+checkTokenAvailable().then((ok) => {
+  if (ok) {
+    getRoomContext();
+  }
+});
