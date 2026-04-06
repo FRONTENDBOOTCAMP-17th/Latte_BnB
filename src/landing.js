@@ -7,56 +7,36 @@ const searchBtn = document.getElementById('searchBtn');
 const sortBox = document.getElementById('sort');
 const content = document.getElementById('content');
 const roomList = document.getElementById('roomList');
+
 let roomData = new Map();
 let pageLimit = 20;
 
-async function fetchRooms() {
+async function fetchAccommodations({ page, query } = {}) {
+  const params = new URLSearchParams({
+    pageLimit,
+    sort: sortBox.value,
+  });
+
+  if (page) {
+    params.set('page', page);
+  }
+
+  if (query) {
+    params.set('query', query);
+  }
+
   const res = await fetch(
-    `${constants.API_BASE_URL}/accommodations?pageLimit=${pageLimit}&sort=${sortBox.value}`,
+    `${constants.API_BASE_URL}/accommodations?${params}`,
     {
       method: 'GET',
     },
   );
 
-  const { message, data, meta } = await res.json();
-
   if (!res.ok) {
-    throw new Error(message);
+    throw new Error('HTTP 에러: ' + res.status);
   }
 
-  return { data, meta };
-}
-
-async function fetchPage() {
-  const res = await fetch(
-    `${constants.API_BASE_URL}/accommodations?page=${pagination.paginationData.page}&pageLimit=${pageLimit}&sort=${sortBox.value}`,
-    {
-      method: 'GET',
-    },
-  );
-
-  const { message, data, meta } = await res.json();
-
-  if (!res.ok) {
-    throw new Error(message);
-  }
-
-  return { data, meta };
-}
-
-async function fetchSearch(query) {
-  const res = await fetch(
-    `${constants.API_BASE_URL}/accommodations?pageLimit=${pageLimit}&query=${query}&sort=${sortBox.value}`,
-    {
-      method: 'GET',
-    },
-  );
-
-  const { message, data, meta } = await res.json();
-
-  if (!res.ok) {
-    throw new Error(message);
-  }
+  const { data, meta } = await res.json();
 
   return { data, meta };
 }
@@ -101,13 +81,13 @@ async function buildRooms(data) {
 }
 
 async function changePage() {
-  const result = await fetchPage();
+  const result = await fetchAccommodations(pagination.paginationData.page);
   buildRooms(result.data.accommodations);
   renderRooms();
   pagination.setPrevNext(result.meta.pagination);
 }
 
-const result = await fetchRooms();
+const result = await fetchAccommodations();
 buildRooms(result.data.accommodations);
 renderRooms();
 
@@ -131,7 +111,7 @@ document.addEventListener('click', async (e) => {
   }
 
   if (e.target.id === 'searchBtn') {
-    const result = await fetchSearch(searchInput.value);
+    const result = await fetchAccommodations({ query: searchInput.value });
     pagination.setCurrentPage(result.meta.pagination.page);
     buildRooms(result.data.accommodations);
     renderRooms();
@@ -141,7 +121,7 @@ document.addEventListener('click', async (e) => {
 
 document.addEventListener('change', async (e) => {
   if (e.target.id === 'sort') {
-    const result = await fetchRooms();
+    const result = await fetchAccommodations();
     pagination.setCurrentPage(result.meta.pagination.page);
     buildRooms(result.data.accommodations);
     renderRooms();
