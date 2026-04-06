@@ -1,24 +1,27 @@
 import constants from '../constants.js';
 
+let hamburgurBtn = null;
+let hamburgurMenu = null;
+
 function buildHamburger() {
   const div = document.createElement('div');
-  div.className = 'hamburger relative';
+  div.className = 'hamburger relative lg:ml-auto';
 
   div.innerHTML = `
-  <button type="button" class="bg-primary-500 hover:bg-primary-500/85 text-white w-10 aspect-square flex items-center justify-center rounded-[50%]">
+  <button type="button" class="hidden lg:bg-primary-500 lg:hover:bg-primary-500/85 text-white w-10 aspect-square lg:flex lg:items-center lg:justify-center lg:rounded-[50%]">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
       <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
     </svg>
   </button>
   `;
-
+  hamburgurBtn = div;
   return div;
 }
 
 function buildMenu(result) {
   const div = document.createElement('div');
   div.className =
-    'absolute right-0 bg-white flex flex-col shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_12px_30px_rgba(0,0,0,0.08)] gap-2 py-4 rounded-xl';
+    'hidden absolute mt-2 right-0 bg-white flex flex-col shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_12px_30px_rgba(0,0,0,0.08)] gap-2 py-4 rounded-xl';
 
   if (result.isAuth) {
     div.classList.add('w-60');
@@ -45,6 +48,7 @@ function buildMenu(result) {
     `;
     div.getElementsByTagName('strong')[0].textContent =
       `${result.data.name} 님`;
+    hamburgurMenu = div;
     return div;
   } else {
     div.classList.add('w-80');
@@ -57,8 +61,15 @@ function buildMenu(result) {
       <img src="./src/assets/login.svg" alt="로그인 svg 이미지" class="w-6 m-2" />로그인
     </a>
     `;
+    hamburgurMenu = div;
     return div;
   }
+}
+
+function attachEvent() {
+  hamburgurBtn.addEventListener('click', (e) => {
+    hamburgurMenu.classList.toggle('hidden');
+  });
 }
 
 async function checkAuth() {
@@ -93,4 +104,4 @@ async function getProfile(token) {
   return data;
 }
 
-export default { buildHamburger, buildMenu, checkAuth };
+export default { buildHamburger, buildMenu, attachEvent, checkAuth };
