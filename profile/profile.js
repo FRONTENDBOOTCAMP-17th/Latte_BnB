@@ -8,12 +8,13 @@ document.body.prepend(buildHeader());
 const API_BASE = constants.API_BASE_URL;
 const token = localStorage.getItem('accessToken');
 
-if (!token) {
-  alert('로그인을 먼저 해주세요');
-  location.href = '/login/';
-}
-
 async function fetchProfile() {
+  if (!token) {
+    alert('로그인을 먼저 해주세요');
+    location.href = '/login/';
+    return;
+  }
+
   try {
     const res = await fetch(`${API_BASE}/me/profile`, {
       method: 'GET',
@@ -21,6 +22,12 @@ async function fetchProfile() {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    if (res.status === 401) {
+      alert('로그인을 먼저 해주세요');
+      location.href = '/login/';
+      return;
+    }
 
     if (!res.ok) {
       alert('프로필 조회 실패');
