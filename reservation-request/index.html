@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>latte-bnb | 예약 요청</title>
+    <link rel="stylesheet" href="./reservation-request.css" />
+  </head>
+  <body>
+    <div id="reservation-wrapper">
+      <div id="reservation-header">
+        <button id="btn-back">&lt;</button>
+        <h1>예약 요청</h1>
+      </div>
+
+      <section id="reservation-info">
+        <img id="thumb" alt="썸네일 이미지" />
+        <p id="title"></p>
+      </section>
+
+      <section id="reservation-date">
+        <h2>일정 선택</h2>
+        <button id="btn-date">날짜를 선택해 주세요</button>
+      </section>
+
+      <section id="reservation-guest">
+        <h2>인원 선택</h2>
+        <button id="btn-guest">성인 1명</button>
+      </section>
+
+      <section id="reservation-pricing">
+        <h2>요금 세부 정보</h2>
+        <div class="pricing-row">
+          <span id="adult-subtotal-label"></span>
+          <span id="adult-subtotal"></span>
+        </div>
+        <div class="pricing-row">
+          <span id="child-subtotal-label"></span>
+          <span id="child-subtotal"></span>
+        </div>
+        <div class="pricing-row">
+          <span>서비스 수수료</span>
+          <span id="service-fee"></span>
+        </div>
+        <div class="pricing-row" id="pricing-total">
+          <span>총 합계</span>
+          <span id="total-price"></span>
+        </div>
+      </section>
+
+      <section id="reservation-btn">
+        <button id="btn-submit">예약 신청</button>
+      </section>
+    </div>
+
+    <!-- =================== 캘린더 모달 ===================-->
+    <div id="modal-calendar" class="modal-overlay" hidden>
+      <div class="modal-box">
+        <div id="calendar">
+          <div id="cal-header">
+            <button id="cal-btn-pre">&lt;</button>
+            <span id="cal-label"></span>
+            <button id="cal-btn-next">&gt;</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>일</th>
+                <th>월</th>
+                <th>화</th>
+                <th>수</th>
+                <th>목</th>
+                <th>금</th>
+                <th>토</th>
+              </tr>
+            </thead>
+            <tbody id="cal-tbody"></tbody>
+          </table>
+        </div>
+        <div class="modal-btn-wrapper">
+          <button id="modal-calendar-cancel">취소</button>
+          <button id="modal-calendar-save">저장</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================== 인원 선택 모달 ================ -->
+    <div id="modal-guest" class="modal-overlay" hidden>
+      <div class="modal-box">
+        <p id="max-guest"></p>
+        <div class="guest-row">
+          <div class="guest-info">
+            <p class="guest-type">성인</p>
+            <p class="guest-age">13세 이상</p>
+            <p class="guest-price" id="adult-price"></p>
+          </div>
+          <div class="guest-cnt">
+            <button id="btn-adult-minus">-</button>
+            <span id="adult-cnt">1</span>
+            <button id="btn-adult-plus">+</button>
+          </div>
+        </div>
+        <div class="guest-row">
+          <div class="guest-info">
+            <p class="guest-type">어린이</p>
+            <p class="guest-age">13세 미만</p>
+            <p class="guest-price" id="child-price"></p>
+          </div>
+          <div class="guest-cnt">
+            <button id="btn-child-minus">-</button>
+            <span id="child-cnt">0</span>
+            <button id="btn-child-plus">+</button>
+          </div>
+        </div>
+        <div class="modal-btn-wrapper">
+          <button id="modal-guest-cancel">취소</button>
+          <button id="modal-guest-save">저장</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./calendar.js"></script>
+    <script type="module" src="./reservation-request.js"></script>
+  </body>
+</html>

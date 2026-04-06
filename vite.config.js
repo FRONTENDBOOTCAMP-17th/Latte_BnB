@@ -15,6 +15,10 @@ export default defineConfig({
         ),
         adminLogin: resolve(__dirname, 'admin/login/index.html'),
         profile: resolve(__dirname, 'profile/index.html'),
+        reservationRequest: resolve(
+          __dirname,
+          'reservation-request/index.html',
+        ),
       },
     },
   },
