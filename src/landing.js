@@ -1,6 +1,7 @@
 import { RoomCard } from './RoomCard.js';
 import constants from './constants.js';
 import pagination from './components/pagination.js';
+import toast from './components/toast.js';
 
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
@@ -52,13 +53,11 @@ async function checkWished() {
     body: JSON.stringify({ accommodationIds: accommodationIds }),
   });
 
-  const { success, message, data } = await res.json();
-
-  if (!success) {
-    console.log('찜 일괄 체크 실패');
-    console.log(message);
-    return;
+  if (!res.ok) {
+    throw new Error('HTTP 에러: ' + res.status);
   }
+
+  const { data } = await res.json();
 
   for (let id of data.wishlistedAccommodationIds) {
     roomData.get(id).setWish(true);
@@ -77,21 +76,34 @@ async function buildRooms(data) {
   data.forEach((room) => {
     roomData.set(room.id, new RoomCard(room));
   });
-  await checkWished();
+  try {
+    await checkWished();
+  } catch (error) {
+    console.log(
+      error.message + '\n로그인하지 않아 찜 목록 체크가 불가능합니다.',
+    );
+  }
 }
 
 async function changePage() {
-  const result = await fetchAccommodations(pagination.paginationData.page);
-  buildRooms(result.data.accommodations);
-  renderRooms();
-  pagination.setPrevNext(result.meta.pagination);
+  try {
+    const result = await fetchAccommodations(pagination.paginationData.page);
+    buildRooms(result.data.accommodations);
+    renderRooms();
+    pagination.setPrevNext(result.meta.pagination);
+  } catch (error) {
+    toast.warn('[pagination]: 데이터 로딩 실패', error.message, 5);
+  }
 }
 
-const result = await fetchAccommodations();
-buildRooms(result.data.accommodations);
-renderRooms();
-
-content.appendChild(pagination.buildPagination(result.meta.pagination));
+try {
+  const result = await fetchAccommodations();
+  buildRooms(result.data.accommodations);
+  renderRooms();
+  content.appendChild(pagination.buildPagination(result.meta.pagination));
+} catch (error) {
+  toast.warn('[landing]데이터 로딩 실패', error.message, 5);
+}
 
 searchInput.addEventListener('keyup', (e) => {
   if (e.key === 'Enter') {
@@ -111,20 +123,28 @@ document.addEventListener('click', async (e) => {
   }
 
   if (e.target.id === 'searchBtn') {
-    const result = await fetchAccommodations({ query: searchInput.value });
-    pagination.setCurrentPage(result.meta.pagination.page);
-    buildRooms(result.data.accommodations);
-    renderRooms();
-    pagination.setPrevNext(result.meta.pagination);
+    try {
+      const result = await fetchAccommodations({ query: searchInput.value });
+      pagination.setCurrentPage(result.meta.pagination.page);
+      buildRooms(result.data.accommodations);
+      renderRooms();
+      pagination.setPrevNext(result.meta.pagination);
+    } catch (error) {
+      toast.warn('[search]: 데이터 로딩 실패', error.message, 5);
+    }
   }
 });
 
 document.addEventListener('change', async (e) => {
   if (e.target.id === 'sort') {
-    const result = await fetchAccommodations();
-    pagination.setCurrentPage(result.meta.pagination.page);
-    buildRooms(result.data.accommodations);
-    renderRooms();
-    pagination.setPrevNext(result.meta.pagination);
+    try {
+      const result = await fetchAccommodations();
+      pagination.setCurrentPage(result.meta.pagination.page);
+      buildRooms(result.data.accommodations);
+      renderRooms();
+      pagination.setPrevNext(result.meta.pagination);
+    } catch (error) {
+      toast.warn('[sort]: 데이터 로딩 실패', error.message, 5);
+    }
   }
 });
