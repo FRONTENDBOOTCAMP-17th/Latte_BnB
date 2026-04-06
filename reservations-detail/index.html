@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../src/style.css" />
+    <script type="module" src="./index.js"></script>
+    <title>latte-bnb | 예약 상세</title>
+    <style>
+      body {
+        overflow-x: hidden;
+      }
+
+      #info {
+        font-size: 2rem;
+        font-weight: 900;
+        border-bottom: 2px solid var(--color-shark-300);
+        padding: 0 1rem 1rem;
+        margin: 1rem 1rem 0;
+      }
+
+      #name,
+      #check,
+      #guest,
+      #price {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      @media (min-width: 768px) {
+        #info,
+        #roomInfo,
+        #schedule,
+        #guestInfo,
+        #priceInfo,
+        #cancel {
+          display: flex;
+          flex-flow: wrap column;
+          justify-self: center;
+          inline-size: 512px;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        #info,
+        #roomInfo,
+        #schedule,
+        #guestInfo,
+        #priceInfo,
+        #cancel {
+          display: flex;
+          flex-flow: wrap column;
+          inline-size: 682px;
+        }
+
+        #nav-bar {
+          visibility: hidden;
+        }
+      }
+
+      @media (max-width: 767px) {
+        #cancel {
+          inline-size: calc(100% - 2rem);
+        }
+      }
+
+      @media (max-width: 1023px) {
+        body footer {
+          display: none;
+        }
+
+        body #cancel {
+          margin-block-end: 6rem;
+        }
+      }
+
+      #roomInfo,
+      #schedule,
+      #guestInfo,
+      #priceInfo {
+        border-bottom: 2px solid var(--color-shark-300);
+        padding: 1rem;
+        margin-inline: 1rem;
+      }
+
+      #roomInfo {
+        display: flex;
+        flex-flow: wrap row;
+      }
+
+      #room {
+        display: flex;
+        flex-flow: wrap column;
+        margin-inline-start: 1rem;
+        row-gap: 1rem;
+      }
+
+      #inDay,
+      #outDay {
+        font-size: 1.25rem;
+        font-weight: 700;
+      }
+
+      #location,
+      #host,
+      #checkIn,
+      #checkOut,
+      #people,
+      #totalPrice {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--color-shark-500);
+      }
+
+      #people {
+        margin-block-start: 1rem;
+      }
+
+      #schedule {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 1rem;
+      }
+
+      #priceInfo {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 1rem;
+      }
+
+      #totalPrice {
+        align-self: center;
+      }
+
+      #total {
+        font-size: 1.5rem;
+        font-weight: 800;
+        text-align: end;
+      }
+
+      #cancel {
+        display: flex;
+        flex-flow: nowrap row;
+        justify-content: center;
+        justify-self: center;
+        gap: 0.5rem;
+        margin: 1.5rem;
+        padding: 1rem;
+        font-weight: 700;
+        border-radius: 8px;
+        color: var(--color-red-600);
+        box-shadow: 0 0 0 2px var(--color-red-600);
+      }
+
+      #nav-bar {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        background: #686868;
+        position: fixed;
+        inset: auto 0 0 0;
+      }
+
+      #search,
+      #wish,
+      #rsv,
+      #profile {
+        display: flex;
+        flex-flow: wrap column;
+        row-gap: 0.5rem;
+        padding-block: 0.5rem;
+
+        @media (max-width: 1023px) {
+          box-shadow:
+            -10px 0 10px -8px rgba(0, 0, 0, 0.2),
+            10px 0 10px -8px rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      #search1,
+      #search2,
+      #wish2,
+      #rsv2,
+      #profile2 {
+        display: flex;
+        align-self: center;
+        color: var(--color-white);
+      }
+    </style>
+  </head>
+  <body>
+    <p id="info">예약 상세정보</p>
+    <div id="roomInfo">
+      <img
+        id="img"
+        src="../docs/images/demo_room.png"
+        alt=""
+        width="200"
+        height="100" />
+      <div id="room">
+        <p id="name">숙소 이름</p>
+        <p id="location">경기, 고양시</p>
+        <p id="host">호스트: 동근 님</p>
+      </div>
+    </div>
+    <div id="schedule">
+      <p id="check">예약 일정</p>
+      <p></p>
+      <p id="checkIn">체크인</p>
+      <p id="checkOut">체크아웃</p>
+      <p id="inDay">4월 4일 (토) 22:00</p>
+      <p id="outDay">4월 5일 (일) 12:00</p>
+    </div>
+    <div id="guestInfo">
+      <p id="guest">게스트</p>
+      <p id="people">성인 2명, 청소년 1명, 어린이 2명</p>
+    </div>
+    <div id="priceInfo">
+      <p id="price">결제 정보</p>
+      <p></p>
+      <p id="totalPrice">총 결제 금액 :</p>
+      <p id="total">50만원</p>
+    </div>
+    <button id="cancel" type="submit">
+      예약 취소
+      <img src="../src/assets/reservation-cancel.svg" alt="" />
+    </button>
+    <div id="nav-bar">
+      <div id="search">
+        <img
+          id="search1"
+          src="../src/assets/search.svg"
+          alt=""
+          width="24"
+          height="24" />
+        <p id="search2">검색</p>
+      </div>
+      <div id="wish">
+        <img id="wish1" src="../src/assets/wish.svg" alt="" />
+        <p id="wish2">위시리스트</p>
+      </div>
+      <div id="rsv">
+        <img id="rsv1" src="../src/assets/reservation.svg" alt="" />
+        <p id="rsv2">예약</p>
+      </div>
+      <div id="profile">
+        <img id="profile1" src="../src/assets/profile.svg" alt="" />
+        <p id="profile2">프로필</p>
+      </div>
+    </div>
+  </body>
+</html>
