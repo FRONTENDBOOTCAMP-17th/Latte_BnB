@@ -13,28 +13,28 @@ function buildMenu(result) {
   if (result.isAuth) {
     navigation.innerHTML = `
     <a href="/" class="flex flex-col items-center justify-center text-sm">
-      <img src="./src/assets/search.svg" alt="nav search svg" class="w-6" />검색
+      <img src="/src/assets/search.svg" alt="nav search svg" class="w-6" />검색
     </a>
     <a href="" class="flex flex-col items-center justify-center text-sm">
-      <img src="./src/assets/wish.svg" alt="nav wish svg" class="w-6" />위시리스트
+      <img src="/src/assets/wish.svg" alt="nav wish svg" class="w-6" />위시리스트
     </a>
     <a href="" class="flex flex-col items-center justify-center text-sm">
-      <img src="./src/assets/reservation.svg" alt="nav reservation svg" class="w-6" />내 예약
+      <img src="/src/assets/reservation.svg" alt="nav reservation svg" class="w-6" />내 예약
     </a>
     <a href="/profile/" class="flex flex-col items-center justify-center text-sm">
-      <img src="./src/assets/profile.svg" alt="nav profile svg" class="w-6" />프로필
+      <img src="/src/assets/profile.svg" alt="nav profile svg" class="w-6" />프로필
     </a>
     `;
   } else {
     navigation.innerHTML = `
     <a href="/" class="flex flex-col items-center justify-center text-sm">
-      <img src="./src/assets/search.svg" alt="nav search svg" class="w-6" />검색
+      <img src="/src/assets/search.svg" alt="nav search svg" class="w-6" />검색
     </a>
     <a href="/login" class="flex flex-col items-center justify-center text-sm">
-      <img src="./src/assets/wish.svg" alt="nav wish svg" class="w-6" />위시리스트
+      <img src="/src/assets/wish.svg" alt="nav wish svg" class="w-6" />위시리스트
     </a>
     <a href="/login/" class="flex flex-col items-center justify-center text-sm">
-      <img src="./src/assets/profile.svg" alt="nav profile svg" class="w-6" />로그인
+      <img src="/src/assets/profile.svg" alt="nav profile svg" class="w-6" />로그인
     </a>
     `;
   }
