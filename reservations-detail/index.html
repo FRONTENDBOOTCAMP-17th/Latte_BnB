@@ -52,10 +52,6 @@
           flex-flow: wrap column;
           inline-size: 682px;
         }
-
-        #nav-bar {
-          visibility: hidden;
-        }
       }
 
       @media (max-width: 767px) {
@@ -138,6 +134,12 @@
         text-align: end;
       }
 
+      #result {
+        display: flex;
+        justify-self: center;
+        font-weight: 600;
+      }
+
       #cancel {
         display: flex;
         flex-flow: nowrap row;
@@ -151,120 +153,117 @@
         color: var(--color-red-600);
         box-shadow: 0 0 0 2px var(--color-red-600);
       }
-
-      #nav-bar {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        background: #686868;
-        position: fixed;
-        inset: auto 0 0 0;
-      }
-
-      #search,
-      #wish,
-      #rsv,
-      #profile {
-        display: flex;
-        flex-flow: wrap column;
-        row-gap: 0.5rem;
-        padding-block: 0.5rem;
-
-        @media (max-width: 1023px) {
-          box-shadow:
-            -10px 0 10px -8px rgba(0, 0, 0, 0.2),
-            10px 0 10px -8px rgba(0, 0, 0, 0.2);
-        }
-      }
-
-      #search1,
-      #search2,
-      #wish1,
-      #wish2,
-      #rsv1,
-      #rsv2,
-      #profile1,
-      #profile2 {
-        display: flex;
-        align-self: center;
-        color: var(--color-black);
-        font-weight: 700;
-      }
     </style>
   </head>
   <body>
     <p id="info">예약 상세정보</p>
-    <div id="roomInfo">
-      <img
-        id="img"
-        src="../docs/images/demo_room.png"
-        alt=""
-        width="200"
-        height="100" />
-      <div id="room">
-        <p id="name">숙소 이름</p>
-        <p id="location">경기, 고양시</p>
-        <p id="host">호스트: 동근 님</p>
-      </div>
-    </div>
-    <div id="schedule">
-      <p id="check">예약 일정</p>
-      <p></p>
-      <p id="checkIn">체크인</p>
-      <p id="checkOut">체크아웃</p>
-      <p id="inDay">4월 4일 (토) 22:00</p>
-      <p id="outDay">4월 5일 (일) 12:00</p>
-    </div>
-    <div id="guestInfo">
-      <p id="guest">게스트</p>
-      <p id="people">성인 2명, 청소년 1명, 어린이 2명</p>
-    </div>
-    <div id="priceInfo">
-      <p id="price">결제 정보</p>
-      <p></p>
-      <p id="totalPrice">총 결제 금액 :</p>
-      <p id="total">50만원</p>
-    </div>
+    <p id="result"></p>
     <button id="cancel" type="submit">
       예약 취소
       <img src="../src/assets/reservation-cancel.svg" alt="" />
     </button>
-    <div id="nav-bar">
-      <div id="search">
-        <img
-          id="search1"
-          src="../src/assets/search.svg"
-          alt=""
-          width="24"
-          height="24" />
-        <p id="search2">검색</p>
-      </div>
-      <div id="wish">
-        <img
-          id="wish1"
-          src="../src/assets/wish.svg"
-          alt=""
-          width="24"
-          height="24" />
-        <p id="wish2">위시리스트</p>
-      </div>
-      <div id="rsv">
-        <img
-          id="rsv1"
-          src="../src/assets/reservation.svg"
-          alt=""
-          width="24"
-          height="24" />
-        <p id="rsv2">예약</p>
-      </div>
-      <div id="profile">
-        <img
-          id="profile1"
-          src="../src/assets/profile.svg"
-          alt=""
-          width="24"
-          height="24" />
-        <p id="profile2">프로필</p>
-      </div>
-    </div>
+
+    <script>
+      const reservationId = localStorage.getItem('id');
+      const token = localStorage.getItem('accessToken');
+      const result = document.getElementById('result');
+      const cancel = document.getElementById('cancel');
+
+      async function loadDetail() {
+        try {
+          const res = await fetch(
+            `https://api.fullstackfamily.com/api/lattebnb/v1/reservations/${reservationId}`,
+            {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+              },
+            },
+          );
+
+          if (!res.ok) {
+            throw new Error('HTTP 오류: ' + res.status);
+          }
+
+          const detailData = await res.json();
+          const rsvDetail = detailData.data.reservation;
+          const amdDetail = rsvDetail.accommodation;
+          const [inyear, inmonth, inday] = rsvDetail.checkInDate.split('-');
+          const [outyear, outmonth, outday] = rsvDetail.checkOutDate.split('-');
+          const guestDetail = rsvDetail.guest;
+          const priceDetail = rsvDetail.pricing;
+
+          const container = document.createElement('div');
+          container.id = 'container';
+
+          container.innerHTML = `
+            <div id="roomInfo">
+              <img src="${amdDetail.thumbnailUrl}" alt="${amdDetail.title}" />
+              <div id="room">
+                <p id="name">${amdDetail.title}</p>
+                <p id="location">${amdDetail.location.address}</p>
+                <p id="host"></p>
+              </div>
+            </div>
+
+            <div id="schedule">
+              <p id="check">예약 일정</p>
+              <p></p>
+              <p id="checkIn">체크인</p>
+              <p id="checkOut">체크아웃</p>
+              <p id="inDay">${inmonth}월 ${inday}일 ${amdDetail.policies.checkInTime}</p>
+              <p id="outDay">${outmonth}월 ${outday}일 ${amdDetail.policies.checkOutTime}</p>
+            </div>
+
+            <div id="guestInfo">
+              <p id="guest">게스트</p>
+              <p id="people">성인 ${guestDetail.adults}명, 어린이 ${guestDetail.children}명</p>
+            </div>
+
+            <div id="priceInfo">
+              <p id="price">결제 정보</p>
+              <p></p>
+              <p id="totalPrice">총 결제 금액</p>
+              <p id="total">${priceDetail.totalPrice}원</p>
+            </div>
+          `;
+
+          document.body.insertBefore(container, cancel);
+        } catch (e) {
+          result.textContent = '상세 정보를 불러올 수 없습니다.';
+          result.style.color = 'red';
+        }
+      }
+
+      loadDetail();
+
+      cancel.addEventListener('click', async () => {
+        const isConfirm = confirm(`예약을 취소하시겠습니까?`);
+        if (!isConfirm) return;
+
+        try {
+          const res = await fetch(
+            `https://api.fullstackfamily.com/api/lattebnb/v1/reservations/${reservationId}/cancel`,
+            {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+              },
+            },
+          );
+
+          if (!res.ok) {
+            throw new Error('HTTP 오류: ' + res.status);
+          } else {
+            alert(`취소가 완료되었습니다.`);
+            location.href(`../reservations-check`);
+          }
+        } catch (e) {
+          alert('예약을 취소하지 못했습니다.\n' + e.message);
+        }
+      });
+    </script>
   </body>
 </html>

@@ -60,6 +60,7 @@ async function loadReservation() {
       resDiv.appendChild(cardDiv);
       rsvList.appendChild(resDiv);
 
+      localStorage.setItem(rsv.id);
       localStorage.setItem(rsv.status);
       console.log(rsv.status);
     }
@@ -70,24 +71,3 @@ async function loadReservation() {
 }
 
 loadReservation();
-
-const search = document.getElementById('search');
-const wish = document.getElementById('wish');
-const rsv = document.getElementById('rsv');
-const profile = document.getElementById('profile');
-
-search.addEventListener('click', () => {
-  location.href = `../index.html`;
-});
-
-wish.addEventListener('click', () => {
-  location.href = `../index.html`;
-});
-
-rsv.addEventListener('click', () => {
-  location.href = `./`;
-});
-
-profile.addEventListener('click', () => {
-  location.href = `../profile/index.html`;
-});
