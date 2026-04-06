@@ -1,5 +1,5 @@
 import './style.css';
-import { buildHeader } from './components/header.js';
+import header from './components/header.js';
 import { buildFooter } from './components/footer.js';
 import hamburger from './components/hamburger';
 import navigation from './components/navigation';
@@ -8,7 +8,7 @@ import constants from './constants.js';
 let result = null;
 
 if (document.body.dataset.header === 'true') {
-  document.body.prepend(buildHeader());
+  document.body.prepend(header.buildHeader());
 
   document.querySelector('header').appendChild(hamburger.buildHamburger());
 
@@ -16,6 +16,15 @@ if (document.body.dataset.header === 'true') {
 
   document.querySelector('.hamburger').appendChild(hamburger.buildMenu(result));
   hamburger.attachEvent();
+}
+
+if (document.body.dataset.search === 'true') {
+  document
+    .querySelector('header')
+    .insertBefore(
+      header.buildSearchBar(),
+      document.querySelector('.hamburger'),
+    );
 }
 
 if (document.body.dataset.nav === 'true') {

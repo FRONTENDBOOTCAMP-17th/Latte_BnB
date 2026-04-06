@@ -1,5 +1,7 @@
-export function buildHeader() {
-  const header = document.createElement('header');
+let header = null;
+
+function buildHeader() {
+  header = document.createElement('header');
 
   header.className =
     'min-w-100 bg-shark-100/55 flex flex-col lg:flex-row items-center lg:justify-between px-[clamp(20px,4vw,80px)] pb-5 pt-2 lg:pt-4 border-b-2 border-shark-200';
@@ -18,15 +20,22 @@ export function buildHeader() {
       <rect x="132" y="130" width="14" height="14" rx="2" fill="currentColor" />
     </svg>
     <p class="font-semibold text-2xl">lattebnb</p>
-  </a>
-  <div class="lg:ml-auto max-w-xl w-full relative">
-    <input type="text" id="searchInput" class="w-full h-10 lg:h-15 bg-white text-shark-800 px-4 py-2 rounded-3xl lg:rounded-4xl shadow-md placeholder:text-shark-600 placeholder:font-medium placeholder:text-center placeholder:bg-[url(./src/assets/search.svg)] placeholder:bg-no-repeat placeholder:bg-[calc(50%-6rem)_75%] placeholder:bg-size-[16px_16px]" placeholder="특별한 공간 탐색하기" />
-    <button id="searchBtn" type="button" class="bg-primary-500 hover:bg-primary-500/85 text-white absolute p-2 right-1 lg:right-2 top-1/2 -translate-y-1/2 rounded-[50%]">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 lg:size-6 pointer-events-none">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-      </svg>
-    </button>
-  </div>`;
+  </a>`;
 
   return header;
 }
+
+function buildSearchBar() {
+  const div = document.createElement('div');
+  div.className = 'lg:ml-auto max-w-xl w-full relative';
+  div.innerHTML = `
+  <input type="text" id="searchInput" class="w-full h-10 lg:h-15 bg-white text-shark-800 px-4 py-2 rounded-3xl lg:rounded-4xl shadow-md placeholder:text-shark-600 placeholder:font-medium placeholder:text-center placeholder:bg-[url(./src/assets/search.svg)] placeholder:bg-no-repeat placeholder:bg-[calc(50%-6rem)_75%] placeholder:bg-size-[16px_16px]" placeholder="특별한 공간 탐색하기" />
+  <button id="searchBtn" type="button" class="bg-primary-500 hover:bg-primary-500/85 text-white absolute p-2 right-1 lg:right-2 top-1/2 -translate-y-1/2 rounded-[50%]">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 lg:size-6 pointer-events-none">
+      <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+    </svg>
+  </button>`;
+  return div;
+}
+
+export default { buildHeader, buildSearchBar };

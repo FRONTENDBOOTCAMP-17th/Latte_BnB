@@ -105,11 +105,13 @@ try {
   toast.warn('[landing]데이터 로딩 실패', error.message, 5);
 }
 
-searchInput.addEventListener('keyup', (e) => {
-  if (e.key === 'Enter') {
-    searchBtn.click();
-  }
-});
+if (searchInput !== null) {
+  searchInput.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') {
+      searchBtn.click();
+    }
+  });
+}
 
 document.addEventListener('click', async (e) => {
   if (e.target.id === 'prevButton') {
