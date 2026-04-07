@@ -4,74 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../src/style.css" />
+    <script type="module" src="../src/main.js"></script>
     <script type="module" src="./index.js"></script>
-    <title>latte-bnb | 예약 확인</title>
+    <title>latte-bnb | 예약 목록</title>
   </head>
   <body
-    class="flex flex-col flex-wrap overflow-x-hidden max-[1023px]:[&_footer]:hidden">
+    class="flex flex-col flex-wrap overflow-x-hidden max-[1023px]:[&_footer]:hidden"
+    data-header="true"
+    data-footer="true"
+    data-nav="true">
     <h1 id="list" class="m-4 mb-0 w-full text-[2rem] font-bold">
-      내 예약 목록
+      나의 예약 목록
     </h1>
+    <p id="result" class="self-center font-bold"></p>
     <ul
       id="reservation-list"
-      class="mx-8 mt-8 mb-24 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <p id="result" class="self-center font-bold"></p>
-    </ul>
-    <div
-      id="nav-bar"
-      class="fixed inset-x-0 bottom-0 grid grid-cols-4 bg-[#686868] lg:invisible">
-      <div
-        id="search"
-        class="flex flex-col flex-wrap gap-y-2 py-2 max-[1023px]:shadow-[-10px_0_10px_-8px_rgba(0,0,0,0.2),10px_0_10px_-8px_rgba(0,0,0,0.2)]">
-        <img
-          id="search1"
-          class="flex self-center text-white"
-          src="../src/assets/search.svg"
-          alt=""
-          width="24"
-          height="24" />
-        <p id="search2" class="flex self-center text-black font-bold">검색</p>
-      </div>
-      <div
-        id="wish"
-        class="flex flex-col flex-wrap gap-y-2 py-2 max-[1023px]:shadow-[-10px_0_10px_-8px_rgba(0,0,0,0.2),10px_0_10px_-8px_rgba(0,0,0,0.2)]">
-        <img
-          id="wish1"
-          class="flex self-center"
-          src="../src/assets/wish.svg"
-          alt=""
-          width="24"
-          height="24" />
-        <p id="wish2" class="flex self-center text-black font-bold">
-          위시리스트
-        </p>
-      </div>
-      <div
-        id="rsv"
-        class="flex flex-col flex-wrap gap-y-2 py-2 max-[1023px]:shadow-[-10px_0_10px_-8px_rgba(0,0,0,0.2),10px_0_10px_-8px_rgba(0,0,0,0.2)]">
-        <img
-          id="rsv1"
-          class="flex self-center"
-          src="../src/assets/reservation.svg"
-          alt=""
-          width="24"
-          height="24" />
-        <p id="rsv2" class="flex self-center text-black font-bold">예약</p>
-      </div>
-      <div
-        id="profile"
-        class="flex flex-col flex-wrap gap-y-2 py-2 max-[1023px]:shadow-[-10px_0_10px_-8px_rgba(0,0,0,0.2),10px_0_10px_-8px_rgba(0,0,0,0.2)]">
-        <img
-          id="profile1"
-          class="flex self-center"
-          src="../src/assets/profile.svg"
-          alt=""
-          width="24"
-          height="24" />
-        <p id="profile2" class="flex self-center text-black font-bold">
-          프로필
-        </p>
-      </div>
-    </div>
+      class="mx-8 mt-8 mb-24 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"></ul>
   </body>
 </html>
