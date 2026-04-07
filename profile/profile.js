@@ -1,9 +1,6 @@
 import constants from '../src/constants.js';
-import { buildHeader } from '../src/components/header.js';
 import avatar1 from '../src/assets/avatar1.jpg';
 import avatar2 from '../src/assets/avatar2.jpg';
-
-document.body.prepend(buildHeader());
 
 const API_BASE = constants.API_BASE_URL;
 const token = localStorage.getItem('accessToken');
