@@ -1,8 +1,11 @@
 import '../../src/style.css';
 import toast from '../../src/components/toast.js';
+import adminLogo from '../adminLogo.js';
 import { adminLogin } from './login.js';
 
 const adminLoginForm = document.getElementById('adminLoginForm');
+const content = document.getElementById('content');
+content.insertBefore(adminLogo.build(), adminLoginForm);
 
 adminLoginForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -41,6 +44,7 @@ adminLoginForm.addEventListener('submit', (e) => {
       localStorage.setItem('admin_token', result.accessToken);
       localStorage.setItem('admin_info', JSON.stringify(result.user));
       toast.success('로그인', '관리자 로그인에 성공했습니다.', 2);
+      location.replace('/admin/');
     })
     .catch((error) => {
       toast.warn('로그인', error.message, 2);

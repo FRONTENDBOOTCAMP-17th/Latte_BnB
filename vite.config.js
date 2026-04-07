@@ -23,6 +23,7 @@ export default defineConfig({
         ),
         adminLogin: resolve(__dirname, 'admin/login/index.html'),
         adminAdd: resolve(__dirname, 'admin/add/index.html'),
+        adminLanding: resolve(__dirname, 'admin/index.html'),
       },
     },
   },
