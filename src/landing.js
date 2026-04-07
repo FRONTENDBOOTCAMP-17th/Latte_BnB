@@ -3,8 +3,8 @@ import constants from './constants.js';
 import pagination from './components/pagination.js';
 import toast from './components/toast.js';
 
-const searchInput = document.getElementById('searchInput');
-const searchBtn = document.getElementById('searchBtn');
+let searchInput = null;
+let searchBtn = null;
 const sortBox = document.getElementById('sort');
 const content = document.getElementById('content');
 const roomList = document.getElementById('roomList');
@@ -105,13 +105,21 @@ try {
   toast.warn('[landing]데이터 로딩 실패', error.message, 5);
 }
 
-if (searchInput !== null) {
-  searchInput.addEventListener('keyup', (e) => {
-    if (e.key === 'Enter') {
-      searchBtn.click();
+// if (searchInput !== null) {
+//   searchInput.addEventListener('keyup', (e) => {
+//     if (e.key === 'Enter') {
+//       searchBtn.click();
+//     }
+//   });
+// }
+document.addEventListener('keyup', (e) => {
+  if (e.target.id === 'searchInput' && e.key === 'Enter') {
+    if (searchBtn === null) {
+      searchBtn = document.getElementById('searchBtn');
     }
-  });
-}
+    searchBtn.click();
+  }
+});
 
 document.addEventListener('click', async (e) => {
   if (e.target.id === 'prevButton') {
@@ -125,6 +133,9 @@ document.addEventListener('click', async (e) => {
   }
 
   if (e.target.id === 'searchBtn') {
+    if (searchInput === null) {
+      searchInput = document.getElementById('searchInput');
+    }
     try {
       const result = await fetchAccommodations({ query: searchInput.value });
       pagination.setCurrentPage(result.meta.pagination.page);
