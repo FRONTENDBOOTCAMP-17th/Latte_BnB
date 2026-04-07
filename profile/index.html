@@ -4,37 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../src/style.css" />
+    <script type="module" src="../src/main.js"></script>
     <title>latte-bnb | 프로필</title>
-    <style>
-      .profile-accordion-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s;
-      }
-      .profile-accordion-item.active .profile-accordion-content {
-        max-height: 200px;
-        border-top: 1px solid var(--color-shark-200);
-      }
-      .profile-accordion-icon.close {
-        display: none;
-      }
-      .profile-accordion-item.active .profile-accordion-icon.close {
-        display: block;
-      }
-      .profile-accordion-item.active .profile-accordion-icon.open {
-        display: none;
-      }
-    </style>
   </head>
 
-  <body>
+  <body data-nav="true" data-header="true">
     <main class="max-w-[640px] mx-auto pb-16">
-      <header>
-        <h1
-          class="text-[1.7rem] font-semibold tracking-wide m-0 px-8 pt-8 pb-2">
-          프로필
-        </h1>
-      </header>
+      <h1 class="text-[1.7rem] font-semibold tracking-wide m-0 px-8 pt-8 pb-2">
+        프로필
+      </h1>
 
       <section class="p-6">
         <div
@@ -48,14 +26,22 @@
       </section>
 
       <ul class="p-6 flex flex-col gap-3 list-none m-0">
-        <li class="profile-accordion-item border border-shark-200 rounded-lg">
+        <li
+          class="profile-accordion-item group border border-shark-200 rounded-lg">
           <div
             class="profile-accordion-header flex p-4 items-center justify-between cursor-pointer">
             <h3 class="text-base font-semibold m-0">개인정보 처리 방침</h3>
-            <span class="profile-accordion-icon open text-shark-400">+</span>
-            <span class="profile-accordion-icon close text-shark-400">-</span>
+            <span
+              class="profile-accordion-icon open text-shark-400 group-[.active]:hidden"
+              >+</span
+            >
+            <span
+              class="profile-accordion-icon close text-shark-400 hidden group-[.active]:block"
+              >-</span
+            >
           </div>
-          <div class="profile-accordion-content">
+          <div
+            class="profile-accordion-content max-h-0 overflow-hidden transition-all duration-300 group-[.active]:max-h-50 group-[.active]:border-t group-[.active]:border-shark-200">
             <p class="p-4 m-0 text-sm text-shark-600 leading-relaxed">
               라떼비앤비는 이용자의 개인정보를 관련 법령에 따라 안전하게
               처리합니다. 수집하는 항목은 이름, 이메일, 연락처 등 서비스 제공에
@@ -63,39 +49,55 @@
               파기합니다. 법령에 의해 보관이 필요한 경우 해당 기간 동안만
               보관하며, 이용자의 동의 없이 제3자에게 개인정보를 제공하지
               않습니다. 이용자는 언제든지 자신의 개인정보에 대한 열람, 수정,
-              삭제를 요청할 수 있습니다.
+              삭제를 요청할 수 있습니다. 멋쟁이 사자 부트캠프 FE 17기 화이팅
             </p>
           </div>
         </li>
 
-        <li class="profile-accordion-item border border-shark-200 rounded-lg">
+        <li
+          class="profile-accordion-item group border border-shark-200 rounded-lg">
           <div
             class="profile-accordion-header flex p-4 items-center justify-between cursor-pointer">
             <h3 class="text-base font-semibold m-0">서비스 이용 약관</h3>
-            <span class="profile-accordion-icon open text-shark-400">+</span>
-            <span class="profile-accordion-icon close text-shark-400">-</span>
+            <span
+              class="profile-accordion-icon open text-shark-400 group-[.active]:hidden"
+              >+</span
+            >
+            <span
+              class="profile-accordion-icon close text-shark-400 hidden group-[.active]:block"
+              >-</span
+            >
           </div>
-          <div class="profile-accordion-content">
+          <div
+            class="profile-accordion-content max-h-0 overflow-hidden transition-all duration-300 group-[.active]:max-h-50 group-[.active]:border-t group-[.active]:border-shark-200">
             <p class="p-4 m-0 text-sm text-shark-600 leading-relaxed">
               본 약관은 라떼비앤비가 제공하는 숙소 예약 서비스의 이용 조건 및
               절차에 관한 사항을 규정합니다. 이용자는 회원가입 시 본 약관에
               동의한 것으로 간주되며, 서비스 이용 중 관련 법령 및 약관을
-              준수해야 합니다. 예약 취소 및 환불은 숙소별 정책에 따르며, 부정
-              이용이 확인될 경우 서비스 이용이 제한될 수 있습니다. 약관의 변경
-              사항은 서비스 내 공지를 통해 안내드리며, 변경 후에도 서비스를 계속
-              이용하실 경우 변경된 약관에 동의한 것으로 봅니다.
+              준수해야 합니다. 부정 이용이 확인될 경우 서비스 이용이 제한될 수
+              있습니다. 약관의 변경 사항은 서비스 내 공지를 통해 안내드리며,
+              변경 후에도 서비스를 계속 이용하실 경우 변경된 약관에 동의한
+              것으로 봅니다. 바닐라라떼조 화이팅
             </p>
           </div>
         </li>
 
-        <li class="profile-accordion-item border border-shark-200 rounded-lg">
+        <li
+          class="profile-accordion-item group border border-shark-200 rounded-lg">
           <div
             class="profile-accordion-header flex p-4 items-center justify-between cursor-pointer">
             <h3 class="text-base font-semibold m-0">회사 세부정보</h3>
-            <span class="profile-accordion-icon open text-shark-400">+</span>
-            <span class="profile-accordion-icon close text-shark-400">-</span>
+            <span
+              class="profile-accordion-icon open text-shark-400 group-[.active]:hidden"
+              >+</span
+            >
+            <span
+              class="profile-accordion-icon close text-shark-400 hidden group-[.active]:block"
+              >-</span
+            >
           </div>
-          <div class="profile-accordion-content">
+          <div
+            class="profile-accordion-content max-h-0 overflow-hidden transition-all duration-300 group-[.active]:max-h-50 group-[.active]:border-t group-[.active]:border-shark-200">
             <p class="p-4 m-0 text-sm text-shark-600 leading-relaxed">
               상호명: 라떼비앤비(Latte BnB) | 대표 : 이동근 이선우 방효진 |
               주소: 서울특별시 종로구 종로3길 17, D1동 16, 17층(청진동, D타워)
