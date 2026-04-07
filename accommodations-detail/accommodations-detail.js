@@ -30,7 +30,8 @@ async function fetchAccommodation() {
   if (data.images && data.images.length > 0) {
     data.images.forEach((img) => {
       const figure = document.createElement('figure');
-      figure.className = 'min-w-50 snap-start m-0';
+
+      figure.className = 'min-w-50 snap-start m-0 cursor-pointer';
       figure.innerHTML =
         `<img src="${img.url}" alt="${img.title || '숙소 이미지'}" class="w-full aspect-4/3 object-cover rounded-lg" />` +
         `<figcaption class="flex flex-col mt-1.5">` +
@@ -40,6 +41,7 @@ async function fetchAccommodation() {
       gallery.appendChild(figure);
 
       const card = document.createElement('figure');
+
       card.className = 'm-0 flex flex-col items-center';
       card.innerHTML =
         `<img src="${img.url}" alt="${img.title || '숙소 이미지'}" class="w-full md:w-1/2 rounded-lg object-cover" />` +
