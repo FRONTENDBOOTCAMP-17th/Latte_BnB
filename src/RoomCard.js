@@ -52,7 +52,7 @@ export class RoomCard {
 
           </div>
         </a>
-        <div class="wishHeart absolute text-transparent right-4 bottom-4 hover:scale-110 transition-[scale] duration-300 z-100">
+        <div class="wishHeart absolute text-transparent right-4 bottom-4 hover:scale-110 transition-[scale] duration-300">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
