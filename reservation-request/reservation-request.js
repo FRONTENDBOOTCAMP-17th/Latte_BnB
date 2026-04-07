@@ -1,5 +1,12 @@
 import constants from '../src/constants.js';
 import toast from '../src/components/toast.js';
+import {
+  getCheckinDate,
+  getCheckoutDate,
+  setBlockedDates,
+  setCalendarChange,
+  setDefaultDates,
+} from './calendar.js';
 
 const API_BASE = constants.API_BASE_URL;
 const token = localStorage.getItem('accessToken');
@@ -33,7 +40,7 @@ let adults = 1;
 let children = 0;
 let room = null;
 
-onCalendarChange = updateDateBtn;
+setCalendarChange(updateDateBtn);
 
 function won(price) {
   return `₩${price.toLocaleString()}`;
@@ -94,7 +101,7 @@ async function getRoomContext() {
     room.pricing = json.data.pricing;
     room.bookingPolicy = json.data.bookingPolicy;
 
-    blockedDates = room.bookingPolicy.blockedDates;
+    setBlockedDates(room.bookingPolicy.blockedDates);
     setDefaultDates();
 
     document.getElementById('thumb').src = room.thumbnailUrl;
