@@ -14,6 +14,7 @@ if (token) {
   });
 
   if (!res.ok) {
+    localStorage.removeItem('accessToken');
     location.replace('/login/');
   }
 
@@ -30,8 +31,6 @@ if (token) {
 let roomData = new Map();
 let pageLimit = 20;
 
-const searchInput = document.getElementById('searchInput');
-const searchBtn = document.getElementById('searchBtn');
 const roomList = document.getElementById('roomList');
 
 async function fetchWishlist({ page } = {}) {
@@ -126,12 +125,6 @@ renderRooms();
 
 content.appendChild(pagination.buildPagination(result.meta.pagination));
 
-searchInput.addEventListener('keyup', (e) => {
-  if (e.key === 'Enter') {
-    searchBtn.click();
-  }
-});
-
 document.addEventListener('click', async (e) => {
   if (e.target.classList.contains('wishHeart')) {
     const id = Number.parseInt(
@@ -154,8 +147,5 @@ document.addEventListener('click', async (e) => {
   if (e.target.id === 'nextButton') {
     pagination.setCurrentPage(pagination.paginationData.page + 1);
     changePage();
-  }
-
-  if (e.target.id === 'searchBtn') {
   }
 });
