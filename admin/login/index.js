@@ -1,8 +1,11 @@
 import '../../src/style.css';
 import toast from '../../src/components/toast.js';
+import adminLogo from '../adminLogo.js';
 import { adminLogin } from './login.js';
 
 const adminLoginForm = document.getElementById('adminLoginForm');
+const content = document.getElementById('content');
+content.insertBefore(adminLogo.build(), adminLoginForm);
 
 adminLoginForm.addEventListener('submit', (e) => {
   e.preventDefault();
