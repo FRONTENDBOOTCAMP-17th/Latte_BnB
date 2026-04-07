@@ -1,3 +1,7 @@
+import constants from '../src/constants.js';
+
+const API_BASE = constants.API_BASE_URL;
+
 const lattebtn = document.getElementById('lattebtn');
 
 const id = document.getElementById('latteId');
@@ -54,13 +58,13 @@ lattebtn.addEventListener('click', async () => {
     username: id.value.trim(),
     password: pw.value.trim(),
     name: nm.value.trim(),
-    phone: pn.value.trim().replace(/-/g, ''),
+    phone: pn.value.trim(),
   };
 
   const regId = /^[a-z0-9_]{4,20}$/;
   const regPw = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   const regNm = /^(?=.*\S).{1,50}$/;
-  const regPn = /^\d{10,11}$/;
+  const regPn = /^010-\d{4}-\d{4}$/;
 
   if (!regId.test(signupData.username)) {
     result1.textContent = '4~20자, 영소문자/숫자/_ 만 가능합니다.';
@@ -81,22 +85,19 @@ lattebtn.addEventListener('click', async () => {
   }
 
   if (!signupData.phone && !regPn.test(signupData.phone)) {
-    result4.textContent = '01012345678과 같이 작성해주세요.';
+    result4.textContent = '010-1234-5678과 같이 입력해주세요.';
     result4.style.color = 'red';
     return;
   }
 
   try {
-    const res = await fetch(
-      'https://api.fullstackfamily.com/api/lattebnb/v1/auth/signup',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(signupData),
+    const res = await fetch(`${API_BASE}/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(signupData),
+    });
 
     if (!res.ok) {
       throw new Error('HTTP 오류: ' + res.status);

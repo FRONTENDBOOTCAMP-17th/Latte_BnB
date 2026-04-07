@@ -1,7 +1,11 @@
+import constants from '../src/constants.js';
+
+const API_BASE = constants.API_BASE_URL;
+
 async function loadReservation() {
   const rsvList = document.getElementById('reservation-list');
   const result = document.getElementById('result');
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
 
   try {
     if (!token) {
@@ -10,16 +14,13 @@ async function loadReservation() {
       return;
     }
 
-    const res = await fetch(
-      'https://api.fullstackfamily.com/api/lattebnb/v1/me/reservations',
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
+    const res = await fetch(`${API_BASE}/me/reservations`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
       },
-    );
+    });
 
     if (!res.ok) {
       throw new Error('HTTP 오류: ' + res.status);
@@ -65,7 +66,7 @@ async function loadReservation() {
       resDiv.innerHTML = `
           <img class="w-full h-40 object-cover rounded-md" src="${amd.thumbnailUrl}" alt="${amd.title}">
           <p class="mt-2 font-bold">${amd.title}</p>
-          <p class="text-sm text-gray-500">${inmonth}월 ${inday}일 ~ ${outmonth}월 ${outday}일</p>
+          <p class="text-sm text-gray-500">${inmonth}월 ${inday}일 ~ ${outmonth}월 ${outday}일 | ${sch.nights}박</p>
       `;
 
       resDiv.addEventListener('click', () => {

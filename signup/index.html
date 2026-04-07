@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../src/style.css" />
+    <script type="module" src="../src/main.js"></script>
     <script type="module" src="./index.js"></script>
     <title>latte-bnb | 회원가입</title>
   </head>
@@ -11,7 +12,8 @@
     <main
       class="max-w-160 mx-auto min-h-screen flex flex-col justify-center px-6 pt-8 pb-10">
       <a
-        href="../signup/index.html"
+        id="logo"
+        href="/"
         class="text-primary-400 flex items-center justify-center mb-7">
         <svg
           class="w-15 h-15"
@@ -106,9 +108,7 @@
           <p id="result4" class="text-xs text-negative-500"></p>
         </div>
 
-        <p
-          id="result5"
-          class="text-xs text-negative-500 text-center"></p>
+        <p id="result5" class="text-xs text-negative-500 text-center"></p>
 
         <button
           type="submit"
@@ -118,9 +118,9 @@
         </button>
 
         <p class="text-sm text-shark-500 text-center">
-          이미 계정이 있으신가요?&nbsp;
+          이미 계정이 있으신가요?
           <a
-            href="../login/index.html"
+            href="../login/"
             class="font-semibold text-shark-700 underline underline-offset-2">
             로그인
           </a>

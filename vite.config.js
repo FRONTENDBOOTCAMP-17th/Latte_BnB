@@ -13,6 +13,7 @@ export default defineConfig({
         wishlist: resolve(__dirname, 'wishlist/index.html'),
         profile: resolve(__dirname, 'profile/index.html'),
         reservationCheck: resolve(__dirname, 'reservations-check/index.html'),
+        reservationDetail: resolve(__dirname, 'reservations-detail/index.html'),
         accommodationsDetail: resolve(
           __dirname,
           'accommodations-detail/index.html',
