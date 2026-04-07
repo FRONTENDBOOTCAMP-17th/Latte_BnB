@@ -46,10 +46,10 @@
   <li><a href="./docs/prototype-design-draft/landing.md">랜딩 페이지</a></li>
   <li><a href="./docs/prototype-design-draft/login.md">로그인 페이지</a></li>
   <li><a href="./docs/prototype-design-draft/register.md">회원가입 페이지</a></li>
-  <li><a href="./docs/prototype-design-draft/accommodation_detail.md.md">숙소 상세 페이지</a></li>
-  <li><a href="./docs/prototype-design-draft/reservation_request.md.md">예약 신청 페이지</a></li>
-  <li><a href="./docs/prototype-design-draft/reservation_detail.md.md">예약 상세 페이지</a></li>
-  <li><a href="./docs/prototype-design-draft/my_reservation.md.md">내 예약 목록 페이지</a></li>
+  <li><a href="./docs/prototype-design-draft/accommodation_detail.md">숙소 상세 페이지</a></li>
+  <li><a href="./docs/prototype-design-draft/reservation_request.md">예약 신청 페이지</a></li>
+  <li><a href="./docs/prototype-design-draft/reservation_detail.md">예약 상세 페이지</a></li>
+  <li><a href="./docs/prototype-design-draft/my_reservation.md">내 예약 목록 페이지</a></li>
   <li><a href="./docs/prototype-design-draft/wish.md">위시리스트 페이지</a></li>
   <li><a href="./docs/prototype-design-draft/profile.md">프로필 페이지</a></li>
 </ul>
@@ -58,26 +58,62 @@
 ## 📁 프로젝트 구조
 
 ```
-latte-bnb/
-├── index.html
-├── detail.html
-├── wishlist.html
-├── login.html
-├── css/
-│   ├── theme.css
-│   ├── common.css
-│   ├── main.css
-│   ├── detail.css
-│   └── wishlist.css
-├── js/
-│   ├── common.js
-│   ├── main.js
-│   ├── detail.js
-│   └── wishlist.js
-├── assets/
-│   ├── images/
-│   ├── icons/
-│   └── logo/
+Latte_BnB/
+├── index.html                          ← 메인(랜딩) 페이지
+├── login/
+│   ├── index.html                      ← 로그인 페이지
+│   └── index.js
+├── signup/
+│   ├── index.html                      ← 회원가입 페이지
+│   └── index.js
+├── profile/
+│   ├── index.html                      ← 프로필 페이지
+│   └── profile.js
+├── accommodations-detail/
+│   ├── index.html                      ← 숙소 상세 페이지
+│   └── accommodations-detail.js
+├── reservations-check/                 ← (신규)
+│   ├── index.html                      ← 예약 확인 페이지
+│   └── index.js
+├── reservations-detail/                ← (신규)
+│   ├── index.html                      ← 예약 상세 페이지
+│   └── index.js
+├── admin/
+│   ├── login/
+│   │   ├── index.html                  ← 관리자 로그인
+│   │   ├── index.js
+│   │   └── login.js
+│   └── add/                            ← (신규)
+│       ├── index.html                  ← 숙소 등록 폼
+│       ├── index.js
+│       └── addAccommodation.js
+├── src/
+│   ├── main.js                         ← 공통 진입점
+│   ├── landing.js                      ← 랜딩 페이지 JS (대폭 확장)
+│   ├── RoomCard.js                     ← 숙소 카드 컴포넌트 (찜 기능 추가)
+│   ├── constants.js                    ← API URL 상수
+│   ├── style.css                       ← Tailwind CSS + 테마 (admin 스타일 추가)
+│   ├── styles/
+│   │   └── toast.css                   ← 토스트 애니메이션
+│   ├── components/
+│   │   ├── header.js                   ← 공통 헤더 (검색 UI 추가)
+│   │   ├── footer.js                   ← 공통 푸터
+│   │   ├── toast.js                    ← 토스트 알림 (버그 수정됨)
+│   │   ├── hamburger.js                ← 햄버거 메뉴 (신규)
+│   │   ├── navigation.js              ← 하단 네비게이션 (신규)
+│   │   ├── pagination.js              ← 페이지네이션 (신규)
+│   │   ├── PreviewImage.js            ← 이미지 프리뷰 (신규)
+│   │   └── numberInput.js             ← 숫자 입력 (신규)
+│   └── assets/
+│       ├── logo.png, search.svg
+│       ├── login.svg, logout.svg       ← (신규)
+│       ├── profile.svg, wish.svg       ← (신규)
+│       ├── reservation.svg             ← (신규)
+│       └── reservation-cancel.svg      ← (신규)
+├── docs/
+│   └── ...
+├── vite.config.js
+├── package.json
 └── README.md
 ```
 

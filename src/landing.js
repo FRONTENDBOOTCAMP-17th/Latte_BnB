@@ -1,62 +1,43 @@
 import { RoomCard } from './RoomCard.js';
 import constants from './constants.js';
 import pagination from './components/pagination.js';
+import toast from './components/toast.js';
 
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const sortBox = document.getElementById('sort');
 const content = document.getElementById('content');
 const roomList = document.getElementById('roomList');
+
 let roomData = new Map();
 let pageLimit = 20;
 
-async function fetchRooms() {
+async function fetchAccommodations({ page, query } = {}) {
+  const params = new URLSearchParams({
+    pageLimit,
+    sort: sortBox.value,
+  });
+
+  if (page) {
+    params.set('page', page);
+  }
+
+  if (query) {
+    params.set('query', query);
+  }
+
   const res = await fetch(
-    `${constants.API_BASE_URL}/accommodations?pageLimit=${pageLimit}&sort=${sortBox.value}`,
+    `${constants.API_BASE_URL}/accommodations?${params}`,
     {
       method: 'GET',
     },
   );
 
-  const { message, data, meta } = await res.json();
-
   if (!res.ok) {
-    throw new Error(message);
+    throw new Error('HTTP 에러: ' + res.status);
   }
 
-  return { data, meta };
-}
-
-async function fetchPage() {
-  const res = await fetch(
-    `${constants.API_BASE_URL}/accommodations?page=${pagination.paginationData.page}&pageLimit=${pageLimit}&sort=${sortBox.value}`,
-    {
-      method: 'GET',
-    },
-  );
-
-  const { message, data, meta } = await res.json();
-
-  if (!res.ok) {
-    throw new Error(message);
-  }
-
-  return { data, meta };
-}
-
-async function fetchSearch(query) {
-  const res = await fetch(
-    `${constants.API_BASE_URL}/accommodations?pageLimit=${pageLimit}&query=${query}&sort=${sortBox.value}`,
-    {
-      method: 'GET',
-    },
-  );
-
-  const { message, data, meta } = await res.json();
-
-  if (!res.ok) {
-    throw new Error(message);
-  }
+  const { data, meta } = await res.json();
 
   return { data, meta };
 }
@@ -72,13 +53,11 @@ async function checkWished() {
     body: JSON.stringify({ accommodationIds: accommodationIds }),
   });
 
-  const { success, message, data } = await res.json();
-
-  if (!success) {
-    console.log('찜 일괄 체크 실패');
-    console.log(message);
-    return;
+  if (!res.ok) {
+    throw new Error('HTTP 에러: ' + res.status);
   }
+
+  const { data } = await res.json();
 
   for (let id of data.wishlistedAccommodationIds) {
     roomData.get(id).setWish(true);
@@ -97,27 +76,42 @@ async function buildRooms(data) {
   data.forEach((room) => {
     roomData.set(room.id, new RoomCard(room));
   });
-  await checkWished();
+  try {
+    await checkWished();
+  } catch (error) {
+    console.log(
+      error.message + '\n로그인하지 않아 찜 목록 체크가 불가능합니다.',
+    );
+  }
 }
 
 async function changePage() {
-  const result = await fetchPage();
-  buildRooms(result.data.accommodations);
-  renderRooms();
-  pagination.setPrevNext(result.meta.pagination);
+  try {
+    const result = await fetchAccommodations(pagination.paginationData.page);
+    buildRooms(result.data.accommodations);
+    renderRooms();
+    pagination.setPrevNext(result.meta.pagination);
+  } catch (error) {
+    toast.warn('[pagination]: 데이터 로딩 실패', error.message, 5);
+  }
 }
 
-const result = await fetchRooms();
-buildRooms(result.data.accommodations);
-renderRooms();
+try {
+  const result = await fetchAccommodations();
+  buildRooms(result.data.accommodations);
+  renderRooms();
+  content.appendChild(pagination.buildPagination(result.meta.pagination));
+} catch (error) {
+  toast.warn('[landing]데이터 로딩 실패', error.message, 5);
+}
 
-content.appendChild(pagination.buildPagination(result.meta.pagination));
-
-searchInput.addEventListener('keyup', (e) => {
-  if (e.key === 'Enter') {
-    searchBtn.click();
-  }
-});
+if (searchInput !== null) {
+  searchInput.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') {
+      searchBtn.click();
+    }
+  });
+}
 
 document.addEventListener('click', async (e) => {
   if (e.target.id === 'prevButton') {
@@ -131,20 +125,28 @@ document.addEventListener('click', async (e) => {
   }
 
   if (e.target.id === 'searchBtn') {
-    const result = await fetchSearch(searchInput.value);
-    pagination.setCurrentPage(result.meta.pagination.page);
-    buildRooms(result.data.accommodations);
-    renderRooms();
-    pagination.setPrevNext(result.meta.pagination);
+    try {
+      const result = await fetchAccommodations({ query: searchInput.value });
+      pagination.setCurrentPage(result.meta.pagination.page);
+      buildRooms(result.data.accommodations);
+      renderRooms();
+      pagination.setPrevNext(result.meta.pagination);
+    } catch (error) {
+      toast.warn('[search]: 데이터 로딩 실패', error.message, 5);
+    }
   }
 });
 
 document.addEventListener('change', async (e) => {
   if (e.target.id === 'sort') {
-    const result = await fetchRooms();
-    pagination.setCurrentPage(result.meta.pagination.page);
-    buildRooms(result.data.accommodations);
-    renderRooms();
-    pagination.setPrevNext(result.meta.pagination);
+    try {
+      const result = await fetchAccommodations();
+      pagination.setCurrentPage(result.meta.pagination.page);
+      buildRooms(result.data.accommodations);
+      renderRooms();
+      pagination.setPrevNext(result.meta.pagination);
+    } catch (error) {
+      toast.warn('[sort]: 데이터 로딩 실패', error.message, 5);
+    }
   }
 });
