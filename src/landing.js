@@ -87,7 +87,9 @@ async function buildRooms(data) {
 
 async function changePage() {
   try {
-    const result = await fetchAccommodations(pagination.paginationData.page);
+    const result = await fetchAccommodations({
+      page: pagination.paginationData.page,
+    });
     buildRooms(result.data.accommodations);
     renderRooms();
     pagination.setPrevNext(result.meta.pagination);
@@ -105,13 +107,6 @@ try {
   toast.warn('[landing]데이터 로딩 실패', error.message, 5);
 }
 
-// if (searchInput !== null) {
-//   searchInput.addEventListener('keyup', (e) => {
-//     if (e.key === 'Enter') {
-//       searchBtn.click();
-//     }
-//   });
-// }
 document.addEventListener('keyup', (e) => {
   if (e.target.id === 'searchInput' && e.key === 'Enter') {
     if (searchBtn === null) {
