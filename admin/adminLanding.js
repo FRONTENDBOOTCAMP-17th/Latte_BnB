@@ -35,3 +35,23 @@ export async function fetchAccommodationList({
 
   return { data, meta };
 }
+
+export async function deleteAccommodation(id) {
+  const res = await fetch(
+    `${constants.API_BASE_URL}/admin/accommodations/${id}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('admin_token')}`,
+      },
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error('HTTP 에러: ' + res.status);
+  }
+
+  const { success, message } = await res.json();
+
+  return { success, message };
+}

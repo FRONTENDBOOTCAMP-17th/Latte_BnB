@@ -30,13 +30,13 @@ function buildMenu(result) {
       <span class="col-start-2 row-start-2 text-shark-600 text-sm">방문을 환영합니다.</span>
     </div>
     <hr class="w-[90%] self-center border-t-2 border-shark-200" />
-    <a href="" class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
+    <a href="/profile/" class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
       <img src="/src/assets/profile.svg" alt="프로필 svg 이미지" class="w-6 m-2" />프로필
     </a>
-    <a href="" class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
+    <a href="/wishlist/" class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
       <img src="/src/assets/wish.svg" alt="위시리스트 svg 이미지" class="w-6 m-2" />위시 리스트
     </a>
-    <a href="" class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
+    <a href="/reservations-check/" class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
       <img src="/src/assets/reservation.svg" alt="예약목록 svg 이미지" class="w-6 m-2" />내 예약 확인
     </a>
     <hr class="w-[90%] self-center border-t-2 border-shark-200" />
