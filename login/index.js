@@ -1,5 +1,8 @@
-const loginbtn = document.getElementById('loginbtn');
+import constants from '../src/constants.js';
 
+const API_BASE = constants.API_BASE_URL;
+
+const loginbtn = document.getElementById('loginbtn');
 const id = document.getElementById('loginId');
 const pw = document.getElementById('loginPw');
 
@@ -19,12 +22,6 @@ pw.addEventListener('keydown', (event) => {
     event.preventDefault();
     loginbtn.click();
   }
-});
-
-const gosignup = document.getElementById('goSignup');
-
-gosignup.addEventListener('click', (e) => {
-  alert(`회원가입 페이지로 이동합니다.`);
 });
 
 loginbtn.addEventListener('click', async () => {
@@ -57,16 +54,13 @@ loginbtn.addEventListener('click', async () => {
   }
 
   try {
-    const res = await fetch(
-      'https://api.fullstackfamily.com/api/lattebnb/v1/auth/login',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(loginData),
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(loginData),
+    });
 
     if (!res.ok) {
       throw new Error('HTTP 오류: ' + res.status);
@@ -76,7 +70,7 @@ loginbtn.addEventListener('click', async () => {
 
     const data = await res.json();
     const token = data.data.accessToken;
-    localStorage.setItem('token', token);
+    localStorage.setItem('accessToken', token);
 
     location.href = `../`;
   } catch (e) {

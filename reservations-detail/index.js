@@ -1,24 +1,24 @@
-const result = document.getElementById('result');
+import constants from '../src/constants.js';
+
+const API_BASE = constants.API_BASE_URL;
+
 const cancel = document.getElementById('cancel');
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('accessToken');
 const reservationId = localStorage.getItem('reservationId');
 
 if (!reservationId) {
-  location.replace('../reservations-check/index.html');
+  location.replace('../reservations-check/');
 }
 
 async function loadDetail() {
   try {
-    const res = await fetch(
-      `https://api.fullstackfamily.com/api/lattebnb/v1/reservations/${reservationId}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token,
-        },
+    const res = await fetch(`${API_BASE}/reservations/${reservationId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
       },
-    );
+    });
 
     if (!res.ok) {
       throw new Error('HTTP 오류: ' + res.status);
@@ -37,7 +37,7 @@ async function loadDetail() {
     container.id = 'container';
 
     container.innerHTML = `
-                        <div
+            <div
             id="roomInfo"
             class="mx-4 border-b-2 border-shark-300 p-4 md:mx-auto md:w-lg lg:w-170.5 lg:flex lg:items-start lg:gap-4"
             >
@@ -60,7 +60,7 @@ async function loadDetail() {
 
             <div id="schedule" class="mx-4 grid grid-cols-2 gap-y-4 border-b-2 border-shark-300 p-4 md:w-lg md:justify-self-center lg:w-170.5">
               <p id="check" class="text-2xl font-bold">예약 일정</p>
-              <p></p>
+              <p class="text-2xl">총 ${schDetail.nights}박</p>
               <p id="checkIn" class="text-base font-semibold text-shark-500">체크인</p>
               <p id="checkOut" class="text-base font-semibold text-shark-500">체크아웃</p>
               <p id="inDay" class="text-xl font-bold">${inmonth}월 ${inday}일 ${schDetail.checkInTime}</p>
@@ -83,7 +83,7 @@ async function loadDetail() {
     document.body.insertBefore(container, cancel);
   } catch (e) {
     localStorage.removeItem('reservationId');
-    location.replace('../reservations-check/index.html');
+    location.replace('../reservations-check/');
   }
 }
 
@@ -95,7 +95,7 @@ cancel.addEventListener('click', async () => {
 
   try {
     const res = await fetch(
-      `https://api.fullstackfamily.com/api/lattebnb/v1/reservations/${reservationId}/cancel`,
+      `${API_BASE}/reservations/${reservationId}/cancel`,
       {
         method: 'PATCH',
         headers: {
@@ -111,7 +111,7 @@ cancel.addEventListener('click', async () => {
       alert(`취소가 완료되었습니다.`);
       localStorage.removeItem('reservationId');
       localStorage.removeItem('reservationId');
-      location.replace('../reservations-check/index.html');
+      location.replace('../reservations-check/');
     }
   } catch (e) {
     alert('예약을 취소하지 못했습니다.\n' + e.message);
