@@ -71,12 +71,12 @@ loginbtn.addEventListener('click', async () => {
     if (!res.ok) {
       throw new Error('HTTP 오류: ' + res.status);
     } else {
-      alert(`로그인 되었습니다.`);
+      alert(`로그인되었습니다.`);
     }
 
     const data = await res.json();
-    const personalData = data.data;
-    localStorage.setItem('accessToken', personalData.accessToken);
+    const token = data.data.accessToken;
+    localStorage.setItem('token', token);
 
     location.href = `../`;
   } catch (e) {
