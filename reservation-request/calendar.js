@@ -132,9 +132,7 @@ function buildCalendar() {
           });
 
           if (hasBlocked) {
-            alert(
-              '예약 불가한 날짜가 포함되어 있습니다. 확인하고 다시 선택해주세요.',
-            );
+            toast.warn('예약 불가한 날짜가 포함되어 있습니다.');
             checkin = null;
             checkout = null;
           } else {
