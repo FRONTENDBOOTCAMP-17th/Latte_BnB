@@ -1,4 +1,5 @@
 // 참고 https://nonmajor-be-developer.tistory.com/entry/47%EC%9D%BC%EC%B0%A8-3-%ED%8C%80%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%B0%94%EB%8B%90%EB%9D%BC%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%8B%AC%EB%A0%A5
+import toast from '../src/components/toast.js';
 
 let checkin = null;
 let checkout = null;
@@ -10,12 +11,16 @@ const today = new Date();
 today.setHours(0, 0, 0, 0);
 
 function getCheckinDate() {
-  if (!checkin || !checkout) { return null; }
+  if (!checkin || !checkout) {
+    return null;
+  }
   return checkin < checkout ? checkin : checkout;
 }
 
 function getCheckoutDate() {
-  if (!checkin || !checkout) { return null; }
+  if (!checkin || !checkout) {
+    return null;
+  }
   return checkin < checkout ? checkout : checkin;
 }
 
@@ -88,10 +93,24 @@ function buildCalendar() {
     cell.textContent = currentDate.getDate();
 
     if (checkin && date.getTime() === checkin.getTime()) {
-      cell.classList.add('bg-primary-300', 'font-bold', 'rounded-lg', 'outline', 'outline-1', 'outline-shark-500');
+      cell.classList.add(
+        'bg-primary-300',
+        'font-bold',
+        'rounded-lg',
+        'outline',
+        'outline-1',
+        'outline-shark-500',
+      );
     }
     if (checkout && date.getTime() === checkout.getTime()) {
-      cell.classList.add('bg-primary-300', 'font-bold', 'rounded-lg', 'outline', 'outline-1', 'outline-shark-500');
+      cell.classList.add(
+        'bg-primary-300',
+        'font-bold',
+        'rounded-lg',
+        'outline',
+        'outline-1',
+        'outline-shark-500',
+      );
     }
 
     if (checkin && checkout) {
@@ -108,7 +127,11 @@ function buildCalendar() {
     } else if (isBlocked(date)) {
       cell.classList.add('text-shark-300', 'pointer-events-none');
     } else {
-      cell.classList.add('cursor-pointer', 'hover:bg-shark-200', 'hover:rounded-lg');
+      cell.classList.add(
+        'cursor-pointer',
+        'hover:bg-shark-200',
+        'hover:rounded-lg',
+      );
       cell.onclick = () => {
         const isCheckin = checkin && date.getTime() === checkin.getTime();
         const isCheckout = checkout && date.getTime() === checkout.getTime();
@@ -132,9 +155,7 @@ function buildCalendar() {
           });
 
           if (hasBlocked) {
-            alert(
-              '예약 불가한 날짜가 포함되어 있습니다. 확인하고 다시 선택해주세요.',
-            );
+            toast.warn('예약 불가한 날짜가 포함되어 있습니다.');
             checkin = null;
             checkout = null;
           } else {
@@ -176,3 +197,13 @@ document.getElementById('cal-btn-next').onclick = () => {
 };
 
 buildCalendar();
+
+// 전역에서 수정 가능한 문제를 해결하기 위해서 export를 추가하였습니다
+export { getCheckinDate, getCheckoutDate, setDefaultDates, buildCalendar };
+
+export function setBlockedDates(dates) {
+  blockedDates = dates;
+}
+export function setCalendarChange(call) {
+  onCalendarChange = call;
+}

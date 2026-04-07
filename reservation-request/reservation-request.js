@@ -1,4 +1,12 @@
 import constants from '../src/constants.js';
+import toast from '../src/components/toast.js';
+import {
+  getCheckinDate,
+  getCheckoutDate,
+  setBlockedDates,
+  setCalendarChange,
+  setDefaultDates,
+} from './calendar.js';
 
 const API_BASE = constants.API_BASE_URL;
 const token = localStorage.getItem('accessToken');
@@ -32,7 +40,7 @@ let adults = 1;
 let children = 0;
 let room = null;
 
-onCalendarChange = updateDateBtn;
+setCalendarChange(updateDateBtn);
 
 function won(price) {
   return `₩${price.toLocaleString()}`;
@@ -84,7 +92,7 @@ async function getRoomContext() {
       },
     );
     if (!res.ok) {
-      alert('숙소 정보를 불러오지 못했습니다.');
+      toast.warn('숙소 정보를 불러오지 못했습니다.');
       return;
     }
 
@@ -93,7 +101,7 @@ async function getRoomContext() {
     room.pricing = json.data.pricing;
     room.bookingPolicy = json.data.bookingPolicy;
 
-    blockedDates = room.bookingPolicy.blockedDates;
+    setBlockedDates(room.bookingPolicy.blockedDates);
     setDefaultDates();
 
     document.getElementById('thumb').src = room.thumbnailUrl;
@@ -136,7 +144,7 @@ async function submitCalendarDate() {
   const checkin = getCheckinDate();
   const checkout = getCheckoutDate();
   if (!checkin || !checkout) {
-    alert('날짜를 선택해 주세요.');
+    toast.warn('날짜를 선택해 주세요.');
     return;
   }
 
@@ -174,15 +182,13 @@ async function submitCalendarDate() {
     const json = await res.json();
 
     if (!res.ok) {
-      alert(json.message);
+      toast.warn(json.message);
       return;
     }
     const schedule = json.data.schedule;
 
     alert(
-      `[예약이 완료되었습니다]\n
-      체크인: ${schedule.checkInDate} ${schedule.checkInTime}\n
-      체크아웃: ${schedule.checkOutDate} ${schedule.checkOutTime}`,
+      `[예약이 완료되었습니다]\n체크인: ${schedule.checkInDate} ${schedule.checkInTime}\n체크아웃: ${schedule.checkOutDate} ${schedule.checkOutTime}`,
     );
 
     location.href = '/reservations-check/';
@@ -209,7 +215,7 @@ document
 
 document.getElementById('modal-calendar-save').addEventListener('click', () => {
   if (!getCheckinDate() || !getCheckoutDate()) {
-    alert('날짜를 모두 선택해 주세요.');
+    toast.warn('날짜를 모두 선택해 주세요.');
     return;
   }
 
