@@ -10,6 +10,14 @@ let onCalendarChange = null;
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
+function setBlockedDates(dates) {
+  blockedDates = dates;
+}
+
+function setCalendarChange(call) {
+  onCalendarChange = call;
+}
+
 function getCheckinDate() {
   if (!checkin || !checkout) {
     return null;
@@ -198,12 +206,11 @@ document.getElementById('cal-btn-next').onclick = () => {
 
 buildCalendar();
 
-// 전역에서 수정 가능한 문제를 해결하기 위해서 export를 추가하였습니다
-export { getCheckinDate, getCheckoutDate, setDefaultDates, buildCalendar };
-
-export function setBlockedDates(dates) {
-  blockedDates = dates;
-}
-export function setCalendarChange(call) {
-  onCalendarChange = call;
-}
+export default {
+  getCheckinDate,
+  getCheckoutDate,
+  setDefaultDates,
+  setBlockedDates,
+  buildCalendar,
+  setCalendarChange,
+};

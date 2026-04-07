@@ -1,12 +1,6 @@
 import constants from '../src/constants.js';
 import toast from '../src/components/toast.js';
-import {
-  getCheckinDate,
-  getCheckoutDate,
-  setBlockedDates,
-  setCalendarChange,
-  setDefaultDates,
-} from './calendar.js';
+import calendar from './calendar.js';
 
 const API_BASE = constants.API_BASE_URL;
 const token = localStorage.getItem('accessToken');
@@ -40,7 +34,7 @@ let adults = 1;
 let children = 0;
 let room = null;
 
-setCalendarChange(updateDateBtn);
+calendar.setCalendarChange(updateDateBtn);
 
 function won(price) {
   return `₩${price.toLocaleString()}`;
@@ -62,8 +56,8 @@ function showDate(date) {
 }
 
 function getNights() {
-  const checkin = getCheckinDate();
-  const checkout = getCheckoutDate();
+  const checkin = calendar.getCheckinDate();
+  const checkout = calendar.getCheckoutDate();
   if (!checkin || !checkout) {
     return 1;
   }
@@ -71,8 +65,8 @@ function getNights() {
 }
 
 function updateDateBtn() {
-  const checkin = getCheckinDate();
-  const checkout = getCheckoutDate();
+  const checkin = calendar.getCheckinDate();
+  const checkout = calendar.getCheckoutDate();
   let text = '날짜 선택';
 
   if (checkin && checkout) {
@@ -101,8 +95,8 @@ async function getRoomContext() {
     room.pricing = json.data.pricing;
     room.bookingPolicy = json.data.bookingPolicy;
 
-    setBlockedDates(room.bookingPolicy.blockedDates);
-    setDefaultDates();
+    calendar.setBlockedDates(room.bookingPolicy.blockedDates);
+    calendar.setDefaultDates();
 
     document.getElementById('thumb').src = room.thumbnailUrl;
     document.getElementById('title').textContent = room.title;
@@ -141,8 +135,8 @@ function updatePricing() {
 }
 // =============
 async function submitCalendarDate() {
-  const checkin = getCheckinDate();
-  const checkout = getCheckoutDate();
+  const checkin = calendar.getCheckinDate();
+  const checkout = calendar.getCheckoutDate();
   if (!checkin || !checkout) {
     toast.warn('날짜를 선택해 주세요.');
     return;
@@ -214,7 +208,7 @@ document
   });
 
 document.getElementById('modal-calendar-save').addEventListener('click', () => {
-  if (!getCheckinDate() || !getCheckoutDate()) {
+  if (!calendar.getCheckinDate() || !calendar.getCheckoutDate()) {
     toast.warn('날짜를 모두 선택해 주세요.');
     return;
   }
