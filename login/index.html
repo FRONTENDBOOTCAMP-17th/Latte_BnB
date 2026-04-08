@@ -6,105 +6,92 @@
     <link rel="stylesheet" href="../src/style.css" />
     <script type="module" src="../src/main.js"></script>
     <script type="module" src="./index.js"></script>
+
     <title>latte-bnb | 로그인</title>
   </head>
-  <body class="bg-white text-shark-800">
+  <body class="bg-white md:bg-primary-50 text-shark-800">
     <main
-      class="max-w-160 mx-auto min-h-screen flex flex-col justify-center px-6">
-      <a
-        href="/"
-        class="text-primary-400 flex items-center justify-center mb-10">
-        <svg
-          class="w-12 h-12"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 256 320"
-          role="img"
-          aria-label="latte bnb 로고">
-          <path
-            fill="currentColor"
-            d="M128 12 C78 12 38 52 38 102 C38 170 93 220 121 248 C125 252 131 252 135 248 C163 220 218 170 218 102 C218 52 178 12 128 12Z" />
-          <path
-            fill="#FFFFFF"
-            d="M127 70 L80 105 C77 108 78 114 82 114 L88 114 L88 150 C88 154 91 157 95 157 L161 157 C165 157 168 154 168 150 L168 114 L175 114 C180 114 181 108 178 106 L160 94 L160 74 C160 71 158 69 155 69 L145 69 C142 69 140 71 140 74 L140 79 L133 73 C130 70 126 70 123 73Z" />
-          <rect
-            x="110"
-            y="108"
-            width="14"
-            height="14"
-            rx="2"
-            fill="currentColor" />
-          <rect
-            x="132"
-            y="108"
-            width="14"
-            height="14"
-            rx="2"
-            fill="currentColor" />
-          <rect
-            x="110"
-            y="130"
-            width="14"
-            height="14"
-            rx="2"
-            fill="currentColor" />
-          <rect
-            x="132"
-            y="130"
-            width="14"
-            height="14"
-            rx="2"
-            fill="currentColor" />
-        </svg>
-        <span class="font-semibold text-xl">lattebnb</span>
-      </a>
-      <form id="loginForm" class="flex flex-col gap-3 px-2">
-        <div class="flex flex-col gap-1">
-          <label for="loginId" class="text-sm font-semibold text-shark-600"
-            >아이디</label
-          >
-          <input
-            type="text"
-            id="loginId"
-            placeholder="아이디를 입력해주세요."
-            class="w-full px-1 py-3 border-0 border-b border-shark-400 text-sm outline-none focus:border-primary-400 bg-transparent placeholder:text-shark-300" />
-          <p
-            id="result1"
-            class="flex h-5 items-center text-xs font-bold text-negative-500"></p>
-        </div>
+      class="max-w-3xl mx-auto min-h-screen flex items-center justify-center md:items-stretch px-6 py-10">
+      <div
+        class="w-full max-w-sm md:max-w-none md:w-1/2 md:bg-white md:border md:border-shark-200 px-8 py-7 md:flex md:flex-col md:justify-center">
+        <p class="text-base text-shark-800 font-semibold mb-5 leading-snug">
+          당신의 다음 여행지는 어디인가요?
+          <br />
+          LatteBnB에서 꿈꾸던 여행을 시작하세요!
+        </p>
 
-        <div class="flex flex-col gap-1">
-          <label for="loginPw" class="text-sm font-semibold text-shark-600"
-            >비밀번호</label
-          >
-          <input
-            type="password"
-            id="loginPw"
-            placeholder="비밀번호를 입력해주세요."
-            class="w-full px-1 py-3 border-0 border-b border-shark-400 text-sm outline-none focus:border-primary-400 bg-transparent placeholder:text-shark-300" />
-          <p
-            id="result2"
-            class="flex h-5 items-center text-xs font-bold text-negative-500"></p>
-        </div>
+        <form id="loginForm" class="flex flex-col gap-4">
+          <div class="flex flex-col gap-1">
+            <label for="loginId" class="text-sm font-semibold text-shark-600"
+              >아이디</label
+            >
+            <input
+              type="text"
+              id="loginId"
+              placeholder="아이디를 입력해주세요."
+              class="w-full px-3 py-3 border border-shark-200 rounded-lg text-sm outline-none focus:border-primary-400 placeholder:text-shark-300" />
+            <p id="result1" class="text-xs text-negative-500"></p>
+          </div>
 
-        <p
-          id="result3"
-          class="flex h-5 items-center justify-center text-xs font-bold text-negative-500"></p>
+          <div class="flex flex-col gap-1">
+            <label for="loginPw" class="text-sm font-semibold text-shark-600"
+              >비밀번호</label
+            >
+            <div class="relative">
+              <input
+                type="password"
+                id="loginPw"
+                placeholder="비밀번호를 입력해주세요."
+                class="w-full px-3 py-3 pr-10 border border-shark-200 rounded-lg text-sm outline-none focus:border-primary-400 placeholder:text-shark-300" />
+              <button
+                type="button"
+                id="togglePass"
+                class="absolute right-4 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-shark-400 p-1 hover:text-shark-600">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-5">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+              </button>
+            </div>
+            <p id="result2" class="text-xs text-negative-500"></p>
+          </div>
 
-        <button
-          type="submit"
-          id="loginbtn"
-          class="w-full p-4 rounded-lg text-base font-semibold cursor-pointer bg-primary-400 text-shark-50">
-          로그인
-        </button>
-      </form>
-      <p class="text-sm text-shark-500 text-center mt-4">
-        아직 계정이 없으신가요?
-        <a
-          href="../signup/"
-          class="font-semibold text-shark-700 underline underline-offset-2">
-          회원가입
-        </a>
-      </p>
+          <p id="result3" class="text-xs text-negative-500 text-center"></p>
+
+          <button
+            type="submit"
+            id="loginbtn"
+            class="w-full p-4 rounded-lg text-base font-semibold cursor-pointer bg-primary-400 text-shark-50 hover:bg-primary-500">
+            로그인
+          </button>
+        </form>
+
+        <p class="text-sm text-shark-500 text-center mt-4">
+          아직 계정이 없으신가요?
+          <a
+            href="../signup/"
+            class="font-semibold text-primary-400 hover:text-primary-500">
+            회원가입
+          </a>
+        </p>
+      </div>
+      <div class="hidden md:flex md:items-center md:justify-center w-1/2">
+        <img
+          src="../src/assets/phonemockup.png"
+          class="max-h-150 object-contain" />
+      </div>
     </main>
   </body>
 </html>

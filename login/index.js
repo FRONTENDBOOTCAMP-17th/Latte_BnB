@@ -20,6 +20,15 @@ function clearMessages() {
   errorMessage.common.textContent = '';
 }
 
+const togglePass = document.getElementById('togglePass');
+
+togglePass.addEventListener('mouseover', () => {
+  formElements.pw.type = 'text';
+});
+togglePass.addEventListener('mouseout', () => {
+  formElements.pw.type = 'password';
+});
+
 window.addEventListener('load', () => {
   formElements.id.focus();
 });
