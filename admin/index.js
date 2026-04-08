@@ -60,6 +60,8 @@ function render() {
 function build(data) {
   accommodationData.clear();
   data.forEach((accommodation) => {
+    const a = document.createElement('a');
+    a.href = `/admin/accommodation/?id=${accommodation.id}`;
     const li = document.createElement('li');
     li.className =
       'accommodationItem rounded-2xl bg-primary-50 p-4 my-2 shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_12px_30px_rgba(0,0,0,0.08)] relative';
@@ -82,7 +84,8 @@ function build(data) {
       '어른: ' + accommodation.pricing.adultPrice + '원';
     li.querySelector('.admin-childPrice').textContent =
       '어린이: ' + accommodation.pricing.childPrice + '원';
-    accommodationData.set(accommodation.id, { accommodation, element: li });
+    a.appendChild(li);
+    accommodationData.set(accommodation.id, { accommodation, element: a });
   });
 }
 
