@@ -2,79 +2,125 @@ import constants from '../src/constants.js';
 
 const API_BASE = constants.API_BASE_URL;
 
-const loginbtn = document.getElementById('loginbtn');
-const id = document.getElementById('loginId');
-const pw = document.getElementById('loginPw');
+const formElements = {
+  id: document.getElementById('loginId'),
+  pw: document.getElementById('loginPw'),
+  loginbtn: document.getElementById('loginbtn'),
+};
+
+const errorMessage = {
+  id: document.getElementById('result1'),
+  pw: document.getElementById('result2'),
+  common: document.getElementById('result3'),
+};
+
+function clearMessages() {
+  errorMessage.id.textContent = '';
+  errorMessage.pw.textContent = '';
+  errorMessage.common.textContent = '';
+}
 
 window.addEventListener('load', () => {
-  document.getElementById('loginId').focus();
+  formElements.id.focus();
 });
 
-id.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    pw.focus();
-  }
-});
+function enterPress() {
+  const forms = [formElements.id, formElements.pw];
 
-pw.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    loginbtn.click();
-  }
-});
+  forms.forEach((form, idx) => {
+    form.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
 
-loginbtn.addEventListener('click', async () => {
-  const result1 = document.getElementById('result1');
-  const result2 = document.getElementById('result2');
-  const result3 = document.getElementById('result3');
+      e.preventDefault();
 
-  result1.textContent = '';
-  result2.textContent = '';
-  result3.textContent = '';
+      const nextForm = forms[idx + 1];
 
-  const loginData = {
-    username: id.value.trim(),
-    password: pw.value.trim(),
+      if (nextForm) {
+        nextForm.focus();
+      } else {
+        formElements.loginbtn.click();
+      }
+    });
+  });
+}
+
+function getloginData() {
+  return {
+    username: formElements.id.value.trim(),
+    password: formElements.pw.value.trim(),
   };
+}
 
-  const regId = /^[a-z0-9_]{4,20}$/;
-  const regPw = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+const reg = {
+  id: /^[a-z0-9_]{4,20}$/,
+  pw: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+};
 
-  if (!regId.test(loginData.username)) {
-    result1.textContent = '아이디를 입력해주세요.';
-    result1.style.color = 'red';
-    return;
+function validationData(loginData) {
+  if (!reg.id.test(loginData.username)) {
+    return {
+      field: 'id',
+      message: '아이디를 입력해주세요.',
+    };
   }
 
-  if (!regPw.test(loginData.password)) {
-    result2.textContent = '비밀번호를 입력해주세요.';
-    result2.style.color = 'red';
+  if (!reg.pw.test(loginData.password)) {
+    return {
+      field: 'pw',
+      message: '비밀번호를 입력해주세요.',
+    };
+  }
+
+  return null;
+}
+
+function showError(field, message) {
+  errorMessage[field].textContent = message;
+}
+
+async function loginApi(loginData) {
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(loginData),
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP 오류: ${res.status}`);
+  }
+
+  return res.json();
+}
+
+const loginForm = document.getElementById('loginForm');
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  clearMessages();
+
+  const loginData = getloginData();
+  const validation = validationData(loginData);
+
+  if (validation) {
+    showError(validation.field, validation.message);
     return;
   }
 
   try {
-    const res = await fetch(`${API_BASE}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(loginData),
-    });
-
-    if (!res.ok) {
-      throw new Error('HTTP 오류: ' + res.status);
-    } else {
-      alert(`로그인되었습니다.`);
-    }
-
-    const data = await res.json();
+    const data = await loginApi(loginData);
     const token = data.data.accessToken;
+
     localStorage.setItem('accessToken', token);
+    alert(`로그인되었습니다.`);
 
     location.href = `../`;
   } catch (e) {
-    result3.textContent = '아이디 또는 비밀번호를 다시 입력해주세요.';
-    result3.style.color = 'red';
+    errorMessage.common.textContent =
+      '아이디 또는 비밀번호를 다시 입력해주세요.';
   }
 });
+
+enterPress();
