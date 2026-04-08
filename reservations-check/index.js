@@ -1,84 +1,121 @@
 import constants from '../src/constants.js';
+import { buildEmptyState } from '../src/components/emptyState.js';
 
 const API_BASE = constants.API_BASE_URL;
 
-async function loadReservation() {
-  const rsvList = document.getElementById('reservation-list');
-  const result = document.getElementById('result');
-  const token = localStorage.getItem('accessToken');
+const elements = {
+  list: document.getElementById('reservation-list'),
+  result: document.getElementById('result'),
+};
 
-  try {
-    if (!token) {
-      result.textContent = '로그인이 필요합니다.';
-      result.style.color = 'red';
-      return;
-    }
+function getToken() {
+  return localStorage.getItem('accessToken');
+}
 
-    const res = await fetch(`${API_BASE}/me/reservations`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-      },
-    });
+function showError(message) {
+  elements.result.textContent = message;
+  elements.result.style.color = 'red';
+}
 
-    if (!res.ok) {
-      throw new Error('HTTP 오류: ' + res.status);
-    }
+function clearMessage() {
+  elements.result.textContent = '';
+  elements.result.style.color = '';
+}
 
-    const rsvData = await res.json();
-    const rsv = rsvData.data.reservations;
+function formatMonthDay(dateString) {
+  const [, month, day] = dateString.split('-');
+  return `${Number(month)}월 ${Number(day)}일`;
+}
 
-    const activeReservations = rsv.filter(
-      (reservation) => reservation.status !== 'CANCELLED',
-    );
+function getReservations(reservations) {
+  return reservations.filter(
+    (reservation) => reservation.status !== 'CANCELLED',
+  );
+}
 
-    if (activeReservations.length === 0) {
-      const div = document.createElement('div');
-      div.className =
-        'w-full min-h-140 col-span-3 flex gap-20 items-center justify-center text-lg font-semibold text-shark-600 pr-8';
-      div.innerHTML = '예약 목록이 <span></span> 비어있습니다.';
+function renderEmptyState() {
+  elements.list.textContent = '';
+  elements.result.textContent = '';
 
-      const highlight = div.querySelector('span');
-      highlight.className =
-        'inline-block text-[10rem] font-extrabold text-primary-500 align-text-top';
-      highlight.textContent = '텅...';
+  const emptyState = buildEmptyState(`예약 목록이`);
+  elements.list.appendChild(emptyState);
 
-      result.appendChild(div);
+  return;
+}
 
-      return;
-    }
+function createReservationItem(reservation) {
+  const { accommodation, schedule, id } = reservation;
 
-    rsvList.textContent = '';
+  const checkIn = formatMonthDay(schedule.checkInDate);
+  const checkOut = formatMonthDay(schedule.checkOutDate);
 
-    for (let i = 0; i < rsv.length; i++) {
-      if (rsv[i].status === 'CANCELLED') continue;
+  const item = document.createElement('li');
+  item.className = 'w-full max-w-[600px] mx-auto';
 
-      const amd = rsv[i].accommodation;
-      const sch = rsv[i].schedule;
-
-      const [, inmonth, inday] = sch.checkInDate.split('-');
-      const [, outmonth, outday] = sch.checkOutDate.split('-');
-
-      const resDiv = document.createElement('li');
-      resDiv.className = 'w-full pr-8 max-w-[600px] mx-auto';
-
-      resDiv.innerHTML = `
-          <img class="w-full h-40 object-cover rounded-md" src="${amd.thumbnailUrl}" alt="${amd.title}">
-          <p class="mt-2 font-bold">${amd.title}</p>
-          <p class="text-sm text-gray-500">${inmonth}월 ${inday}일 ~ ${outmonth}월 ${outday}일 | ${sch.nights}박</p>
+  item.innerHTML = `
+    <img class="w-full h-40 object-cover rounded-md"
+    src="${accommodation.thumbnailUrl}"
+    alt="${accommodation.title}">
+    <p class="mt-2 font-bold">${accommodation.title}</p>
+    <p class="text-sm text-gray-500">${checkIn} ~ ${checkOut} | ${schedule.nights}박</p>
       `;
 
-      resDiv.addEventListener('click', () => {
-        localStorage.setItem('reservationId', rsv[i].id);
-        location.href = `../reservations-detail/`;
-      });
+  item.addEventListener('click', () => {
+    localStorage.setItem('reservationId', id);
+    location.href = `../reservations-detail/`;
+  });
 
-      rsvList.appendChild(resDiv);
+  return item;
+}
+
+function renderReservations(reservations) {
+  elements.list.textContent = '';
+
+  reservations.forEach((reservation) => {
+    const item = createReservationItem(reservation);
+    elements.list.appendChild(item);
+  });
+}
+
+async function listApi(token) {
+  const res = await fetch(`${API_BASE}/me/reservations`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP 오류: ${res.status}`);
+  }
+
+  return res.json();
+}
+
+async function loadReservation() {
+  try {
+    clearMessage();
+
+    const token = getToken();
+
+    if (!token) {
+      showError(`로그인이 필요합니다.`);
+      return;
     }
+
+    const data = await listApi(token);
+    const rsv = data.data.reservations;
+    const cancelledReservations = getReservations(rsv);
+
+    if (cancelledReservations.length === 0) {
+      renderEmptyState();
+      return;
+    }
+
+    renderReservations(cancelledReservations);
   } catch (e) {
-    result.textContent = '에러 발생: ' + e.message;
-    result.style.color = 'red';
+    showError(`에러 발생: ${e.message}`);
   }
 }
 
