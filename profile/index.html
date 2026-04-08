@@ -109,8 +109,7 @@
 
       <hr class="border-none border-t border-shark-200 mx-6 my-2" />
 
-      <section
-        class="px-6 pt-4 pb-6 flex flex-col gap-3 items-center justify-center md:flex-row md:justify-between">
+      <section class="px-6 pt-4 pb-6 flex flex-col gap-3 items-center">
         <button
           id="logoutBtn"
           class="w-full p-4 border-none rounded-lg text-base font-semibold cursor-pointer bg-shark-300 text-shark-950">
@@ -118,7 +117,7 @@
         </button>
         <button
           id="withdrawBtn"
-          class="w-full p-4 border-none rounded-lg text-base font-semibold cursor-pointer bg-primary-500 text-shark-50">
+          class="bg-transparent border-none cursor-pointer text-sm text-shark-400 underline">
           회원탈퇴
         </button>
       </section>
@@ -126,8 +125,7 @@
 
     <div
       id="withdrawModal"
-      class="fixed inset-0 bg-black/50 flex items-center justify-center"
-      hidden>
+      class="fixed inset-0 bg-black/50 flex items-center justify-center opacity-0 invisible transition-opacity duration-300 [&.active]:opacity-100 [&.active]:visible">
       <div class="p-6 w-[80%] max-w-[22rem] bg-shark-50 rounded-lg">
         <h3 class="text-base m-0 mb-3">회원 탈퇴하기</h3>
         <p class="m-0 mb-3 text-sm text-shark-500">
