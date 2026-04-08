@@ -81,10 +81,24 @@ const reg = {
 };
 
 function validationData(signupData) {
+  if (!signupData.username) {
+    return {
+      field: 'id',
+      message: `아이디를 입력하세요.`,
+    };
+  }
+
   if (!reg.id.test(signupData.username)) {
     return {
       field: 'id',
       message: `4~20자, 영소문자/숫자/_ 만 가능합니다.`,
+    };
+  }
+
+  if (!signupData.password) {
+    return {
+      field: 'pw',
+      message: `비밀번호를 입력하세요.`,
     };
   }
 
@@ -95,10 +109,24 @@ function validationData(signupData) {
     };
   }
 
+  if (!signupData.name) {
+    return {
+      field: 'nm',
+      message: `이름을 입력하세요.`,
+    };
+  }
+
   if (!reg.nm.test(signupData.name)) {
     return {
       field: 'nm',
       message: `1~50자를 입력해주세요.`,
+    };
+  }
+
+  if (!signupData.phone) {
+    return {
+      field: 'pn',
+      message: `전화번호를 입력하세요.`,
     };
   }
 
