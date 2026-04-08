@@ -2,112 +2,150 @@ import constants from '../src/constants.js';
 
 const API_BASE = constants.API_BASE_URL;
 
-const lattebtn = document.getElementById('lattebtn');
+const formElements = {
+  id: document.getElementById('latteId'),
+  pw: document.getElementById('lattePw'),
+  nm: document.getElementById('latteNm'),
+  pn: document.getElementById('lattePn'),
+  signupbtn: document.getElementById('signupbtn'),
+};
 
-const id = document.getElementById('latteId');
-const pw = document.getElementById('lattePw');
-const nm = document.getElementById('latteNm');
-const pn = document.getElementById('lattePn');
+const errorMessage = {
+  id: document.getElementById('result1'),
+  pw: document.getElementById('result2'),
+  nm: document.getElementById('result3'),
+  pn: document.getElementById('result4'),
+  common: document.getElementById('result5'),
+};
+
+function clearMessages() {
+  errorMessage.id.textContent = '';
+  errorMessage.pw.textContent = '';
+  errorMessage.nm.textContent = '';
+  errorMessage.pn.textContent = '';
+  errorMessage.common.textContent = '';
+}
 
 window.addEventListener('load', () => {
-  id.focus();
+  formElements.id.focus();
 });
 
-id.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    pw.focus();
-  }
-});
+function enterPress() {
+  const forms = [
+    formElements.id,
+    formElements.pw,
+    formElements.nm,
+    formElements.pn,
+  ];
 
-pw.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    nm.focus();
-  }
-});
+  forms.forEach((form, idx) => {
+    form.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
 
-nm.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    pn.focus();
-  }
-});
+      e.preventDefault();
 
-pn.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    lattebtn.click();
-  }
-});
+      const nextForm = forms[idx + 1];
 
-lattebtn.addEventListener('click', async () => {
-  const result1 = document.getElementById('result1');
-  const result2 = document.getElementById('result2');
-  const result3 = document.getElementById('result3');
-  const result4 = document.getElementById('result4');
-  const result5 = document.getElementById('result5');
+      if (nextForm) {
+        nextForm.focus();
+      } else {
+        formElements.signupbtn.click();
+      }
+    });
+  });
+}
 
-  result1.textContent = '';
-  result2.textContent = '';
-  result3.textContent = '';
-  result4.textContent = '';
-  result5.textContent = '';
-
-  const signupData = {
-    username: id.value.trim(),
-    password: pw.value.trim(),
-    name: nm.value.trim(),
-    phone: pn.value.trim(),
+function getsignupData() {
+  return {
+    username: formElements.id.value.trim(),
+    password: formElements.pw.value.trim(),
+    name: formElements.nm.value.trim(),
+    phone: formElements.pn.value.trim(),
   };
+}
 
-  const regId = /^[a-z0-9_]{4,20}$/;
-  const regPw = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-  const regNm = /^(?=.*\S).{1,50}$/;
-  const regPn = /^010-\d{4}-\d{4}$/;
+const reg = {
+  id: /^[a-z0-9_]{4,20}$/,
+  pw: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+  nm: /^(?=.*\S).{1,50}$/,
+  pn: /^010-\d{4}-\d{4}$/,
+};
 
-  if (!regId.test(signupData.username)) {
-    result1.textContent = '4~20자, 영소문자/숫자/_ 만 가능합니다.';
-    result1.style.color = 'red';
-    return;
+function validationData(signupData) {
+  if (!reg.id.test(signupData.username)) {
+    return {
+      field: 'id',
+      message: `4~20자, 영소문자/숫자/_ 만 가능합니다.`,
+    };
   }
 
-  if (!regPw.test(signupData.password)) {
-    result2.textContent = '8자 이상, 영문/숫자를 한 개 이상 포함해야 합니다.';
-    result2.style.color = 'red';
-    return;
+  if (!reg.pw.test(signupData.password)) {
+    return {
+      field: 'pw',
+      message: `8자 이상, 영문/숫자를 한 개 이상 포함해야 합니다.`,
+    };
   }
 
-  if (!regNm.test(signupData.name)) {
-    result3.textContent = '1~50자를 입력해주세요.';
-    result3.style.color = 'red';
-    return;
+  if (!reg.nm.test(signupData.name)) {
+    return {
+      field: 'nm',
+      message: `1~50자를 입력해주세요.`,
+    };
   }
 
-  if (!signupData.phone && !regPn.test(signupData.phone)) {
-    result4.textContent = '010-1234-5678과 같이 입력해주세요.';
-    result4.style.color = 'red';
+  if (!reg.pn.test(signupData.phone)) {
+    return {
+      field: 'pn',
+      message: `010-1234-5678과 같이 입력해주세요.`,
+    };
+  }
+
+  return null;
+}
+
+function showError(field, message) {
+  errorMessage[field].textContent = message;
+}
+
+async function signupApi(signupData) {
+  const res = await fetch(`${API_BASE}/auth/signup`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(signupData),
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP 오류: ${res.status}`);
+  }
+
+  return res;
+}
+
+const signupForm = document.getElementById('signupForm');
+
+signupForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  clearMessages();
+
+  const signupData = getsignupData();
+  const validation = validationData(signupData);
+
+  if (validation) {
+    showError(validation.field, validation.message);
     return;
   }
 
   try {
-    const res = await fetch(`${API_BASE}/auth/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(signupData),
-    });
-
-    if (!res.ok) {
-      throw new Error('HTTP 오류: ' + res.status);
-    } else {
-      alert(`회원가입이 완료되었습니다!`);
-    }
+    await signupApi(signupData);
+    alert(`회원가입이 완료되었습니다!`);
 
     location.href = `../`;
   } catch (e) {
-    result5.textContent = `형식에 맞지 않습니다.\n회원 정보를 다시 입력해주세요.`;
-    result5.style.color = 'red';
+    errorMessage.common.textContent = `형식에 맞지 않습니다. 회원 정보를 다시 입력해주세요.`;
   }
 });
+
+enterPress();
