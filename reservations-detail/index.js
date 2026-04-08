@@ -87,7 +87,7 @@ function renderDetail(detailData) {
   container.id = 'container';
   container.innerHTML = createDetail(detailData);
 
-  document.body.insertBefore(container, elements.cancelbtn);
+  elements.cancelbtn.parentNode.insertBefore(container, elements.cancelbtn);
 }
 
 async function detailApi(reservationId, token) {
