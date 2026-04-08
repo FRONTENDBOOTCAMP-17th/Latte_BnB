@@ -91,11 +91,11 @@ const withdrawPassword = document.getElementById('withdrawPassword');
 
 document.getElementById('withdrawBtn').addEventListener('click', () => {
   withdrawPassword.value = '';
-  withdrawModal.hidden = false;
+  withdrawModal.classList.add('active');
 });
 
 document.getElementById('withdrawCancel').addEventListener('click', () => {
-  withdrawModal.hidden = true;
+  withdrawModal.classList.remove('active');
 });
 
 document.getElementById('withdrawOk').addEventListener('click', async () => {
