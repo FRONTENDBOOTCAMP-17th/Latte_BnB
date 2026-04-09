@@ -1,5 +1,6 @@
 import constants from '../src/constants.js';
 import { buildEmptyState } from '../src/components/emptyState.js';
+import { getToken } from '../src/utils/auth.js';
 
 const API_BASE = constants.API_BASE_URL;
 
@@ -8,9 +9,7 @@ const elements = {
   result: document.getElementById('result'),
 };
 
-function getToken() {
-  return localStorage.getItem('accessToken');
-}
+getToken();
 
 function showError(message) {
   elements.result.textContent = message;

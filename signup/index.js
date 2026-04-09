@@ -1,6 +1,10 @@
-import constants from '../src/constants.js';
-
-const API_BASE = constants.API_BASE_URL;
+import { signupApi, loginApi } from '../src/api/auth.js';
+import {
+  isValidUsername,
+  isValidPassword,
+  isValidName,
+  isValidPhone,
+} from '../src/utils/validate.js';
 
 const formElements = {
   id: document.getElementById('latteId'),
@@ -73,13 +77,6 @@ function getsignupData() {
   };
 }
 
-const reg = {
-  id: /^[a-z0-9_]{4,20}$/,
-  pw: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-  nm: /^(?=.*\S).{1,50}$/,
-  pn: /^010-\d{4}-\d{4}$/,
-};
-
 function validationData(signupData) {
   if (!signupData.username) {
     return {
@@ -88,7 +85,7 @@ function validationData(signupData) {
     };
   }
 
-  if (!reg.id.test(signupData.username)) {
+  if (!isValidUsername(signupData.username)) {
     return {
       field: 'id',
       message: `4~20자, 영소문자/숫자/_ 만 가능합니다.`,
@@ -102,7 +99,7 @@ function validationData(signupData) {
     };
   }
 
-  if (!reg.pw.test(signupData.password)) {
+  if (!isValidPassword(signupData.password)) {
     return {
       field: 'pw',
       message: `8자 이상, 영문/숫자를 한 개 이상 포함해야 합니다.`,
@@ -116,7 +113,7 @@ function validationData(signupData) {
     };
   }
 
-  if (!reg.nm.test(signupData.name)) {
+  if (!isValidName(signupData.name)) {
     return {
       field: 'nm',
       message: `1~50자를 입력해주세요.`,
@@ -130,10 +127,10 @@ function validationData(signupData) {
     };
   }
 
-  if (!reg.pn.test(signupData.phone)) {
+  if (!isValidPhone(signupData.phone)) {
     return {
       field: 'pn',
-      message: `010-1234-5678과 같이 입력해주세요.`,
+      message: `전화번호는 숫자만 10~11자리여야 합니다.`,
     };
   }
 
@@ -144,22 +141,6 @@ function showError(field, message) {
   errorMessage[field].textContent = message;
 }
 
-async function signupApi(signupData) {
-  const res = await fetch(`${API_BASE}/auth/signup`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(signupData),
-  });
-
-  if (!res.ok) {
-    throw new Error(`HTTP 오류: ${res.status}`);
-  }
-
-  return res;
-}
-
 const signupForm = document.getElementById('signupForm');
 
 signupForm.addEventListener('submit', async (e) => {
@@ -168,6 +149,7 @@ signupForm.addEventListener('submit', async (e) => {
   clearMessages();
 
   const signupData = getsignupData();
+  console.log(signupData);
   const validation = validationData(signupData);
 
   if (validation) {
@@ -177,6 +159,10 @@ signupForm.addEventListener('submit', async (e) => {
 
   try {
     await signupApi(signupData);
+    await loginApi({
+      username: signupData.username,
+      password: signupData.password,
+    });
     alert(`회원가입이 완료되었습니다!`);
 
     location.href = `../`;

@@ -1,9 +1,10 @@
 import constants from '../src/constants.js';
 import avatar1 from '../src/assets/avatar1.jpg';
 import avatar2 from '../src/assets/avatar2.jpg';
+import { getToken, removeToken } from '../src/utils/auth.js';
 
 const API_BASE = constants.API_BASE_URL;
-const token = localStorage.getItem('accessToken');
+const token = getToken();
 
 async function fetchProfile() {
   if (!token) {
@@ -78,7 +79,7 @@ document.getElementById('logoutBtn').addEventListener('click', async () => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    localStorage.removeItem('accessToken');
+    removeToken();
     location.href = '/';
   } catch (error) {
     console.error('로그아웃 실패:', error);
@@ -122,7 +123,7 @@ document.getElementById('withdrawOk').addEventListener('click', async () => {
     }
     alert('회원 탈퇴가 완료되었습니다.');
 
-    localStorage.removeItem('accessToken');
+    removeToken();
     location.href = '/';
   } catch (error) {
     console.error(`회원 탈퇴 실패: ${error}`);

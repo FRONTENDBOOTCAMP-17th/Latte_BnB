@@ -1,9 +1,10 @@
 import constants from '../src/constants.js';
 import toast from '../src/components/toast.js';
 import calendar from './calendar.js';
+import { getToken } from '../src/utils/auth.js';
 
 const API_BASE = constants.API_BASE_URL;
-const token = localStorage.getItem('accessToken');
+const token = getToken();
 const params = new URLSearchParams(location.search);
 const roomId = params.get('id');
 

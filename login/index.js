@@ -1,6 +1,5 @@
-import constants from '../src/constants.js';
-
-const API_BASE = constants.API_BASE_URL;
+import { loginApi } from '../src/api/auth.js';
+import { isValidUsername, isValidPassword } from '../src/utils/validate.js';
 
 const formElements = {
   id: document.getElementById('loginId'),
@@ -60,20 +59,15 @@ function getloginData() {
   };
 }
 
-const reg = {
-  id: /^[a-z0-9_]{4,20}$/,
-  pw: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-};
-
 function validationData(loginData) {
-  if (!reg.id.test(loginData.username)) {
+  if (!isValidUsername(loginData.username)) {
     return {
       field: 'id',
       message: '아이디를 입력해주세요.',
     };
   }
 
-  if (!reg.pw.test(loginData.password)) {
+  if (!isValidPassword(loginData.password)) {
     return {
       field: 'pw',
       message: '비밀번호를 입력해주세요.',
@@ -85,22 +79,6 @@ function validationData(loginData) {
 
 function showError(field, message) {
   errorMessage[field].textContent = message;
-}
-
-async function loginApi(loginData) {
-  const res = await fetch(`${API_BASE}/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(loginData),
-  });
-
-  if (!res.ok) {
-    throw new Error(`HTTP 오류: ${res.status}`);
-  }
-
-  return res.json();
 }
 
 const loginForm = document.getElementById('loginForm');
@@ -119,10 +97,7 @@ loginForm.addEventListener('submit', async (e) => {
   }
 
   try {
-    const data = await loginApi(loginData);
-    const token = data.data.accessToken;
-
-    localStorage.setItem('accessToken', token);
+    await loginApi(loginData);
     alert(`로그인되었습니다.`);
 
     location.href = `../`;

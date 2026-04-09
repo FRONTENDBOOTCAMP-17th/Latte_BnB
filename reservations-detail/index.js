@@ -1,5 +1,4 @@
 import constants from '../src/constants.js';
-
 const API_BASE = constants.API_BASE_URL;
 
 const elements = {

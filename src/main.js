@@ -3,7 +3,7 @@ import header from './components/header.js';
 import { buildFooter } from './components/footer.js';
 import hamburger from './components/hamburger';
 import navigation from './components/navigation';
-import constants from './constants.js';
+import { getProfile } from '../src/api/auth.js';
 
 let result = null;
 
@@ -40,33 +40,15 @@ if (document.body.dataset.footer === 'true') {
 }
 
 async function checkAuth() {
-  const token = localStorage.getItem('accessToken');
-
   try {
-    const data = await getProfile(token);
+    const data = await getProfile();
 
     if (data) {
       return { isAuth: true, data };
     }
+    return { isAuth: false, data: null };
   } catch (error) {
     console.log(error.message + '\n프로필 조회 실패');
     return { isAuth: false, data: null };
   }
-}
-
-async function getProfile(token) {
-  const res = await fetch(`${constants.API_BASE_URL}/me/profile`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) {
-    throw new Error('HTTP 에러: ' + res.status);
-  }
-
-  const { data } = await res.json();
-
-  return data;
 }
