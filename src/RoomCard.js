@@ -1,5 +1,6 @@
 import constants from './constants.js';
 import toast from './components/toast.js';
+import { toggleWishList } from '../src/api/auth.js';
 
 export class RoomCard {
   #id;
@@ -75,21 +76,9 @@ export class RoomCard {
     this.#maxGuestNode = li.querySelector('.accommodationMaxGuest');
     this.#wishNode = li.querySelector('.wishHeart');
     this.#wishNode.addEventListener('click', async (e) => {
-      const res = await fetch(`${constants.API_BASE_URL}/me/wishlist`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-        body: JSON.stringify({
-          accommodationId: this.#id,
-          isWishlisted: !this.#isWish,
-        }),
-      });
+      const result = await toggleWishList(this.#id, !this.#isWish);
 
-      const result = await res.json();
-
-      if (!result.success) {
+      if (!result || !result.success) {
         toast.warn('실패', '위시리스트에 추가하려면 로그인해야합니다.', 3);
         return;
       }

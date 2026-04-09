@@ -2,6 +2,7 @@ import { RoomCard } from './RoomCard.js';
 import constants from './constants.js';
 import pagination from './components/pagination.js';
 import toast from './components/toast.js';
+import { checkWish } from './api/auth.js';
 
 let searchInput = null;
 let searchBtn = null;
@@ -43,23 +44,10 @@ async function fetchAccommodations({ page, query } = {}) {
 }
 
 async function checkWished() {
-  const accommodationIds = [...roomData.keys()];
-  const res = await fetch(`${constants.API_BASE_URL}/me/wishlist/check`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-    },
-    body: JSON.stringify({ accommodationIds: accommodationIds }),
-  });
+  const res = await checkWish([...roomData.keys()]);
+  if (!res) return;
 
-  if (!res.ok) {
-    throw new Error('HTTP 에러: ' + res.status);
-  }
-
-  const { data } = await res.json();
-
-  for (let id of data.wishlistedAccommodationIds) {
+  for (let id of res.data.wishlistedAccommodationIds) {
     roomData.get(id).setWish(true);
   }
 }

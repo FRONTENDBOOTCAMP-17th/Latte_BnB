@@ -2,10 +2,11 @@ import { RoomCard } from '../src/RoomCard.js';
 import constants from '../src/constants.js';
 import pagination from '../src/components/pagination.js';
 import { buildEmptyState } from '../src/components/emptyState.js';
+import { getToken, removeToken } from '../src/utils/auth.js';
 
 const content = document.getElementById('content');
 
-const token = localStorage.getItem('accessToken');
+const token = getToken();
 if (token) {
   const res = await fetch(`${constants.API_BASE_URL}/me/profile`, {
     method: 'GET',
@@ -15,7 +16,7 @@ if (token) {
   });
 
   if (!res.ok) {
-    localStorage.removeItem('accessToken');
+    removeToken();
     location.replace('/login/');
   }
 
