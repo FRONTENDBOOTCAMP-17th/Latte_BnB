@@ -1,8 +1,7 @@
-import constants from '../src/constants.js';
 import { buildEmptyState } from '../src/components/emptyState.js';
 import { getToken } from '../src/utils/auth.js';
-
-const API_BASE = constants.API_BASE_URL;
+import { showReservations } from '../src/api/reservation.js';
+import pagination from '../src/components/pagination.js';
 
 const elements = {
   list: document.getElementById('reservation-list'),
@@ -13,12 +12,12 @@ getToken();
 
 function showError(message) {
   elements.result.textContent = message;
-  elements.result.style.color = 'red';
+  elements.result.classList.add('text-negative-500');
 }
 
 function clearMessage() {
   elements.result.textContent = '';
-  elements.result.style.color = '';
+  elements.result.classList.remove('text-negative-500');
 }
 
 function formatMonthDay(dateString) {
@@ -52,16 +51,19 @@ function createReservationItem(reservation) {
   item.className = 'w-full max-w-[600px] mx-auto';
 
   item.innerHTML = `
-    <img class="w-full h-40 object-cover rounded-md"
-    src="${accommodation.thumbnailUrl}"
-    alt="${accommodation.title}">
-    <p class="mt-2 font-bold">${accommodation.title}</p>
-    <p class="text-sm text-gray-500">${checkIn} ~ ${checkOut} | ${schedule.nights}박</p>
+    <img class="w-full h-40 object-cover rounded-xl" />
+    <p class="mt-2 font-bold"></p>
+    <p class="text-sm text-gray-500"></p>
       `;
 
+  item.querySelector('img').src = accommodation.thumbnailUrl;
+  item.querySelector('img').alt = accommodation.title;
+  item.querySelector('.font-bold').textContent = accommodation.title;
+  item.querySelector('.text-sm').textContent =
+    `${checkIn} ~ ${checkOut} | ${schedule.nights}박`;
+
   item.addEventListener('click', () => {
-    localStorage.setItem('reservationId', id);
-    location.href = `../reservations-detail/`;
+    location.href = `../reservations-detail/?id=${id}`;
   });
 
   return item;
@@ -76,20 +78,15 @@ function renderReservations(reservations) {
   });
 }
 
-async function listApi(token) {
-  const res = await fetch(`${API_BASE}/me/reservations`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
+async function changePage() {
+  const data = await showReservations({
+    page: pagination.paginationData.page,
+    pageLimit: 20,
   });
-
-  if (!res.ok) {
-    throw new Error(`HTTP 오류: ${res.status}`);
-  }
-
-  return res.json();
+  const rsv = data.data.reservations;
+  const cancelledReservations = getReservations(rsv);
+  renderReservations(cancelledReservations);
+  pagination.setPrevNext(data.meta.pagination);
 }
 
 async function loadReservation() {
@@ -103,7 +100,7 @@ async function loadReservation() {
       return;
     }
 
-    const data = await listApi(token);
+    const data = await showReservations({ pageLimit: 20 });
     const rsv = data.data.reservations;
     const cancelledReservations = getReservations(rsv);
 
@@ -113,9 +110,22 @@ async function loadReservation() {
     }
 
     renderReservations(cancelledReservations);
+    elements.list.after(pagination.buildPagination(data.meta.pagination));
   } catch (e) {
     showError(`에러 발생: ${e.message}`);
   }
 }
 
 loadReservation();
+
+document.addEventListener('click', (e) => {
+  if (e.target.id === 'prevButton') {
+    pagination.setCurrentPage(pagination.paginationData.page - 1);
+    changePage();
+  }
+
+  if (e.target.id === 'nextButton') {
+    pagination.setCurrentPage(pagination.paginationData.page + 1);
+    changePage();
+  }
+});

@@ -1,4 +1,5 @@
 import { signupApi, loginApi } from '../src/api/auth.js';
+import { passwordToggle } from '../src/components/togglePassword.js';
 import {
   isValidUsername,
   isValidPassword,
@@ -15,11 +16,11 @@ const formElements = {
 };
 
 const errorMessage = {
-  id: document.getElementById('result1'),
-  pw: document.getElementById('result2'),
-  nm: document.getElementById('result3'),
-  pn: document.getElementById('result4'),
-  common: document.getElementById('result5'),
+  id: document.getElementById('errorUsername'),
+  pw: document.getElementById('errorPassword'),
+  nm: document.getElementById('errorName'),
+  pn: document.getElementById('errorPhone'),
+  common: document.getElementById('errorCommon'),
 };
 
 function clearMessages() {
@@ -30,14 +31,7 @@ function clearMessages() {
   errorMessage.common.textContent = '';
 }
 
-const togglePass = document.getElementById('togglePass');
-
-togglePass.addEventListener('mouseover', () => {
-  formElements.pw.type = 'text';
-});
-togglePass.addEventListener('mouseout', () => {
-  formElements.pw.type = 'password';
-});
+passwordToggle('togglePass', formElements.pw);
 
 window.addEventListener('load', () => {
   formElements.id.focus();
@@ -56,7 +50,6 @@ function enterPress() {
       if (e.key !== 'Enter') return;
 
       e.preventDefault();
-
       const nextForm = forms[idx + 1];
 
       if (nextForm) {
@@ -68,7 +61,7 @@ function enterPress() {
   });
 }
 
-function getsignupData() {
+function getSignupData() {
   return {
     username: formElements.id.value.trim(),
     password: formElements.pw.value.trim(),
@@ -148,8 +141,7 @@ signupForm.addEventListener('submit', async (e) => {
 
   clearMessages();
 
-  const signupData = getsignupData();
-  console.log(signupData);
+  const signupData = getSignupData();
   const validation = validationData(signupData);
 
   if (validation) {
