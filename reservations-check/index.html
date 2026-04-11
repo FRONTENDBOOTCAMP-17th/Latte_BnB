@@ -12,15 +12,17 @@
     data-header="true"
     data-footer="true"
     data-nav="true"
-    class="flex flex-col flex-wrap overflow-x-hidden max-[1023px]:[&_footer]:hidden">
-    <main>
-      <h1 id="list" class="m-4 mb-0 w-full text-[2rem] font-bold">
+    class="overflow-x-hidden max-[1023px]:[&_footer]:hidden">
+    <main class="min-w-100 pb-20 flex flex-col items-center">
+      <h1
+        id="list"
+        class="self-start scroll-m-20 text-[clamp(1.25rem,4vw,2.25rem)] font-extrabold tracking-tight break-keep py-8 mx-[clamp(1.25rem,4vw,5rem)]">
         나의 예약 목록
       </h1>
       <p id="result" class="self-center font-bold"></p>
       <ul
         id="reservation-list"
-        class="w-full mt-8 mb-24 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 px-[clamp(20px,4vw,80px)]"></ul>
+        class="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 px-[clamp(20px,4vw,80px)]"></ul>
     </main>
   </body>
 </html>

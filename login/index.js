@@ -1,5 +1,6 @@
 import { loginApi } from '../src/api/auth.js';
 import { isValidUsername, isValidPassword } from '../src/utils/validate.js';
+import { passwordToggle } from '../src/components/togglePassword.js';
 
 const formElements = {
   id: document.getElementById('loginId'),
@@ -8,9 +9,9 @@ const formElements = {
 };
 
 const errorMessage = {
-  id: document.getElementById('result1'),
-  pw: document.getElementById('result2'),
-  common: document.getElementById('result3'),
+  id: document.getElementById('errorUsername'),
+  pw: document.getElementById('errorPassword'),
+  common: document.getElementById('errorCommon'),
 };
 
 function clearMessages() {
@@ -19,14 +20,7 @@ function clearMessages() {
   errorMessage.common.textContent = '';
 }
 
-const togglePass = document.getElementById('togglePass');
-
-togglePass.addEventListener('mouseover', () => {
-  formElements.pw.type = 'text';
-});
-togglePass.addEventListener('mouseout', () => {
-  formElements.pw.type = 'password';
-});
+passwordToggle('togglePass', formElements.pw);
 
 window.addEventListener('load', () => {
   formElements.id.focus();
@@ -40,7 +34,6 @@ function enterPress() {
       if (e.key !== 'Enter') return;
 
       e.preventDefault();
-
       const nextForm = forms[idx + 1];
 
       if (nextForm) {
@@ -52,7 +45,7 @@ function enterPress() {
   });
 }
 
-function getloginData() {
+function getLoginData() {
   return {
     username: formElements.id.value.trim(),
     password: formElements.pw.value.trim(),
@@ -88,7 +81,7 @@ loginForm.addEventListener('submit', async (e) => {
 
   clearMessages();
 
-  const loginData = getloginData();
+  const loginData = getLoginData();
   const validation = validationData(loginData);
 
   if (validation) {
