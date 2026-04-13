@@ -130,11 +130,15 @@ function buildCalendar() {
       }
     }
 
+    const aDayWeek = date.getDay();
+
     if (date < today) {
       cell.classList.add('text-shark-300', 'pointer-events-none');
     } else if (isBlocked(date)) {
       cell.classList.add('text-shark-300', 'pointer-events-none');
     } else {
+      if (aDayWeek === 0) cell.classList.add('text-negative-500');
+      if (aDayWeek === 6) cell.classList.add('text-blue-500');
       cell.classList.add(
         'cursor-pointer',
         'hover:bg-shark-200',
@@ -183,6 +187,23 @@ function buildCalendar() {
     }
 
     currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  // 마지막 7일이 추가 안 되는 경우에 빈 칸 채워넣기
+  const lastRow = tbody.rows[tbody.rows.length - 1];
+  const remainingCells = 7 - lastRow.cells.length;
+
+  for (let i = 0; i < remainingCells; i++) {
+    const cell = lastRow.insertCell();
+    cell.classList.add('h-11');
+  }
+
+  while (tbody.rows.length < 6) {
+    const emptyRow = tbody.insertRow();
+    for (let c = 0; c < 7; c++) {
+      const cell = emptyRow.insertCell();
+      cell.classList.add('h-11');
+    }
   }
 }
 
