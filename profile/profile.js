@@ -1,41 +1,22 @@
-import constants from '../src/constants.js';
 import avatar1 from '../src/assets/avatar1.jpg';
 import avatar2 from '../src/assets/avatar2.jpg';
-import { getToken, removeToken } from '../src/utils/auth.js';
-
-const API_BASE = constants.API_BASE_URL;
-const token = getToken();
+import { removeToken } from '../src/utils/auth.js';
+import { getProfile, logout, withdraw } from '../src/api/auth.js';
 
 async function fetchProfile() {
-  if (!token) {
-    alert('로그인을 먼저 해주세요');
-    location.href = '/login/';
-    return;
-  }
-
   try {
-    const res = await fetch(`${API_BASE}/me/profile`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await getProfile();
 
-    if (res.status === 401) {
+    if (!res) {
       alert('로그인을 먼저 해주세요');
       location.href = '/login/';
       return;
     }
 
-    if (!res.ok) {
-      alert('프로필 조회 실패');
-      return;
-    }
-
-    const json = await res.json();
-    const user = json.data;
+    const user = res.data;
 
     const avatarElement = document.getElementById('avatar');
+
     if (user.avatarUrl) {
       avatarElement.src = user.avatarUrl;
       avatarElement.onerror = () => {
@@ -49,7 +30,15 @@ async function fetchProfile() {
     document.getElementById('role').textContent =
       user.role === 'ADMIN' ? '관리자' : '게스트';
   } catch (error) {
+    if (error.message === 'HTTP 에러: 401') {
+      alert('로그인을 먼저 해주세요');
+
+      location.href = '/login/';
+      return;
+    }
+
     console.error(`프로필 조회 실패: ${error}`);
+
     alert('프로필 정보를 불러오는 중 오류가 발생했습니다.');
   }
 }
@@ -74,15 +63,13 @@ accordionHeaders.forEach((header) => {
 
 document.getElementById('logoutBtn').addEventListener('click', async () => {
   try {
-    await fetch(`${API_BASE}/auth/logout`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await logout();
 
     removeToken();
     location.href = '/';
   } catch (error) {
     console.error('로그아웃 실패:', error);
+
     alert('로그아웃 중 오류가 발생했습니다.');
   }
 });
@@ -101,26 +88,14 @@ document.getElementById('withdrawCancel').addEventListener('click', () => {
 
 document.getElementById('withdrawOk').addEventListener('click', async () => {
   const password = withdrawPassword.value;
+
   if (!password) {
     alert('비밀번호를 입력해주세요.');
     return;
   }
 
   try {
-    const res = await fetch(`${API_BASE}/me/withdraw`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ password }),
-    });
-
-    if (!res.ok) {
-      const json = await res.json();
-      alert(json.message || '회원 탈퇴에 실패했습니다.');
-      return;
-    }
+    await withdraw(password);
     alert('회원 탈퇴가 완료되었습니다.');
 
     removeToken();
