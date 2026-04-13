@@ -74,6 +74,12 @@ function showError(field, message) {
   errorMessage[field].textContent = message;
 }
 
+const modal = {
+  modalContainer: document.getElementById('modalContainer'),
+  loginModal: document.getElementById('loginModal'),
+  loginConfirmBtn: document.getElementById('loginConfirmBtn'),
+};
+
 const loginForm = document.getElementById('loginForm');
 
 loginForm.addEventListener('submit', async (e) => {
@@ -91,13 +97,23 @@ loginForm.addEventListener('submit', async (e) => {
 
   try {
     await loginApi(loginData);
-    alert(`로그인되었습니다.`);
 
-    location.href = `../`;
+    clearMessages();
+    loginForm.reset();
+
+    modal.modalContainer.classList.remove('invisible', 'opacity-0');
+    modal.modalContainer.classList.add('visible', 'opacity-100');
+
+    document.activeElement.blur();
+    modal.loginConfirmBtn.focus();
   } catch (e) {
     errorMessage.common.textContent =
       '아이디 또는 비밀번호를 다시 입력해주세요.';
   }
+});
+
+modal.loginConfirmBtn.addEventListener('click', () => {
+  location.href = `../`;
 });
 
 enterPress();
