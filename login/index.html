@@ -10,7 +10,7 @@
   </head>
   <body class="bg-white md:bg-primary-50 text-shark-800">
     <main
-      class="max-w-3xl mx-auto min-h-screen flex items-center justify-center md:items-stretch px-6 py-10">
+      class="max-w-3xl mx-auto min-h-screen flex items-center justify-center md:items-stretch px-6 py-10 min-w-110">
       <div
         class="w-full max-w-sm md:max-w-none md:w-1/2 md:bg-white md:border md:border-shark-200 px-8 py-7 md:flex md:flex-col md:justify-center">
         <p class="text-base text-shark-800 font-semibold mb-5 leading-snug">
@@ -102,6 +102,21 @@
         <img
           src="../src/assets/phonemockup.png"
           class="max-h-150 object-contain" />
+      </div>
+      <div
+        id="modalContainer"
+        class="fixed inset-0 flex items-center justify-center bg-[color-mix(in_oklab,var(--color-black)_50%,transparent)] transition-opacity duration-300 ease-[ease] invisible opacity-0">
+        <div
+          id="loginModal"
+          class="flex flex-col flex-wrap gap-8 rounded-lg bg-shark-50 px-8 py-6">
+          <p class="font-bold">로그인되었습니다.</p>
+          <button
+            type="button"
+            id="loginConfirmBtn"
+            class="flex-1 rounded-lg bg-primary-400 p-2 text-white">
+            확인
+          </button>
+        </div>
       </div>
     </main>
   </body>

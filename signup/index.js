@@ -136,6 +136,12 @@ function showError(field, message) {
 
 const signupForm = document.getElementById('signupForm');
 
+const modal = {
+  modalContainer: document.getElementById('modalContainer'),
+  signupModal: document.getElementById('signupModal'),
+  signupConfirmBtn: document.getElementById('signupConfirmBtn'),
+};
+
 signupForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -155,12 +161,22 @@ signupForm.addEventListener('submit', async (e) => {
       username: signupData.username,
       password: signupData.password,
     });
-    alert(`회원가입이 완료되었습니다!`);
 
-    location.href = `../`;
+    clearMessages();
+    signupForm.reset();
+
+    modal.modalContainer.classList.remove('invisible', 'opacity-0');
+    modal.modalContainer.classList.add('visible', 'opacity-100');
+
+    document.activeElement.blur();
+    modal.signupConfirmBtn.focus();
   } catch (e) {
     errorMessage.common.textContent = `형식에 맞지 않습니다. 회원 정보를 다시 입력해주세요.`;
   }
+});
+
+modal.signupConfirmBtn.addEventListener('click', () => {
+  location.href = `../`;
 });
 
 enterPress();
