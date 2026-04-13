@@ -155,3 +155,18 @@
     @apply w-full h-fit bg-primary-500 rounded-2xl p-1 my-2 hover:bg-primary-500/70;
   }
 }
+
+@layer utilities {
+  .thin-scroll {
+    &::-webkit-scrollbar {
+      block-size: 0.5rem;
+      inline-size: 0.5rem;
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 0.25rem;
+      background: theme('colors.shark.200');
+    }
+  }
+}
