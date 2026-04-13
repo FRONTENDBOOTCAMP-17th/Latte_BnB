@@ -1,25 +1,14 @@
-import constants from '../constants.js';
+import { request } from '../api/client.js';
 
 let originData = null;
 let modifiedData = null;
 let element = null;
 
 async function fetchAccommodation(id) {
-  const res = await fetch(
-    `${constants.API_BASE_URL}/admin/accommodations/${id}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('admin_token')}`,
-      },
-    },
+  const { success, message, data } = await request(
+    `/admin/accommodations/${id}`,
+    { method: 'GET' },
   );
-
-  if (!res.ok) {
-    throw new Error('HTTP 에러: ' + res.status);
-  }
-
-  const { success, message, data } = await res.json();
 
   originData = data;
 
