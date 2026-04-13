@@ -30,7 +30,7 @@ function buildViewMode() {
   element = document.createElement('div');
   element.id = 'accommodation';
   element.className =
-    'min-w-100 w-fit max-w-3xl flex flex-col items-center bg-white gap-4 md:rounded-t-2xl pb-10';
+    'min-w-100 w-full max-w-3xl flex flex-col items-center bg-white gap-4 md:rounded-t-2xl pb-10';
   element.innerHTML = `
     <img src="${originData.thumbnailUrl}" alt="숙소 대표 이미지" id="thumbnail" class="w-full md:rounded-t-2xl" />
     <div id="mainInfo" class="px-4 text-center">
