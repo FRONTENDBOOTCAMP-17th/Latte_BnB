@@ -40,3 +40,16 @@ export async function toggleWishList(accommodationId, isWishlisted) {
     body: JSON.stringify({ accommodationId, isWishlisted }),
   });
 }
+
+export async function logout() {
+  return authRequest('/auth/logout', {
+    method: 'POST',
+  });
+}
+
+export async function withdraw(password) {
+  return authRequest('/me/withdraw', {
+    method: 'POST',
+    body: JSON.stringify({ password }),
+  });
+}
