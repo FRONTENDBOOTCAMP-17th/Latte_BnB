@@ -1,34 +1,24 @@
 import { RoomCard } from '../src/RoomCard.js';
-import constants from '../src/constants.js';
 import pagination from '../src/components/pagination.js';
 import { buildEmptyState } from '../src/components/emptyState.js';
-import { getToken, removeToken } from '../src/utils/auth.js';
+import { removeToken } from '../src/utils/auth.js';
+import { checkWish, getProfile } from '../src/api/auth.js';
+import { request } from '../src/api/client.js';
 
 const content = document.getElementById('content');
+const authPromise = getProfile();
 
-const token = getToken();
-if (token) {
-  const res = await fetch(`${constants.API_BASE_URL}/me/profile`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) {
+authPromise
+  .then(({ success }) => {
+    if (success) {
+      content.classList.remove('hidden');
+      content.classList.add('flex');
+    }
+  })
+  .catch(() => {
     removeToken();
     location.replace('/login/');
-  }
-
-  const { success } = await res.json();
-  if (success) {
-    console.log('유효한 토큰입니다.');
-    content.classList.remove('hidden');
-    content.classList.add('flex');
-  }
-} else {
-  location.replace('/login/');
-}
+  });
 
 let roomData = new Map();
 let pageLimit = 20;
@@ -37,47 +27,28 @@ const roomList = document.getElementById('roomList');
 
 async function fetchWishlist({ page } = {}) {
   const params = new URLSearchParams({ pageLimit });
+
   if (page) {
     params.set('page', page);
   }
 
-  const res = await fetch(`${constants.API_BASE_URL}/me/wishlist?${params}`, {
+  const { data, meta } = await request(`/me/wishlist?${params}`, {
     method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
   });
-
-  const { message, data, meta } = await res.json();
-
-  if (!res.ok) {
-    throw new Error(message);
-  }
 
   return { data, meta };
 }
 
 async function checkWished() {
-  const accommodationIds = [...roomData.keys()];
-  const res = await fetch(`${constants.API_BASE_URL}/me/wishlist/check`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ accommodationIds: accommodationIds }),
-  });
-
-  const { success, message, data } = await res.json();
-
-  if (!success) {
+  try {
+    const { data } = await checkWish([...roomData.keys()]);
+    for (let id of data.wishlistedAccommodationIds) {
+      roomData.get(id).setWish(true);
+    }
+  } catch (error) {
     console.log('찜 일괄 체크 실패');
-    console.log(message);
+    console.log(error.message);
     return;
-  }
-
-  for (let id of data.wishlistedAccommodationIds) {
-    roomData.get(id).setWish(true);
   }
 }
 
@@ -116,7 +87,9 @@ const result = await fetchWishlist();
 buildRooms(result.data.accommodations);
 renderRooms();
 
-content.appendChild(pagination.buildPagination(result.meta.pagination));
+if (roomData.size !== 0) {
+  content.appendChild(pagination.buildPagination(result.meta.pagination));
+}
 
 document.addEventListener('click', async (e) => {
   if (e.target.classList.contains('wishHeart')) {
