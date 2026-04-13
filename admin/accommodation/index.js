@@ -3,17 +3,32 @@ import accommodationForm from '../../src/components/accommodationForm.js';
 import adminLogo from '../adminLogo.js';
 import toast from '../../src/components/toast.js';
 import { deleteAccommodation } from '../adminLanding.js';
+import { getProfile } from '../../src/api/auth.js';
 
 const params = new URLSearchParams(location.search);
 const content = document.getElementById('content');
 const btnContainer = document.getElementById('btnContainer');
 
 document.body.prepend(adminLogo.build());
+content.classList.replace('flex', 'hidden');
+
+const profilePromise = getProfile();
+
+profilePromise
+  .then(({ data }) => {
+    if (data.user.role !== 'ADMIN') {
+      throw new Error();
+    }
+  })
+  .catch(() => {
+    location.replace('/admin/login/');
+  });
 
 const fetchPromise = accommodationForm.fetchAccommodation(params.get('id'));
-fetchPromise.then(({ success, message }) => {
+fetchPromise.then(({ success }) => {
   if (success) {
     content.append(accommodationForm.buildViewMode());
+    content.classList.replace('hidden', 'flex');
   }
 });
 
