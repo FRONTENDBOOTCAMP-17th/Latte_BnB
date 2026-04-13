@@ -10,7 +10,7 @@
   </head>
   <body class="bg-white md:bg-primary-50 text-shark-800">
     <main
-      class="max-w-3xl mx-auto min-h-screen flex items-center justify-center md:items-stretch px-6 py-10">
+      class="max-w-3xl mx-auto min-h-screen flex items-center justify-center md:items-stretch px-6 py-10 min-w-102">
       <div class="hidden md:flex md:items-center md:justify-center w-1/2">
         <img
           src="../src/assets/phonemockup.png"
@@ -19,7 +19,7 @@
       <div
         class="w-full max-w-sm md:max-w-none md:w-1/2 md:bg-white md:border md:border-shark-200 px-8 py-7 md:flex md:flex-col md:justify-center">
         <p class="text-base text-shark-800 font-semibold mb-5 leading-snug">
-          오늘의 여행을 더 특별하게,<br />latteBnB에서 나만의 숙소를 만나보세요
+          오늘의 여행을 더 특별하게,<br />latteBnB에서 나만의 숙소를 만나보세요.
         </p>
 
         <form id="signupForm" class="flex flex-col gap-4">
@@ -124,6 +124,21 @@
             로그인
           </a>
         </p>
+      </div>
+      <div
+        id="modalContainer"
+        class="fixed inset-0 flex items-center justify-center bg-[color-mix(in_oklab,var(--color-black)_50%,transparent)] transition-opacity duration-300 ease-[ease] opacity-0 invisible">
+        <div
+          id="signupModal"
+          class="flex flex-col flex-wrap gap-8 rounded-lg bg-shark-50 px-8 py-6">
+          <p class="font-bold">회원가입이 완료되었습니다!</p>
+          <button
+            type="button"
+            id="signupConfirmBtn"
+            class="flex-1 rounded-lg bg-primary-400 p-2 text-white">
+            확인
+          </button>
+        </div>
       </div>
     </main>
   </body>
