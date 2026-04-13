@@ -1,9 +1,9 @@
 import '../src/style.css';
-import constants from '../src/constants';
 import adminLogo from './adminLogo';
 import { deleteAccommodation, fetchAccommodationList } from './adminLanding';
 import pagination from '../src/components/pagination';
 import toast from '../src/components/toast';
+import { getProfile } from '../src/api/auth';
 
 let searchInput = null;
 let searchBtn = null;
@@ -13,42 +13,20 @@ const accommodationList = document.getElementById('accommodationList');
 const accommodationData = new Map();
 
 content.prepend(adminLogo.build());
-content.classList.remove('grid');
-content.classList.add('hidden');
+content.classList.replace('grid', 'hidden');
 
-if (localStorage.getItem('admin_token')) {
-  const res = await fetch(`${constants.API_BASE_URL}/me/profile`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('admin_token')}`,
-    },
-  });
+const profilePromise = getProfile();
 
-  if (!res.ok) {
-    if (localStorage.getItem('admin_token')) {
-      localStorage.removeItem('admin_token');
+profilePromise
+  .then(({ data }) => {
+    if (data.user.role !== 'ADMIN') {
+      throw new Error();
     }
-    if (localStorage.getItem('admin_Info')) {
-      localStorage.removeItem('admin_info');
-    }
+    content.classList.replace('hidden', 'grid');
+  })
+  .catch(() => {
     location.replace('/admin/login/');
-  }
-
-  const { success } = await res.json();
-  if (success) {
-    console.log('유효한 토큰입니다.');
-    content.classList.add('grid');
-    content.classList.remove('hidden');
-  }
-} else {
-  if (localStorage.getItem('admin_token')) {
-    localStorage.removeItem('admin_token');
-  }
-  if (localStorage.getItem('admin_Info')) {
-    localStorage.removeItem('admin_info');
-  }
-  location.replace('/admin/login/');
-}
+  });
 
 function render() {
   accommodationList.replaceChildren();

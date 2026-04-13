@@ -40,13 +40,15 @@ adminLoginForm.addEventListener('submit', (e) => {
   const loginPromise = adminLogin(adminInfo);
   toast.message('관리자 로그인 중입니다...', '', 999);
   loginPromise
-    .then((result) => {
-      localStorage.setItem('admin_token', result.accessToken);
-      localStorage.setItem('admin_info', JSON.stringify(result.user));
-      toast.success('로그인', '관리자 로그인에 성공했습니다.', 2);
+    .then(() => {
+      toast.success('관리자 로그인', '관리자 로그인에 성공했습니다.', 2);
       location.replace('/admin/');
     })
     .catch((error) => {
-      toast.warn('로그인', error.message, 2);
+      toast.warn(
+        '관리자 로그인',
+        error.data ? error.data.message : error.message,
+        2,
+      );
     });
 });

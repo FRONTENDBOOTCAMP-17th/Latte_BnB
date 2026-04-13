@@ -8,36 +8,26 @@ import {
   buildRequestFormData,
   uploadImage,
 } from './addAccommodation.js';
-import constants from '../../src/constants.js';
+import { getProfile } from '../../src/api/auth.js';
 
 const content = document.getElementById('content');
 let addForm = document.getElementById('addForm');
 
 content.insertBefore(adminLogo.build(), addForm);
-content.classList.remove('grid');
-content.classList.add('hidden');
+content.classList.replace('grid', 'hidden');
 
-if (localStorage.getItem('admin_token')) {
-  const res = await fetch(`${constants.API_BASE_URL}/me/profile`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('admin_token')}`,
-    },
-  });
+const profilePromise = getProfile();
 
-  if (!res.ok) {
+profilePromise
+  .then(({ data }) => {
+    if (data.user.role !== 'ADMIN') {
+      throw new Error();
+    }
+    content.classList.replace('hidden', 'grid');
+  })
+  .catch(() => {
     location.replace('/admin/login/');
-  }
-
-  const { success } = await res.json();
-  if (success) {
-    console.log('유효한 토큰입니다.');
-    content.classList.add('grid');
-    content.classList.remove('hidden');
-  }
-} else {
-  location.replace('/admin/login/');
-}
+  });
 
 let uploadThumbnailBtn = null;
 let deleteThumbnailBtn = null;

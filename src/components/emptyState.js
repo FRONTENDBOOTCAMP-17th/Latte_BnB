@@ -1,7 +1,7 @@
 export function buildEmptyState(message) {
   const div = document.createElement('div');
   div.className =
-    'w-full min-h-140 col-span-3 flex gap-20 items-center justify-center text-lg font-semibold text-shark-600';
+    'w-full min-h-140 col-start-1 -col-end-1 flex flex-col md:flex-row gap-5 md:gap-20 items-center justify-center text-lg font-semibold text-shark-600';
 
   const text = document.createTextNode(`${message} `);
   const highlight = document.createElement('span');

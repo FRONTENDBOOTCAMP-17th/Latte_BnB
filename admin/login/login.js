@@ -1,19 +1,23 @@
-import constants from '../../src/constants';
+import { getProfile } from '../../src/api/auth.js';
+import { request } from '../../src/api/client.js';
+import { removeToken, setToken } from '../../src/utils/auth.js';
 
 export async function adminLogin(adminInfo) {
-  const res = await fetch(`${constants.API_BASE_URL}/auth/login`, {
+  const { data } = await request('/auth/login', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify(adminInfo),
   });
 
-  const { message, data } = await res.json();
+  setToken(data.accessToken);
 
-  if (!res.ok) {
-    throw new Error(message);
+  const {
+    data: {
+      user: { role },
+    },
+  } = await getProfile();
+
+  if (role !== 'ADMIN') {
+    removeToken();
+    throw new Error('해당 페이지는 관리자만 로그인 할 수 있습니다.');
   }
-
-  return { accessToken: data.accessToken, user: data.user };
 }

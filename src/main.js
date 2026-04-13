@@ -40,15 +40,11 @@ if (document.body.dataset.footer === 'true') {
 }
 
 async function checkAuth() {
-  try {
-    const data = await getProfile();
+  const res = await getProfile();
 
-    if (data) {
-      return { isAuth: true, data };
-    }
-    return { isAuth: false, data: null };
-  } catch (error) {
-    console.log(error.message + '\n프로필 조회 실패');
+  if (res) {
+    return { isAuth: true, data: res.data.user };
+  } else {
     return { isAuth: false, data: null };
   }
 }

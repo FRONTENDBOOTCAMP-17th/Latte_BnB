@@ -1,4 +1,4 @@
-import constants from '../src/constants.js';
+import { request } from '../src/api/client.js';
 
 export async function fetchAccommodationList({
   page,
@@ -17,41 +17,17 @@ export async function fetchAccommodationList({
     params.set('query', query);
   }
 
-  const res = await fetch(
-    `${constants.API_BASE_URL}/admin/accommodations?${params}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('admin_token')}`,
-      },
-    },
-  );
-
-  if (!res.ok) {
-    throw new Error('HTTP 에러: ' + res.status);
-  }
-
-  const { data, meta } = await res.json();
+  const { data, meta } = await request(`/admin/accommodations?${params}`, {
+    method: 'GET',
+  });
 
   return { data, meta };
 }
 
 export async function deleteAccommodation(id) {
-  const res = await fetch(
-    `${constants.API_BASE_URL}/admin/accommodations/${id}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('admin_token')}`,
-      },
-    },
-  );
-
-  if (!res.ok) {
-    throw new Error('HTTP 에러: ' + res.status);
-  }
-
-  const { success, message } = await res.json();
+  const { success, message } = await request(`/admin/accommodations/${id}`, {
+    method: 'DELETE',
+  });
 
   return { success, message };
 }
