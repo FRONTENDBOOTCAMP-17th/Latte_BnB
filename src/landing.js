@@ -1,8 +1,8 @@
 import { RoomCard } from './RoomCard.js';
-import constants from './constants.js';
 import pagination from './components/pagination.js';
 import toast from './components/toast.js';
 import { checkWish } from './api/auth.js';
+import { request } from './api/client.js';
 
 let searchInput = null;
 let searchBtn = null;
@@ -27,18 +27,9 @@ async function fetchAccommodations({ page, query } = {}) {
     params.set('query', query);
   }
 
-  const res = await fetch(
-    `${constants.API_BASE_URL}/accommodations?${params}`,
-    {
-      method: 'GET',
-    },
-  );
-
-  if (!res.ok) {
-    throw new Error('HTTP 에러: ' + res.status);
-  }
-
-  const { data, meta } = await res.json();
+  const { data, meta } = await request(`/accommodations?${params}`, {
+    method: 'GET',
+  });
 
   return { data, meta };
 }
