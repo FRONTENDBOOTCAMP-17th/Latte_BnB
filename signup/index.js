@@ -113,14 +113,7 @@ function validationData(signupData) {
     };
   }
 
-  if (!signupData.phone) {
-    return {
-      field: 'pn',
-      message: `전화번호를 입력하세요.`,
-    };
-  }
-
-  if (!isValidPhone(signupData.phone)) {
+  if (signupData.phone && !isValidPhone(signupData.phone)) {
     return {
       field: 'pn',
       message: `전화번호는 숫자만 10~11자리여야 합니다.`,

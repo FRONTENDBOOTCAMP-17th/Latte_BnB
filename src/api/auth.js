@@ -2,12 +2,19 @@ import { setToken } from '../utils/auth.js';
 import { request, authRequest } from './client.js';
 
 export async function signupApi(signupData) {
+  const body = {
+    username: signupData.username,
+    password: signupData.password,
+    name: signupData.name,
+  };
+
+  if (signupData.phone) {
+    body.phone = signupData.phone.replace(/-/g, '');
+  }
+
   return request('/auth/signup', {
     method: 'POST',
-    body: JSON.stringify({
-      ...signupData,
-      phone: signupData.phone.replace(/-/g, ''),
-    }),
+    body: JSON.stringify(body),
   });
 }
 
