@@ -1,43 +1,21 @@
-import constants from '../../src/constants.js';
+import { imageRequest, request } from '../../src/api/client.js';
 
 export async function uploadImage(file) {
   const formData = new FormData();
   formData.append('file', file);
 
-  const res = await fetch(
-    `${constants.API_BASE_URL}/admin/accommodations/images`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('admin_token')}`,
-      },
-      body: formData,
-    },
-  );
-
-  if (!res.ok) {
-    throw new Error('이미지 업로드 실패');
-  }
-
-  const { data } = await res.json();
+  const { data } = await imageRequest('/admin/accommodations/images', {
+    method: 'POST',
+    body: formData,
+  });
   return data.imageUrl;
 }
 
 export async function addAccommodation(requestData) {
-  const res = await fetch(`${constants.API_BASE_URL}/admin/accommodations`, {
+  const { success, message, data } = await request('/admin/accommodations', {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('admin_token')}`,
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify(requestData),
   });
-
-  if (!res.ok) {
-    throw new Error('숙소 추가 실패');
-  }
-
-  const { success, message, data } = await res.json();
 
   return { success, message, data };
 }
