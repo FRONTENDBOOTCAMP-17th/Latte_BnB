@@ -1,34 +1,30 @@
-import constants from '../src/constants.js';
 import toast from '../src/components/toast.js';
 import calendar from './calendar.js';
-import { getToken } from '../src/utils/auth.js';
+import { getProfile } from '../src/api/auth.js';
+import {
+  getReservationContext,
+  createReservation,
+} from '../src/api/reservation.js';
 
-const API_BASE = constants.API_BASE_URL;
-const token = getToken();
 const params = new URLSearchParams(location.search);
 const roomId = params.get('id');
 
 async function checkTokenAvailable() {
-  if (!token) {
-    alert('로그인이 필요합니다.');
-    location.href = '/login/';
+  try {
+    const res = await getProfile();
+    if (!res) {
+      alert('로그인이 필요합니다.');
+      location.href = '/login/';
+      return false;
+    }
+    return true;
+  } catch (error) {
+    if (error.message === 'HTTP 에러: 401') {
+      alert('로그인이 필요합니다.');
+      location.href = '/login/';
+    }
     return false;
   }
-
-  const res = await fetch(`${API_BASE}/me/profile`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (res.status === 401) {
-    alert('로그인이 필요합니다.');
-    location.href = '/login/';
-    return false;
-  }
-
-  return true;
 }
 
 let adults = 1;
@@ -79,22 +75,12 @@ function updateDateBtn() {
 
 async function getRoomContext() {
   try {
-    const res = await fetch(
-      `${API_BASE}/accommodations/${roomId}/reservation-context`,
-      {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    );
-    if (!res.ok) {
-      toast.warn('숙소 정보를 불러오지 못했습니다.');
-      return;
-    }
+    const contextRes = await getReservationContext(roomId);
+    if (!contextRes) return;
 
-    const json = await res.json();
-    room = json.data.accommodation;
-    room.pricing = json.data.pricing;
-    room.bookingPolicy = json.data.bookingPolicy;
+    room = contextRes.data.accommodation;
+    room.pricing = contextRes.data.pricing;
+    room.bookingPolicy = contextRes.data.bookingPolicy;
 
     calendar.setBlockedDates(room.bookingPolicy.blockedDates);
     calendar.setDefaultDates();
@@ -111,6 +97,7 @@ async function getRoomContext() {
     updatePricing();
   } catch (e) {
     console.error(e);
+    toast.warn('숙소 정보를 불러오지 못했습니다.');
   }
 }
 
@@ -134,7 +121,7 @@ function updatePricing() {
     adultTotal + childTotal + pricing.serviceFee,
   );
 }
-// =============
+
 async function submitCalendarDate() {
   const checkin = calendar.getCheckinDate();
   const checkout = calendar.getCheckoutDate();
@@ -150,37 +137,24 @@ async function submitCalendarDate() {
   const totalPrice = adultTotal + childTotal + pricing.serviceFee;
 
   try {
-    const res = await fetch(`${API_BASE}/reservations`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+    const contextRes = await createReservation({
+      accommodation: { id: room.id },
+      schedule: {
+        checkInDate: dateFormat(checkin),
+        checkOutDate: dateFormat(checkout),
       },
-      body: JSON.stringify({
-        accommodation: { id: room.id },
-        schedule: {
-          checkInDate: dateFormat(checkin),
-          checkOutDate: dateFormat(checkout),
-        },
-        guestCount: { adults, children },
-        pricingSnapshot: {
-          nights,
-          adultSubtotal: adultTotal,
-          childSubtotal: childTotal,
-          serviceFee: pricing.serviceFee,
-          totalPrice,
-        },
-        agreeToTerms: true,
-      }),
+      guestCount: { adults, children },
+      pricingSnapshot: {
+        nights,
+        adultSubtotal: adultTotal,
+        childSubtotal: childTotal,
+        serviceFee: pricing.serviceFee,
+        totalPrice,
+      },
+      agreeToTerms: true,
     });
 
-    const json = await res.json();
-
-    if (!res.ok) {
-      toast.warn(json.message);
-      return;
-    }
-    const schedule = json.data.schedule;
+    const schedule = contextRes.data.schedule;
 
     alert(
       `[예약이 완료되었습니다]\n체크인: ${schedule.checkInDate} ${schedule.checkInTime}\n체크아웃: ${schedule.checkOutDate} ${schedule.checkOutTime}`,
@@ -189,23 +163,33 @@ async function submitCalendarDate() {
     location.href = '/reservations-check/';
   } catch (e) {
     console.error(e);
+    toast.warn('예약에 실패했습니다.');
   }
 }
-// =========================
 
 const calModal = document.getElementById('modal-calendar');
 const guestModal = document.getElementById('modal-guest');
 
+function openModal(modal) {
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closeModal(modal) {
+  modal.classList.remove('flex');
+  modal.classList.add('hidden');
+  document.body.classList.remove('overflow-hidden');
+}
+
 document.getElementById('btn-date').addEventListener('click', () => {
-  calModal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+  openModal(calModal);
 });
 
 document
   .getElementById('modal-calendar-cancel')
   .addEventListener('click', () => {
-    calModal.style.display = '';
-    document.body.style.overflow = '';
+    closeModal(calModal);
   });
 
 document.getElementById('modal-calendar-save').addEventListener('click', () => {
@@ -214,26 +198,21 @@ document.getElementById('modal-calendar-save').addEventListener('click', () => {
     return;
   }
 
-  calModal.style.display = '';
-  document.body.style.overflow = '';
-
+  closeModal(calModal);
   updateDateBtn();
   updatePricing();
 });
 
 document.getElementById('btn-guest').addEventListener('click', () => {
-  guestModal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+  openModal(guestModal);
 });
 
 document.getElementById('modal-guest-cancel').addEventListener('click', () => {
-  guestModal.style.display = '';
-  document.body.style.overflow = '';
+  closeModal(guestModal);
 });
 
 document.getElementById('modal-guest-save').addEventListener('click', () => {
-  guestModal.style.display = '';
-  document.body.style.overflow = '';
+  closeModal(guestModal);
 
   let guestText = `성인 ${adults}명`;
 
@@ -245,7 +224,7 @@ document.getElementById('modal-guest-save').addEventListener('click', () => {
   updatePricing();
 });
 
-// 어른 카운트========================
+// 어른 카운트
 document.getElementById('btn-adult-minus').addEventListener('click', () => {
   if (adults <= 1) {
     return;
@@ -262,7 +241,7 @@ document.getElementById('btn-adult-plus').addEventListener('click', () => {
   document.getElementById('adult-cnt').textContent = adults;
 });
 
-// 어린이 카운트==================================
+// 어린이 카운트
 document.getElementById('btn-child-minus').addEventListener('click', () => {
   if (children <= 0) {
     return;
@@ -279,7 +258,6 @@ document.getElementById('btn-child-plus').addEventListener('click', () => {
   document.getElementById('child-cnt').textContent = children;
 });
 
-// ==============================
 document.getElementById('btn-back').addEventListener('click', () => {
   location.href = `/accommodations-detail/?id=${roomId}`;
 });

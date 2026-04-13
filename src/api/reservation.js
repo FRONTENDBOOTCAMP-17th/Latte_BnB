@@ -24,3 +24,9 @@ export async function createReservation(data) {
     body: JSON.stringify(data),
   });
 }
+
+export async function getReservationContext(accommodationId) {
+  return authRequest(`/accommodations/${accommodationId}/reservation-context`, {
+    method: 'GET',
+  });
+}
