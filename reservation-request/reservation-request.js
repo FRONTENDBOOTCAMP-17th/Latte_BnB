@@ -1,6 +1,7 @@
 import toast from '../src/components/toast.js';
 import calendar from './calendar.js';
 import { getProfile } from '../src/api/auth.js';
+import { openModal, closeModal } from '../src/components/modal.js';
 import {
   getReservationContext,
   createReservation,
@@ -19,7 +20,7 @@ async function checkTokenAvailable() {
     }
     return true;
   } catch (error) {
-    if (error.message === 'HTTP 에러: 401') {
+    if (error.status === 401) {
       alert('로그인이 필요합니다.');
       location.href = '/login/';
     }
@@ -169,18 +170,6 @@ async function submitCalendarDate() {
 
 const calModal = document.getElementById('modal-calendar');
 const guestModal = document.getElementById('modal-guest');
-
-function openModal(modal) {
-  modal.classList.remove('hidden');
-  modal.classList.add('flex');
-  document.body.classList.add('overflow-hidden');
-}
-
-function closeModal(modal) {
-  modal.classList.remove('flex');
-  modal.classList.add('hidden');
-  document.body.classList.remove('overflow-hidden');
-}
 
 document.getElementById('btn-date').addEventListener('click', () => {
   openModal(calModal);

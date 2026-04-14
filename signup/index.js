@@ -1,5 +1,6 @@
 import { signupApi, loginApi } from '../src/api/auth.js';
 import { passwordToggle } from '../src/components/togglePassword.js';
+import { openModal } from '../src/components/modal.js';
 import {
   isValidUsername,
   isValidPassword,
@@ -158,8 +159,7 @@ signupForm.addEventListener('submit', async (e) => {
     clearMessages();
     signupForm.reset();
 
-    modal.modalContainer.classList.remove('invisible', 'opacity-0');
-    modal.modalContainer.classList.add('visible', 'opacity-100');
+    openModal(modal.modalContainer);
 
     document.activeElement.blur();
     modal.signupConfirmBtn.focus();

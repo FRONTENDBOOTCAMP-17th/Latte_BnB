@@ -1,6 +1,7 @@
 import { loginApi } from '../src/api/auth.js';
 import { isValidUsername, isValidPassword } from '../src/utils/validate.js';
 import { passwordToggle } from '../src/components/togglePassword.js';
+import { openModal } from '../src/components/modal.js';
 
 const formElements = {
   id: document.getElementById('loginId'),
@@ -101,8 +102,7 @@ loginForm.addEventListener('submit', async (e) => {
     clearMessages();
     loginForm.reset();
 
-    modal.modalContainer.classList.remove('invisible', 'opacity-0');
-    modal.modalContainer.classList.add('visible', 'opacity-100');
+    openModal(modal.modalContainer);
 
     document.activeElement.blur();
     modal.loginConfirmBtn.focus();
