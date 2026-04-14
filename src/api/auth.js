@@ -41,6 +41,13 @@ export async function getProfile() {
   });
 }
 
+export async function updateProfile(data) {
+  return authRequest('/me/profile', {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
 export async function toggleWishList(accommodationId, isWishlisted) {
   return authRequest('/me/wishlist', {
     method: 'PATCH',

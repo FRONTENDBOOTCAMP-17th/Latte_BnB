@@ -1,20 +1,24 @@
 import avatar1 from '../src/assets/avatar1.jpg';
 import avatar2 from '../src/assets/avatar2.jpg';
 import { removeToken } from '../src/utils/auth.js';
-import { getProfile, logout, withdraw } from '../src/api/auth.js';
+import {
+  getProfile,
+  updateProfile,
+  logout,
+  withdraw,
+} from '../src/api/auth.js';
+import toast from '../src/components/toast.js';
 
 async function fetchProfile() {
   try {
     const res = await getProfile();
 
     if (!res) {
-      alert('로그인을 먼저 해주세요');
       location.href = '/login/';
       return;
     }
 
-    const user = res.data;
-
+    const user = res.data.user;
     const avatarElement = document.getElementById('avatar');
 
     if (user.avatarUrl) {
@@ -29,48 +33,96 @@ async function fetchProfile() {
     document.getElementById('name').textContent = user.name;
     document.getElementById('role').textContent =
       user.role === 'ADMIN' ? '관리자' : '게스트';
-  } catch (error) {
-    if (error.message === 'HTTP 에러: 401') {
-      alert('로그인을 먼저 해주세요');
 
-      location.href = '/login/';
-      return;
+    document.getElementById('bio').textContent =
+      user.bio || '본인을 표현하는 글을 작성해보세요.';
+
+    if (user.region) {
+      document.getElementById('region').textContent = user.region;
+      document.getElementById('regionDot').classList.remove('hidden');
     }
 
-    console.error(`프로필 조회 실패: ${error}`);
+    if (user.phone) {
+      const badge = document.getElementById('phoneCheck');
+      badge.classList.remove('hidden');
+      badge.classList.add('flex');
+    }
 
-    alert('프로필 정보를 불러오는 중 오류가 발생했습니다.');
+    const date = new Date(user.createdAt);
+    document.getElementById('createdAt').textContent =
+      `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 가입`;
+  } catch (error) {
+    console.error('프로필 조회 실패:', error);
   }
 }
 
 fetchProfile();
 
-const accordionHeaders = document.querySelectorAll('.profile-accordion-header');
-accordionHeaders.forEach((header) => {
+document.querySelectorAll('.profile-accordion-header').forEach((header) => {
   header.addEventListener('click', () => {
     const item = header.closest('.profile-accordion-item');
     const isActive = item.classList.contains('active');
 
-    accordionHeaders.forEach((h) => {
-      h.closest('.profile-accordion-item').classList.remove('active');
-    });
+    document
+      .querySelectorAll('.profile-accordion-item')
+      .forEach((accordionItem) => {
+        accordionItem.classList.remove('active');
+      });
 
-    if (!isActive) {
-      item.classList.add('active');
-    }
+    if (!isActive) item.classList.add('active');
   });
 });
 
 document.getElementById('logoutBtn').addEventListener('click', async () => {
   try {
     await logout();
-
     removeToken();
     location.href = '/';
   } catch (error) {
-    console.error('로그아웃 실패:', error);
+    console.error('로그아웃에 실패했습니다:', error);
+  }
+});
 
-    alert('로그아웃 중 오류가 발생했습니다.');
+const editProfileModal = document.getElementById('editProfileModal');
+const editBio = document.getElementById('editBio');
+const editRegion = document.getElementById('editRegion');
+
+document.getElementById('editProfileBtn').addEventListener('click', () => {
+  const bio = document.getElementById('bio').textContent;
+  editBio.value = bio === '본인을 표현하는 글을 작성해보세요.' ? '' : bio;
+
+  editRegion.value = document.getElementById('region').textContent || '';
+
+  editProfileModal.classList.add('active');
+});
+
+document.getElementById('editProfileCancel').addEventListener('click', () => {
+  editProfileModal.classList.remove('active');
+});
+
+document.getElementById('editProfileOk').addEventListener('click', async () => {
+  const data = { bio: editBio.value };
+  if (editRegion.value) data.region = editRegion.value;
+
+  try {
+    const res = await updateProfile(data);
+    const user = res.data.user;
+
+    document.getElementById('bio').textContent =
+      user.bio || '자기소개를 입력해주세요.';
+
+    if (user.region) {
+      document.getElementById('region').textContent = user.region;
+      document.getElementById('regionDot').classList.remove('hidden');
+    } else {
+      document.getElementById('regionDot').classList.add('hidden');
+    }
+
+    editProfileModal.classList.remove('active');
+    toast.success('프로필이 저장되었습니다.');
+  } catch (error) {
+    console.error('프로필 수정 에러:', error);
+    toast.error('프로필 수정에 실패했습니다.');
   }
 });
 
@@ -87,21 +139,18 @@ document.getElementById('withdrawCancel').addEventListener('click', () => {
 });
 
 document.getElementById('withdrawOk').addEventListener('click', async () => {
-  const password = withdrawPassword.value;
-
-  if (!password) {
-    alert('비밀번호를 입력해주세요.');
+  if (!withdrawPassword.value) {
+    toast.warn('비밀번호를 입력해주세요.');
     return;
   }
 
   try {
-    await withdraw(password);
-    alert('회원 탈퇴가 완료되었습니다.');
-
+    await withdraw(withdrawPassword.value);
+    toast.success('회원 탈퇴가 성공적으로 완료되었습니다.');
     removeToken();
     location.href = '/';
   } catch (error) {
-    console.error(`회원 탈퇴 실패: ${error}`);
-    alert('회원 탈퇴에 실패했습니다. 다시 시도해주세요.');
+    console.error('회원 탈퇴 에러:', error);
+    toast.error('회원 탈퇴에 실패하였습니다.');
   }
 });
