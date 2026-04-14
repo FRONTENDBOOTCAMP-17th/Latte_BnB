@@ -45,7 +45,7 @@ function createDetail(detailData) {
 
   <div id="schedule" class="mx-4 grid grid-cols-2 gap-y-4 border-b-2 border-shark-300 p-4 md:w-lg md:justify-self-center lg:w-170.5">
     <p id="check" class="text-2xl font-bold"></p>
-    <p id="nights" class="text-2xl"></p>
+    <p id="nights"></p>
     <p id="checkIn" class="text-base font-semibold text-shark-500"></p>
     <p id="checkOut" class="text-base font-semibold text-shark-500"></p>
     <p id="inDay" class="text-xl font-bold"></p>
@@ -73,7 +73,6 @@ function createDetail(detailData) {
   container.querySelector('#location').textContent = accommodation.location;
 
   container.querySelector('#check').textContent = `예약 일정`;
-  container.querySelector('#nights').textContent = `총 ${schedule.nights}박`;
   container.querySelector('#checkIn').textContent = `체크인`;
   container.querySelector('#checkOut').textContent = `체크아웃`;
   container.querySelector('#inDay').textContent =
@@ -86,7 +85,6 @@ function createDetail(detailData) {
     `성인 ${guestCount.adults}명, 어린이 ${guestCount.children}명`;
 
   container.querySelector('#price').textContent = `결제 정보`;
-  container.querySelector('#blank').textContent = ``;
   container.querySelector('#totalPrice').textContent = `총 결제 금액`;
   container.querySelector('#total').textContent = `${pricing.totalPrice}원`;
 
