@@ -8,6 +8,7 @@ import {
   withdraw,
 } from '../src/api/auth.js';
 import toast from '../src/components/toast.js';
+import { openModal, closeModal } from '../src/components/modal.js';
 
 async function fetchProfile() {
   try {
@@ -93,11 +94,11 @@ document.getElementById('editProfileBtn').addEventListener('click', () => {
 
   editRegion.value = document.getElementById('region').textContent || '';
 
-  editProfileModal.classList.add('active');
+  openModal(editProfileModal);
 });
 
 document.getElementById('editProfileCancel').addEventListener('click', () => {
-  editProfileModal.classList.remove('active');
+  closeModal(editProfileModal);
 });
 
 document.getElementById('editProfileOk').addEventListener('click', async () => {
@@ -118,7 +119,7 @@ document.getElementById('editProfileOk').addEventListener('click', async () => {
       document.getElementById('regionDot').classList.add('hidden');
     }
 
-    editProfileModal.classList.remove('active');
+    closeModal(editProfileModal);
     toast.success('프로필이 저장되었습니다.');
   } catch (error) {
     console.error('프로필 수정 에러:', error);
@@ -131,11 +132,11 @@ const withdrawPassword = document.getElementById('withdrawPassword');
 
 document.getElementById('withdrawBtn').addEventListener('click', () => {
   withdrawPassword.value = '';
-  withdrawModal.classList.add('active');
+  openModal(withdrawModal);
 });
 
 document.getElementById('withdrawCancel').addEventListener('click', () => {
-  withdrawModal.classList.remove('active');
+  closeModal(withdrawModal);
 });
 
 document.getElementById('withdrawOk').addEventListener('click', async () => {
