@@ -53,6 +53,10 @@ async function fetchProfile() {
     document.getElementById('createdAt').textContent =
       `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 가입`;
   } catch (error) {
+    if (error.status === 401) {
+      location.href = '/login/';
+      return;
+    }
     console.error('프로필 조회 실패:', error);
   }
 }
