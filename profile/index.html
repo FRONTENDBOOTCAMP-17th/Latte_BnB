@@ -10,33 +10,76 @@
 
   <body data-nav="true" data-header="true">
     <main class="max-w-160 mx-auto pb-16">
-      <h1 class="text-[1.7rem] font-semibold tracking-wide m-0 px-8 pt-8 pb-2">
+      <h1 class="text-[1.3rem] font-semibold tracking-wide m-0 px-8 pt-8 pb-2">
         프로필
       </h1>
 
-      <section class="p-6">
-        <div
-          class="p-8 flex items-center gap-6 rounded-[1.25rem] shadow-[0_2px_16px_rgba(0,0,0,0.2)]">
-          <img id="avatar" class="w-24 h-24 rounded-full" alt="프로필 아바타" />
-          <div class="text-[1.3rem] font-semibold">
-            <p id="name"></p>
-            <p id="role" class="text-[0.9rem] text-shark-400"></p>
+      <section class="px-6 pt-4 pb-2">
+        <div class="rounded-[1.25rem] shadow-[0_2px_16px_rgba(0,0,0,0.2)]">
+          <div class="p-6 pb-0 flex items-center gap-6">
+            <div class="relative shrink-0">
+              <img
+                id="avatar"
+                class="w-24 h-24 rounded-full object-cover"
+                alt="프로필 아바타" />
+
+              <span
+                id="phoneCheck"
+                class="hidden absolute right-0 bottom-0 w-6 h-6 rounded-full items-center justify-center bg-positive-600">
+                <svg
+                  class="w-3.5 h-3.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              </span>
+            </div>
+
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <p id="name" class="m-0 text-[1.3rem] font-semibold"></p>
+                <button
+                  id="editProfileBtn"
+                  class="px-5 py-1.5 text-xs font-semibold rounded-full border border-primary-500 text-primary-500 bg-transparent cursor-pointer hover:bg-primary-500 hover:text-white transition-colors">
+                  수정
+                </button>
+              </div>
+
+              <p id="role" class="m-0 text-[0.9rem] text-shark-400"></p>
+
+              <div
+                class="mt-1 flex items-center gap-1.5 text-xs text-shark-400">
+                <span id="createdAt"></span>
+
+                <span id="regionDot" class="hidden">
+                  · <span id="region"></span>
+                </span>
+              </div>
+            </div>
           </div>
+
+          <p
+            id="bio"
+            class="m-0 px-6 py-4 text-sm text-shark-500 leading-relaxed"></p>
         </div>
       </section>
 
-      <ul class="p-6 flex flex-col gap-3 list-none m-0">
+      <ul class="px-6 pt-4 pb-2 flex flex-col gap-3 list-none m-0">
         <li
           class="profile-accordion-item group border border-shark-200 rounded-lg">
           <div
             class="profile-accordion-header flex p-4 items-center justify-between cursor-pointer">
-            <h3 class="text-base font-semibold m-0">개인정보 처리 방침</h3>
+            <h3 class="text-sm font-semibold m-0">개인정보 처리 방침</h3>
             <span
-              class="profile-accordion-icon open text-shark-400 group-[.active]:hidden"
+              class="profile-accordion-icon open text-shark-400 text-xs group-[.active]:hidden"
               >+</span
             >
             <span
-              class="profile-accordion-icon close text-shark-400 hidden group-[.active]:block"
+              class="profile-accordion-icon close text-shark-400 text-xs hidden group-[.active]:block"
               >-</span
             >
           </div>
@@ -58,13 +101,13 @@
           class="profile-accordion-item group border border-shark-200 rounded-lg">
           <div
             class="profile-accordion-header flex p-4 items-center justify-between cursor-pointer">
-            <h3 class="text-base font-semibold m-0">서비스 이용 약관</h3>
+            <h3 class="text-sm font-semibold m-0">서비스 이용 약관</h3>
             <span
-              class="profile-accordion-icon open text-shark-400 group-[.active]:hidden"
+              class="profile-accordion-icon open text-shark-400 text-xs group-[.active]:hidden"
               >+</span
             >
             <span
-              class="profile-accordion-icon close text-shark-400 hidden group-[.active]:block"
+              class="profile-accordion-icon close text-shark-400 text-xs hidden group-[.active]:block"
               >-</span
             >
           </div>
@@ -86,13 +129,13 @@
           class="profile-accordion-item group border border-shark-200 rounded-lg">
           <div
             class="profile-accordion-header flex p-4 items-center justify-between cursor-pointer">
-            <h3 class="text-base font-semibold m-0">회사 세부정보</h3>
+            <h3 class="text-sm font-semibold m-0">회사 세부정보</h3>
             <span
-              class="profile-accordion-icon open text-shark-400 group-[.active]:hidden"
+              class="profile-accordion-icon open text-shark-400 text-xs group-[.active]:hidden"
               >+</span
             >
             <span
-              class="profile-accordion-icon close text-shark-400 hidden group-[.active]:block"
+              class="profile-accordion-icon close text-shark-400 text-xs hidden group-[.active]:block"
               >-</span
             >
           </div>
@@ -107,26 +150,85 @@
         </li>
       </ul>
 
-      <hr class="border-none border-t border-shark-200 mx-6 my-2" />
-
-      <section class="px-6 pt-4 pb-6 flex flex-col gap-3 items-center">
+      <section class="px-6 pt-4 pb-10 flex gap-3">
         <button
           id="logoutBtn"
-          class="w-full p-4 border-none rounded-lg text-base font-semibold cursor-pointer bg-shark-300 text-shark-950">
+          class="flex-1 p-3.5 border-none rounded-lg text-sm font-semibold cursor-pointer bg-secondary-500 text-white hover:bg-white hover:text-primary-500 hover:border hover:border-primary-500 transition-colors">
           로그아웃
         </button>
         <button
           id="withdrawBtn"
-          class="bg-transparent border-none cursor-pointer text-sm text-shark-400 underline">
+          class="flex-1 p-3.5 border-none rounded-lg text-sm cursor-pointer bg-shark-300 text-shark-600 hover:bg-white hover:text-shark-600 hover:border hover:border-shark-400 transition-colors">
           회원탈퇴
         </button>
       </section>
     </main>
 
+    <!-- 프로필 수정 모달 =================================== -->
+    <div
+      id="editProfileModal"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center opacity-0 invisible transition-opacity duration-300 [&.active]:opacity-100 [&.active]:visible">
+      <div class="p-6 w-[85%] max-w-100 bg-shark-50 rounded-lg">
+        <h3 class="text-base m-0 mb-4">프로필 수정</h3>
+        <div class="flex flex-col gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-shark-700 mb-1"
+              >자기소개</label
+            >
+            <textarea
+              id="editBio"
+              maxlength="200"
+              rows="3"
+              placeholder="자기소개를 입력해주세요. (최대 200자)"
+              class="w-full p-2.5 text-sm border border-shark-300 rounded box-border resize-none"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-shark-700 mb-1"
+              >거주 지역</label
+            >
+            <select
+              id="editRegion"
+              class="w-full p-2.5 text-sm border border-shark-300 rounded box-border bg-white">
+              <option value="">선택 안함</option>
+              <option value="서울">서울</option>
+              <option value="경기">경기</option>
+              <option value="인천">인천</option>
+              <option value="강원">강원</option>
+              <option value="충남">충남</option>
+              <option value="충북">충북</option>
+              <option value="대전">대전</option>
+              <option value="세종">세종</option>
+              <option value="경남">경남</option>
+              <option value="경북">경북</option>
+              <option value="대구">대구</option>
+              <option value="울산">울산</option>
+              <option value="부산">부산</option>
+              <option value="전남">전남</option>
+              <option value="전북">전북</option>
+              <option value="광주">광주</option>
+              <option value="제주">제주</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-4">
+          <button
+            id="editProfileCancel"
+            class="flex-1 text-sm p-2.5 rounded cursor-pointer bg-shark-200">
+            취소
+          </button>
+          <button
+            id="editProfileOk"
+            class="flex-1 text-sm p-2.5 rounded cursor-pointer bg-primary-500 text-shark-50">
+            저장
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- ========================탈퇴 모달===================== -->
     <div
       id="withdrawModal"
       class="fixed inset-0 bg-black/50 flex items-center justify-center opacity-0 invisible transition-opacity duration-300 [&.active]:opacity-100 [&.active]:visible">
-      <div class="p-6 w-[80%] max-w-88 bg-shark-50 rounded-lg">
+      <div class="p-6 w-[85%] max-w-100 bg-shark-50 rounded-lg">
         <h3 class="text-base m-0 mb-3">회원 탈퇴하기</h3>
         <p class="m-0 mb-3 text-sm text-shark-500">
           회원 탈퇴를 위해 비밀번호를 입력해주세요.
