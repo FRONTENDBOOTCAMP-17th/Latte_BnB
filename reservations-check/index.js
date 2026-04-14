@@ -48,12 +48,13 @@ function createReservationItem(reservation) {
   const checkOut = formatMonthDay(schedule.checkOutDate);
 
   const item = document.createElement('li');
-  item.className = 'w-full max-w-[600px] mx-auto';
+  item.className =
+    'w-full max-w-[600px] mx-auto shadow-xl rounded-xl overflow-hidden';
 
   item.innerHTML = `
-    <img class="w-full h-40 object-cover rounded-xl" />
-    <p class="mt-2 font-bold"></p>
-    <p class="text-sm text-gray-500"></p>
+    <img class="w-full h-40 object-cover" />
+    <p class="mt-4 mb-2 mx-4 font-bold"></p>
+    <p class="text-sm text-gray-500 mt-2 mb-4 mx-4"></p>
       `;
 
   item.querySelector('img').src = accommodation.thumbnailUrl;
