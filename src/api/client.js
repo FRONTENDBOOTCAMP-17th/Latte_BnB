@@ -20,8 +20,14 @@ export async function request(endpoint, options = {}) {
   });
 
   if (!res.ok) {
-    const { message } = await res.json();
+    let message = '';
+    try {
+      ({ message } = await res.json());
+    } catch {
+      // 서버가 JSON을 안 보내면 무시
+    }
     const error = new Error(`HTTP 에러: ${res.status}`);
+    error.status = res.status;
     error.data = { message };
     throw error;
   }

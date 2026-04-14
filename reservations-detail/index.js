@@ -1,15 +1,9 @@
+import { getToken } from '../src/utils/auth.js';
+import { openModal, closeModal } from '../src/components/modal.js';
 import {
   getReservationDetail,
   removeReservation,
 } from '../src/api/reservation.js';
-
-const storageKeys = {
-  token: 'accessToken',
-};
-
-function getToken() {
-  return localStorage.getItem(storageKeys.token);
-}
 
 const reservationId = new URLSearchParams(location.search).get('id');
 
@@ -128,64 +122,28 @@ async function loadDetail() {
   }
 }
 
-function openModal() {
-  elements.cancelModal.classList.remove('hidden');
-  elements.cancelModal.classList.add('flex');
-}
-
-function openModalReverse() {
-  elements.cancelModal.classList.remove('flex');
-  elements.cancelModal.classList.add('hidden');
-}
-
-function closeModal() {
-  elements.cancelConfirmModal.classList.add('hidden');
-  elements.cancelConfirmModal.classList.remove('flex');
-}
-
-function closeModalReverse() {
-  elements.cancelConfirmModal.classList.add('flex');
-  elements.cancelConfirmModal.classList.remove('hidden');
-}
-
-function errorModal() {
-  elements.cancelFaultModal.classList.add('hidden');
-  elements.cancelFaultModal.classList.remove('flex');
-}
-
-function errorModalReverse() {
-  elements.cancelFaultModal.classList.add('flex');
-  elements.cancelFaultModal.classList.remove('hidden');
-}
-
 elements.cancel.addEventListener('click', () => {
-  elements.modalContainer.classList.remove('invisible', 'opacity-0');
-  elements.modalContainer.classList.add('visible', 'opacity-100');
-  document.body.classList.add('overflow-hidden');
-  openModal();
-  closeModal();
-  errorModal();
+  openModal(elements.modalContainer);
+  openModal(elements.cancelModal);
+  closeModal(elements.cancelConfirmModal);
+  closeModal(elements.cancelFaultModal);
 });
 
 elements.cancelNo.addEventListener('click', () => {
-  elements.modalContainer.classList.remove('visible', 'opacity-100');
-  elements.modalContainer.classList.add('invisible', 'opacity-0');
-  document.body.classList.remove('overflow-hidden');
-  openModal();
-  closeModal();
-  errorModal();
+  closeModal(elements.modalContainer);
+  closeModal(elements.cancelModal);
 });
 
 elements.cancelYes.addEventListener('click', async () => {
   try {
     await removeReservation(reservationId);
-    openModalReverse();
-    closeModalReverse();
-    errorModal();
+    closeModal(elements.cancelModal);
+    openModal(elements.cancelConfirmModal);
+    closeModal(elements.cancelFaultModal);
   } catch (e) {
-    openModalReverse();
-    closeModal();
-    errorModalReverse();
+    closeModal(elements.cancelModal);
+    closeModal(elements.cancelConfirmModal);
+    openModal(elements.cancelFaultModal);
     elements.cancelFault.textContent = `예약을 취소하지 못했습니다.\n다시 시도해주세요.`;
   }
 });
