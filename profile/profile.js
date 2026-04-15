@@ -10,6 +10,47 @@ import {
 import toast from '../src/components/toast.js';
 import { openModal, closeModal } from '../src/components/modal.js';
 
+const EMPTY_BIO_TEXT = '본인을 표현하는 글을 작성해보세요.';
+let currentUser = null;
+
+function renderProfile(user) {
+  currentUser = user;
+
+  const avatarElement = document.getElementById('avatar');
+  if (user.avatarUrl) {
+    avatarElement.src = user.avatarUrl;
+    avatarElement.onerror = () => {
+      avatarElement.src = user.id % 2 === 1 ? avatar1 : avatar2;
+    };
+  } else {
+    avatarElement.src = user.id % 2 === 1 ? avatar1 : avatar2;
+  }
+
+  document.getElementById('name').textContent = user.name;
+  document.getElementById('role').textContent =
+    user.role === 'ADMIN' ? '관리자' : '게스트';
+
+  document.getElementById('bio').textContent = user.bio || EMPTY_BIO_TEXT;
+
+  if (user.region) {
+    document.getElementById('region').textContent = user.region;
+    document.getElementById('regionDot').classList.remove('hidden');
+  } else {
+    document.getElementById('region').textContent = '';
+    document.getElementById('regionDot').classList.add('hidden');
+  }
+
+  if (user.phone) {
+    const badge = document.getElementById('phoneCheck');
+    badge.classList.remove('hidden');
+    badge.classList.add('flex');
+  }
+
+  const date = new Date(user.createdAt);
+  document.getElementById('createdAt').textContent =
+    `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 가입`;
+}
+
 async function fetchProfile() {
   try {
     const res = await getProfile();
@@ -19,39 +60,7 @@ async function fetchProfile() {
       return;
     }
 
-    const user = res.data.user;
-    const avatarElement = document.getElementById('avatar');
-
-    if (user.avatarUrl) {
-      avatarElement.src = user.avatarUrl;
-      avatarElement.onerror = () => {
-        avatarElement.src = user.id % 2 === 1 ? avatar1 : avatar2;
-      };
-    } else {
-      avatarElement.src = user.id % 2 === 1 ? avatar1 : avatar2;
-    }
-
-    document.getElementById('name').textContent = user.name;
-    document.getElementById('role').textContent =
-      user.role === 'ADMIN' ? '관리자' : '게스트';
-
-    document.getElementById('bio').textContent =
-      user.bio || '본인을 표현하는 글을 작성해보세요.';
-
-    if (user.region) {
-      document.getElementById('region').textContent = user.region;
-      document.getElementById('regionDot').classList.remove('hidden');
-    }
-
-    if (user.phone) {
-      const badge = document.getElementById('phoneCheck');
-      badge.classList.remove('hidden');
-      badge.classList.add('flex');
-    }
-
-    const date = new Date(user.createdAt);
-    document.getElementById('createdAt').textContent =
-      `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일 가입`;
+    renderProfile(res.data.user);
   } catch (error) {
     if (error.status === 401) {
       location.href = '/login/';
@@ -93,10 +102,8 @@ const editBio = document.getElementById('editBio');
 const editRegion = document.getElementById('editRegion');
 
 document.getElementById('editProfileBtn').addEventListener('click', () => {
-  const bio = document.getElementById('bio').textContent;
-  editBio.value = bio === '본인을 표현하는 글을 작성해보세요.' ? '' : bio;
-
-  editRegion.value = document.getElementById('region').textContent || '';
+  editBio.value = currentUser?.bio || '';
+  editRegion.value = currentUser?.region || '';
 
   openModal(editProfileModal);
 });
@@ -106,22 +113,14 @@ document.getElementById('editProfileCancel').addEventListener('click', () => {
 });
 
 document.getElementById('editProfileOk').addEventListener('click', async () => {
-  const data = { bio: editBio.value };
-  if (editRegion.value) data.region = editRegion.value;
+  const data = {
+    bio: editBio.value,
+    region: editRegion.value,
+  };
 
   try {
     const res = await updateProfile(data);
-    const user = res.data.user;
-
-    document.getElementById('bio').textContent =
-      user.bio || '자기소개를 입력해주세요.';
-
-    if (user.region) {
-      document.getElementById('region').textContent = user.region;
-      document.getElementById('regionDot').classList.remove('hidden');
-    } else {
-      document.getElementById('regionDot').classList.add('hidden');
-    }
+    renderProfile(res.data.user);
 
     closeModal(editProfileModal);
     toast.success('프로필이 저장되었습니다.');
