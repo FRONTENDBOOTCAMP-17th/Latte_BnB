@@ -19,63 +19,69 @@
         <h1 class="text-lg font-bold">예약 요청</h1>
       </div>
 
-      <section
-        id="reservation-info"
-        class="flex items-center gap-3 py-5 border-b border-shark-200">
-        <img
-          id="thumb"
-          alt="썸네일 이미지"
-          class="w-20 h-20 rounded-lg object-cover bg-shark-200" />
-        <p id="title" class="text-[15px] font-semibold"></p>
-      </section>
+      <div class="md:grid md:grid-cols-[60%_auto] md:gap-16 md:pt-6">
+        <div>
+          <section
+            id="reservation-info"
+            class="flex items-center gap-3 py-5 border-b border-shark-200">
+            <img
+              id="thumb"
+              alt="썸네일 이미지"
+              class="w-20 h-20 rounded-lg object-cover bg-shark-200" />
+            <p id="title" class="text-[15px] font-semibold"></p>
+          </section>
 
-      <section id="reservation-date" class="py-5 border-b border-shark-200">
-        <h2 class="text-base font-bold mb-3">일정 선택</h2>
-        <button
-          id="btn-date"
-          class="w-full py-3.5 px-4 border border-shark-200 rounded-[10px] bg-white text-left text-sm text-shark-800 cursor-pointer hover:bg-shark-100">
-          날짜를 선택해 주세요
-        </button>
-      </section>
+          <section id="reservation-date" class="py-5 border-b border-shark-200">
+            <h2 class="text-base font-bold mb-3">일정 선택</h2>
+            <button
+              id="btn-date"
+              class="w-full py-3.5 px-4 border border-shark-200 rounded-[10px] bg-white text-left text-sm text-shark-800 cursor-pointer hover:bg-shark-100">
+              날짜를 선택해 주세요
+            </button>
+          </section>
 
-      <section id="reservation-guest" class="py-5 border-b border-shark-200">
-        <h2 class="text-base font-bold mb-3">인원 선택</h2>
-        <button
-          id="btn-guest"
-          class="w-full py-3.5 px-4 border border-shark-200 rounded-[10px] bg-white text-left text-sm text-shark-800 cursor-pointer hover:bg-shark-100">
-          성인 1명
-        </button>
-      </section>
+          <section id="reservation-guest" class="py-5 border-b border-shark-200 md:border-b-0">
+            <h2 class="text-base font-bold mb-3">인원 선택</h2>
+            <button
+              id="btn-guest"
+              class="w-full py-3.5 px-4 border border-shark-200 rounded-[10px] bg-white text-left text-sm text-shark-800 cursor-pointer hover:bg-shark-100">
+              성인 1명
+            </button>
+          </section>
+        </div>
 
-      <section id="reservation-pricing" class="py-5 border-b border-shark-200">
-        <h2 class="text-base font-bold mb-3">요금 세부 정보</h2>
-        <div class="flex justify-between text-sm py-1.5 text-shark-700">
-          <span id="adult-subtotal-label"></span>
-          <span id="adult-subtotal"></span>
-        </div>
-        <div class="flex justify-between text-sm py-1.5 text-shark-700">
-          <span id="child-subtotal-label"></span>
-          <span id="child-subtotal"></span>
-        </div>
-        <div class="flex justify-between text-sm py-1.5 text-shark-700">
-          <span>서비스 수수료</span>
-          <span id="service-fee"></span>
-        </div>
-        <div
-          id="pricing-total"
-          class="flex justify-between text-base font-bold text-shark-900 border-t border-shark-200 mt-2 pt-3.5">
-          <span>총 합계</span>
-          <span id="total-price"></span>
-        </div>
-      </section>
+        <div class="md:w-80 md:border md:border-shark-200 md:rounded-2xl md:p-6 md:h-fit md:sticky md:top-6 md:shadow-lg">
+          <section id="reservation-pricing" class="py-5 md:pt-0 md:pb-4 border-b border-shark-200">
+            <h2 class="text-base font-bold mb-3 md:hidden">요금 세부 정보</h2>
+            <div class="flex justify-between text-sm py-1.5 text-shark-700">
+              <span id="adult-subtotal-label"></span>
+              <span id="adult-subtotal"></span>
+            </div>
+            <div class="flex justify-between text-sm py-1.5 text-shark-700">
+              <span id="child-subtotal-label"></span>
+              <span id="child-subtotal"></span>
+            </div>
+            <div class="flex justify-between text-sm py-1.5 text-shark-700">
+              <span>서비스 수수료</span>
+              <span id="service-fee"></span>
+            </div>
+            <div
+              id="pricing-total"
+              class="flex justify-between text-base font-bold text-shark-900 border-t border-shark-200 mt-2 pt-3.5">
+              <span>총 합계</span>
+              <span id="total-price"></span>
+            </div>
+          </section>
 
-      <section id="reservation-btn" class="py-4">
-        <button
-          id="btn-submit"
-          class="w-full py-4 border-0 rounded-xl bg-primary-500 text-white text-base font-bold cursor-pointer hover:bg-primary-400">
-          예약 신청
-        </button>
-      </section>
+          <section id="reservation-btn" class="py-4 md:py-0 md:pt-4">
+            <button
+              id="btn-submit"
+              class="w-full py-4 border-0 rounded-xl bg-primary-500 text-white text-base font-bold cursor-pointer hover:bg-primary-400">
+              예약 신청
+            </button>
+          </section>
+        </div>
+      </div>
     </div>
 
     <div
