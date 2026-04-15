@@ -49,14 +49,14 @@ function createReservationItem(reservation) {
 
   item.innerHTML = `
     <img class="w-full h-40 object-cover" />
-    <p class="mt-4 mb-2 mx-4 font-bold"></p>
-    <p class="text-sm text-gray-500 mt-2 mb-4 mx-4"></p>
+    <p data-role="title" class="mt-4 mb-2 mx-4 font-bold"></p>
+    <p data-role="schedule" class="text-sm text-gray-500 mt-2 mb-4 mx-4"></p>
       `;
 
   item.querySelector('img').src = accommodation.thumbnailUrl;
   item.querySelector('img').alt = accommodation.title;
-  item.querySelector('.font-bold').textContent = accommodation.title;
-  item.querySelector('.text-sm').textContent =
+  item.querySelector('[data-role="title"]').textContent = accommodation.title;
+  item.querySelector('[data-role="schedule"]').textContent =
     `${checkIn} ~ ${checkOut} | ${schedule.nights}박`;
 
   item.addEventListener('click', () => {

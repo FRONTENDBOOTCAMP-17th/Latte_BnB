@@ -158,7 +158,7 @@ elements.cancelYes.addEventListener('click', async () => {
   }
 });
 
-elements.faultYes.addEventListener('click', async () => {
+elements.faultYes.addEventListener('click', () => {
   location.reload();
 });
 
