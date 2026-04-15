@@ -35,6 +35,20 @@ export async function checkWish(accommodationIds) {
   });
 }
 
+export function checkAdmin() {
+  const profilePromise = getProfile();
+
+  profilePromise
+    .then(({ data }) => {
+      if (data.user.role !== 'ADMIN') {
+        throw new Error();
+      }
+    })
+    .catch(() => {
+      location.replace('/admin/login/');
+    });
+}
+
 export async function getProfile() {
   return authRequest('/me/profile', {
     method: 'GET',
