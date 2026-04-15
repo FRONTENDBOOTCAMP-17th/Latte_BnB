@@ -120,27 +120,41 @@ async function loadDetail() {
   }
 }
 
+function showCancelStep(step) {
+  const isOpen = step !== 'idle';
+
+  if (isOpen) {
+    openModal(elements.modalContainer);
+  } else {
+    closeModal(elements.modalContainer);
+  }
+
+  step === 'confirm'
+    ? openModal(elements.cancelModal)
+    : closeModal(elements.cancelModal);
+  step === 'success'
+    ? openModal(elements.cancelConfirmModal)
+    : closeModal(elements.cancelConfirmModal);
+  step === 'error'
+    ? openModal(elements.cancelFaultModal)
+    : closeModal(elements.cancelFaultModal);
+}
+
 elements.cancel.addEventListener('click', () => {
-  openModal(elements.modalContainer);
-  openModal(elements.cancelModal);
+  showCancelStep('confirm');
 });
 
 elements.cancelNo.addEventListener('click', () => {
-  closeModal(elements.modalContainer);
-  closeModal(elements.cancelModal);
+  showCancelStep('idle');
 });
 
 elements.cancelYes.addEventListener('click', async () => {
   try {
     await removeReservation(reservationId);
-    closeModal(elements.cancelModal);
-    openModal(elements.cancelConfirmModal);
-    closeModal(elements.cancelFaultModal);
+    showCancelStep('success');
   } catch (e) {
-    closeModal(elements.cancelModal);
-    closeModal(elements.cancelConfirmModal);
-    openModal(elements.cancelFaultModal);
     elements.cancelFault.textContent = `예약을 취소하지 못했습니다.\n다시 시도해주세요.`;
+    showCancelStep('error');
   }
 });
 
