@@ -1,5 +1,4 @@
 import avatar1 from '../src/assets/avatar1.jpg';
-import avatar2 from '../src/assets/avatar2.jpg';
 import { removeToken } from '../src/utils/auth.js';
 import {
   getProfile,
@@ -17,14 +16,11 @@ function renderProfile(user) {
   currentUser = user;
 
   const avatarElement = document.getElementById('avatar');
-  if (user.avatarUrl) {
-    avatarElement.src = user.avatarUrl;
-    avatarElement.onerror = () => {
-      avatarElement.src = user.id % 2 === 1 ? avatar1 : avatar2;
-    };
-  } else {
-    avatarElement.src = user.id % 2 === 1 ? avatar1 : avatar2;
-  }
+  avatarElement.src = user.avatarUrl || avatar1;
+
+  avatarElement.onerror = () => {
+    avatarElement.src = avatar1;
+  };
 
   document.getElementById('name').textContent = user.name;
   document.getElementById('role').textContent =
