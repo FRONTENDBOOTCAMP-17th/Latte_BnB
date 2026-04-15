@@ -80,7 +80,8 @@ function createDetail(detailData) {
 
   container.querySelector('#price').textContent = `결제 정보`;
   container.querySelector('#totalPrice').textContent = `총 결제 금액`;
-  container.querySelector('#total').textContent = `${pricing.totalPrice}원`;
+  container.querySelector('#total').textContent =
+    `${pricing.totalPrice.toLocaleString()}원`;
 
   return container;
 }
@@ -89,15 +90,12 @@ const elements = {
   cancel: document.getElementById('cancel'),
   modalContainer: document.getElementById('modalContainer'),
   cancelModal: document.getElementById('cancelModal'),
-  cancelBtn: document.getElementById('cancelBtn'),
   cancelYes: document.getElementById('cancelYes'),
   cancelNo: document.getElementById('cancelNo'),
   cancelConfirmModal: document.getElementById('cancelConfirmModal'),
-  confirmBtn: document.getElementById('confirmBtn'),
   confirmYes: document.getElementById('confirmYes'),
   cancelFaultModal: document.getElementById('cancelFaultModal'),
   cancelFault: document.getElementById('cancelFault'),
-  faultBtn: document.getElementById('faultBtn'),
   faultYes: document.getElementById('faultYes'),
 };
 
@@ -125,8 +123,6 @@ async function loadDetail() {
 elements.cancel.addEventListener('click', () => {
   openModal(elements.modalContainer);
   openModal(elements.cancelModal);
-  closeModal(elements.cancelConfirmModal);
-  closeModal(elements.cancelFaultModal);
 });
 
 elements.cancelNo.addEventListener('click', () => {
