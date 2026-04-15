@@ -1543,6 +1543,14 @@ function getModifiedData() {
   return cloneData(modifiedData);
 }
 
+function getOriginData() {
+  if (!originData) {
+    return null;
+  }
+
+  return cloneData(originData);
+}
+
 function fillBlockedDate(mode = constants.FORM_MODE.VIEW, container) {
   if (!container) {
     return;
@@ -1712,5 +1720,6 @@ export default {
   updateAccommodationMinNights,
   addBlockedDate,
   removeBlockedDate,
+  getOriginData,
   getModifiedData,
 };
