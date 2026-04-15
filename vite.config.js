@@ -25,6 +25,8 @@ export default defineConfig({
         adminLogin: resolve(__dirname, 'admin/login/index.html'),
         adminAdd: resolve(__dirname, 'admin/add/index.html'),
         adminLanding: resolve(__dirname, 'admin/index.html'),
+        adminAccommodation: resolve(__dirname, 'admin/accommodation/index.html'),
+        adminModify: resolve(__dirname, 'admin/modify/index.html'),
       },
     },
   },
