@@ -7,15 +7,15 @@ export class FormImage {
   #description = '';
   #src;
 
-  constructor(src, mode, title = '', description = '') {
-    this.#id = crypto.randomUUID();
+  constructor(src, mode, title = '', description = '', options = {}) {
+    this.#id = options.id ?? crypto.randomUUID();
     this.#src = src;
     this.#title = title;
     this.#description = description;
-    this.#element = this.#buildElement(mode);
+    this.#element = this.#buildElement(mode, options.checked ?? false);
   }
 
-  #buildElement(mode) {
+  #buildElement(mode, checked) {
     const div = document.createElement('div');
     div.dataset.id = this.#id;
     div.className = 'relative';
@@ -40,6 +40,7 @@ export class FormImage {
       radio.name = 'image';
       radio.value = this.#id;
       radio.className = 'absolute top-2 left-2 accent-primary-500';
+      radio.checked = checked;
       div.append(radio, button);
 
       img.addEventListener('click', () => {
