@@ -1,7 +1,7 @@
 export function buildFooter() {
   const footer = document.createElement('footer');
   footer.className =
-    'min-w-100 px-[clamp(20px,4vw,80px)] bg-shark-100 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 py-5';
+    'min-w-100 px-[clamp(20px,4vw,80px)] bg-shark-100 hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 py-5';
   footer.innerHTML = `
   <div id="brand" class="col-start-1 -col-end-1 -ml-2">
     <span class="text-primary-400 flex items-center justify-start">
@@ -23,28 +23,10 @@ export function buildFooter() {
     <li>
       <h3 class="scroll-m-20 text-xl font-semibold tracking-tight">서비스</h3>
     </li>
-    <li><a href="#" class="text-sm">회원 가입</a></li>
-    <li><a href="#" class="text-sm">숙소 둘러보기</a></li>
-    <li><a href="#" class="text-sm">숙소 예약</a></li>
-    <li><a href="#" class="text-sm">예약 조회</a></li>
-  </ul>
-  <ul class="text-shark-700">
-    <li>
-      <h3 class="scroll-m-20 text-xl font-semibold tracking-tight">
-        고객지원
-      </h3>
-    </li>
-    <li><a href="#" class="text-sm">FAQ</a></li>
-    <li><a href="#" class="text-sm">공지사항</a></li>
-    <li><a href="#" class="text-sm">문의하기</a></li>
-  </ul>
-  <ul class="text-shark-700">
-    <li>
-      <h3 class="scroll-m-20 text-xl font-semibold tracking-tight">정책</h3>
-    </li>
-    <li><a href="#" class="text-sm">이용약관</a></li>
-    <li><a href="#" class="text-sm">개인정보처리방침</a></li>
-    <li><a href="#" class="text-sm">취소 및 환불정책</a></li>
+    <li><a href="/profile/" class="text-sm">프로필</a></li>
+    <li><a href="/" class="text-sm">숙소 둘러보기</a></li>
+    <li><a href="/reservations-check/" class="text-sm">예약 조회</a></li>
+    <li><a href="/wishlist/" class="text-sm">위시리스트</a></li>
   </ul>
   <ul class="text-shark-700">
     <li>

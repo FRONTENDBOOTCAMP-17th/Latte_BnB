@@ -6,7 +6,7 @@ function buildHamburger() {
   div.className = 'hamburger relative lg:ml-auto';
 
   div.innerHTML = `
-  <button type="button" class="hidden lg:bg-primary-500 lg:hover:bg-primary-500/85 text-white w-10 aspect-square lg:flex lg:items-center lg:justify-center lg:rounded-[50%]">
+  <button type="button" class="hidden lg:bg-primary-500 lg:hover:bg-primary-500/85 text-white w-10 aspect-square lg:flex lg:items-center lg:justify-center lg:rounded-[50%] cursor-pointer">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
       <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
     </svg>
@@ -69,6 +69,21 @@ function attachEvent() {
     hamburgerMenu.classList.toggle('hidden');
     hamburgerMenu.classList.toggle('flex');
   });
+
+  const logoutBtn = hamburgerMenu?.querySelector('button');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async () => {
+      const { logout } = await import('../api/auth.js');
+      const { removeToken } = await import('../utils/auth.js');
+      try {
+        await logout();
+        removeToken();
+        location.href = '/';
+      } catch (error) {
+        console.error('로그아웃 실패:', error);
+      }
+    });
+  }
 }
 
 export default { buildHamburger, buildMenu, attachEvent };
