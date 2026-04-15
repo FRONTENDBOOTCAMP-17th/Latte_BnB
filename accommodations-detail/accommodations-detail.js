@@ -1,23 +1,17 @@
 import { buildFooter } from '../src/components/footer.js';
-import constants from '../src/constants.js';
-
-const API_BASE = constants.API_BASE_URL;
+import { openModal, closeModal } from '../src/components/modal.js';
+import { request } from '../src/api/client.js';
+import toast from '../src/components/toast.js';
 
 const params = new URLSearchParams(location.search);
-const accommodationId = params.get('id') || '1';
+const accommodationId = params.get('id');
 
 async function fetchAccommodation() {
-  const res = await fetch(`${API_BASE}/accommodations/${accommodationId}`, {
-    method: 'GET',
-  });
-
-  if (!res.ok) {
-    alert('숙소 정보를 불러올 수 없습니다.');
-    return;
-  }
-
-  const json = await res.json();
-  const data = json.data;
+  try {
+    const json = await request(`/accommodations/${accommodationId}`, {
+      method: 'GET',
+    });
+    const data = json.data;
 
   const thumbImg = document.querySelector('.accommodation-thumb-img');
   if (data.thumbnailUrl) {
@@ -79,18 +73,14 @@ async function fetchAccommodation() {
 
   document.getElementById('reservation-price').innerHTML =
     `<span class="text-lg font-bold text-shark-800">₩${data.pricing.adultPrice.toLocaleString()}</span> / 1박`;
+  } catch (error) {
+    console.error('숙소 정보 조회 실패:', error);
+    toast.error('숙소 정보를 불러올 수 없습니다.');
+  }
 }
 
 fetchAccommodation();
 
-function openModal(modal) {
-  modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal(modal) {
-  modal.classList.remove('active');
-  document.body.style.overflow = '';
-}
 
 const modalDesc = document.getElementById('modal-desc');
 document.getElementById('btn-desc-more').addEventListener('click', () => {
