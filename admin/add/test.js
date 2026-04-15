@@ -16,7 +16,7 @@ const fetchPromise = accommodationForm.fetchAccommodation(params.get('id'));
 fetchPromise.then(({ success }) => {
   if (success) {
     // content.append(accommodationForm.buildViewMode());
-    content.append(accommodationForm.buildForm(constants.FORM_MODE.VIEW));
+    content.append(accommodationForm.buildForm(constants.FORM_MODE.EDIT));
     content.classList.replace('hidden', 'flex');
   }
 });

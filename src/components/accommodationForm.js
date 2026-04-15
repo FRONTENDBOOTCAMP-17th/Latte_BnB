@@ -6,6 +6,66 @@ let originData = null;
 let modifiedData = null;
 let element = null;
 const imageMap = new Map();
+const blockedDateMap = new Map();
+
+const EMPTY_FORM_DATA = {
+  thumbnailUrl: '',
+  title: '',
+  description: '',
+  location: {
+    address: '',
+    region: '',
+  },
+  maxGuest: '',
+  images: [],
+  pricing: {
+    adultPrice: '',
+    childPrice: '',
+    serviceFee: '',
+  },
+  bookingPolicy: {
+    minNights: '',
+    blockedDates: [],
+  },
+};
+
+function cloneData(data) {
+  return JSON.parse(JSON.stringify(data));
+}
+
+function createEmptyFormData() {
+  return cloneData(EMPTY_FORM_DATA);
+}
+
+function syncBlockedDateMap(blockedDates = []) {
+  blockedDateMap.clear();
+
+  for (const blockedDate of blockedDates) {
+    blockedDateMap.set(crypto.randomUUID(), { ...blockedDate });
+  }
+}
+
+function initializeFormState(mode = constants.FORM_MODE.VIEW) {
+  imageMap.clear();
+
+  if (mode === constants.FORM_MODE.ADD) {
+    modifiedData = createEmptyFormData();
+  } else if (originData) {
+    modifiedData = cloneData(originData);
+  } else {
+    modifiedData = createEmptyFormData();
+  }
+
+  syncBlockedDateMap(modifiedData.bookingPolicy?.blockedDates ?? []);
+}
+
+function formatPrice(value) {
+  const parsed = Number.parseInt(value, 10);
+  if (Number.isNaN(parsed)) {
+    return '';
+  }
+  return parsed.toLocaleString();
+}
 
 async function fetchAccommodation(id) {
   const { success, message, data } = await request(
@@ -13,82 +73,22 @@ async function fetchAccommodation(id) {
     { method: 'GET' },
   );
 
-  originData = data;
+  originData = success ? data : null;
 
   return { success, message };
 }
 
 function buildViewMode() {
-  element = document.createElement('div');
-  element.id = 'accommodation';
-  element.className =
-    'min-w-100 w-full max-w-3xl flex flex-col items-center bg-white gap-4 md:rounded-t-2xl pb-10';
-  element.innerHTML = `
-    <img src="${originData.thumbnailUrl}" alt="숙소 대표 이미지" id="thumbnail" class="w-full md:rounded-t-2xl" />
-    <div id="mainInfo" class="px-4 text-center">
-      <h1 id="title" class="scroll-m-20 text-shark-700 text-center text-4xl font-extrabold tracking-tight text-balance"></h1>
-      <p id="address" class="leading-7 text-shark-700 [&:not(:first-child)]:mt-6"></p>
-      <div id="subInfo">
-        <span id="region" class="leading-7 text-shark-500 [&:not(:first-child)]:mt-6 text-sm"></span>
-        <span class="leading-7 text-shark-500 [&:not(:first-child)]:mt-6 text-sm">·</span>
-        <span id="maxGuest" class="leading-7 text-shark-500 [&:not(:first-child)]:mt-6 text-sm"></span>
-      </div>
-    </div>
-    <p id="description" class="leading-7 text-shark-700 [&:not(:first-child)]:mt-6 mx-4"></p>
-    <div id="images" class="w-full px-4">
-      <h2 class="scroll-m-20 border-b border-b-shark-200 pb-2 text-3xl text-shark-700 font-semibold tracking-tight first:mt-0 mb-2">숙박장소</h2>
-    </div>
-    <div id="pricing" class="px-4 w-full">
-      <h2 class="scroll-m-20 border-b border-b-shark-200 pb-2 text-3xl text-shark-700 font-semibold tracking-tight first:mt-0 mb-2">가격정책 (단위: 원)</h2>
-      <div class="grid grid-cols-[max-content_1fr] text-shark-700">
-        <p id="adultPrice" class="grid grid-cols-subgrid col-span-2">
-          <span class="row-start-1 col-start-1 flex justify-between gap-2 mr-1">
-            <span>성</span>
-            <span>인</span>
-          </span>
-        </p>
-        <p id="childPrice" class="grid grid-cols-subgrid col-span-2">
-          <span class="row-start-2 col-start-1 flex justify-between gap-2 mr-1">
-            <span>어</span>
-            <span>린</span>
-            <span>이</span>
-          </span>
-        </p>
-        <p id="serviceFee" class="grid grid-cols-subgrid col-span-2">
-          <span class="row-start-3 col-start-1 flex justify-between gap-2 mr-1">
-            <span>서비스</span>
-            <span>수수료</span>
-          </span>
-        </p>
-      </div>
-    </div>
-    <div id="booking" class="px-4 w-full">
-      <h2 class="scroll-m-20 border-b border-b-shark-200 pb-2 text-3xl text-shark-700 font-semibold tracking-tight first:mt-0 mb-2">예약정책</h2>
-      <p id="minNights" class="text-lg text-shark-700 mb-2 mt-4"></p>
-    </div>
-  `;
-
-  fillData();
-
-  return element;
+  return buildForm(constants.FORM_MODE.VIEW);
 }
 
 function buildForm(mode = constants.FORM_MODE.VIEW) {
-  // if (mode === Mode.VIEW) {
-  //   return buildViewMode();
-  // }
-
-  if (originData && mode === constants.FORM_MODE.EDIT) {
-    modifiedData = JSON.parse(JSON.stringify(originData));
-  }
+  initializeFormState(mode);
 
   element = document.createElement('div');
   element.id = 'accommodation';
   element.className =
     'min-w-100 w-full max-w-3xl flex flex-col items-center bg-white gap-4 md:rounded-t-2xl pb-10';
-  // element.innerHTML = `
-  //   ${buildThumbnail(mode)}
-  // `;
   element.append(
     buildThumbnail(mode),
     buildInfo(mode),
@@ -98,21 +98,25 @@ function buildForm(mode = constants.FORM_MODE.VIEW) {
     buildBooking(mode),
   );
 
+  fillData(mode);
+
   return element;
 }
 
 function buildThumbnail(mode) {
   const thumbnailHTML = document.createElement('div');
   thumbnailHTML.className = 'w-full relative';
+  const thumbnailSrc = modifiedData?.thumbnailUrl ?? '';
+
   switch (mode) {
     case constants.FORM_MODE.VIEW:
       thumbnailHTML.innerHTML = `
-      <img src="${originData.thumbnailUrl}" alt="숙소 대표 이미지" id="thumbnail" class="w-full md:rounded-t-2xl"/>
+      <img src="${thumbnailSrc}" alt="숙소 대표 이미지" id="thumbnail" class="w-full md:rounded-t-2xl"/>
       `;
       break;
     case constants.FORM_MODE.EDIT:
       thumbnailHTML.innerHTML = `
-      <img src="${originData.thumbnailUrl}" alt="숙소 대표 이미지" id="thumbnail" class="w-full md:rounded-t-2xl"/>
+      <img src="${thumbnailSrc}" alt="숙소 대표 이미지" id="thumbnail" class="w-full md:rounded-t-2xl"/>
       `;
       thumbnailHTML.appendChild(buildThumbnailDeleteBtn());
       break;
@@ -242,28 +246,7 @@ function buildImages(mode) {
   container.id = 'imagesContainer';
   container.className =
     'w-full flex flex-nowrap gap-5 overflow-x-auto thin-scroll py-4';
-
-  if (mode === constants.FORM_MODE.EDIT || mode === constants.FORM_MODE.VIEW) {
-    if (originData.images.length > 0) {
-      for (const image of originData.images) {
-        if (!image.url) {
-          continue;
-        }
-        const imageHTML = new FormImage(
-          image.url,
-          mode,
-          image.title,
-          image.description,
-        );
-        imageMap.set(imageHTML.getId(), imageHTML);
-        container.appendChild(imageHTML.getElement());
-      }
-    } else {
-      container.appendChild(buildEmptyImage());
-    }
-  } else if (mode === constants.FORM_MODE.ADD) {
-    container.appendChild(buildEmptyImage());
-  }
+  container.appendChild(buildEmptyImage());
 
   images.appendChild(container);
 
@@ -394,7 +377,7 @@ function buildPricing(mode) {
 
   const serviceFee = document.createElement('p');
   serviceFee.id = 'serviceFee';
-  serviceFee.classname = 'grid grid-cols-subgrid col-span-2';
+  serviceFee.className = 'grid grid-cols-subgrid col-span-2';
   serviceFee.innerHTML = `
   <span class="row-start-3 col-start-1 flex justify-between gap-2 mr-1">
     <span>서비스</span>
@@ -442,8 +425,11 @@ function buildBooking(mode) {
   minNights.id = 'minNights';
   minNights.className = 'text-lg text-shark-700 mb-2 mt-4';
 
-  booking.appendChild(minNights);
-  booking.appendChild(fillBlockedDate(mode));
+  const blockedDates = document.createElement('div');
+  blockedDates.id = 'blockedDates';
+  blockedDates.className = 'thin-scroll max-h-100 overflow-y-scroll';
+
+  booking.append(minNights, blockedDates);
 
   if (mode !== constants.FORM_MODE.VIEW) {
     booking.innerHTML += `
@@ -471,158 +457,250 @@ function buildBooking(mode) {
 }
 
 function fillData(mode = constants.FORM_MODE.VIEW) {
-  if (mode === constants.FORM_MODE.ADD) {
+  if (!modifiedData || !element) {
     return;
   }
 
   const html = getHTMLReference();
+  const data = modifiedData;
 
-  if (mode === constants.FORM_MODE.EDIT) {
-  } else if (mode === constants.FORM_MODE.VIEW) {
-    html.title.textContent = originData.title;
-    html.address.textContent = originData.location.address;
-    html.region.textContent = originData.location.region;
-    html.maxGuest.textContent = `최대 ${originData.maxGuest}명까지 숙박 가능`;
-    html.description.textContent = originData.description;
-    html.images.appendChild(fillImages());
+  if (html.thumbnail && data.thumbnailUrl) {
+    html.thumbnail.src = data.thumbnailUrl;
+  }
 
-    const adultPrice = document.createElement('span');
-    adultPrice.className = 'row-start-1 col-start-2 font-semibold';
-    adultPrice.textContent = `: ₩${Number.parseInt(originData.pricing.adultPrice).toLocaleString()}`;
-    html.adultPrice.appendChild(adultPrice);
+  if (html.title) {
+    html.title.textContent = data.title || '숙소 이름';
+  }
+  if (html.address) {
+    html.address.textContent = data.location?.address || '주소';
+  }
+  if (html.region) {
+    html.region.textContent = data.location?.region || '지역';
+  }
+  if (html.maxGuest) {
+    html.maxGuest.textContent = data.maxGuest
+      ? `최대 ${data.maxGuest}명까지 숙박 가능`
+      : '최대 숙박 가능 인원';
+  }
+  if (html.description) {
+    html.description.textContent = data.description || '숙소 설명';
+  }
 
-    const childPrice = document.createElement('span');
-    childPrice.className = 'row-start-2 col-start-2 font-semibold';
-    childPrice.textContent = `: ₩${Number.parseInt(originData.pricing.childPrice).toLocaleString()}`;
-    html.childPrice.appendChild(childPrice);
+  fillImages(mode, html.imagesContainer, data.images ?? []);
 
-    const serviceFee = document.createElement('span');
-    serviceFee.className = 'row-start-3 col-start-2 font-semibold';
-    serviceFee.textContent = `: ₩${Number.parseInt(originData.pricing.serviceFee).toLocaleString()}`;
-    html.serviceFee.appendChild(serviceFee);
+  appendPriceValue(
+    html.adultPrice,
+    'adultPriceValue',
+    'row-start-1 col-start-2',
+    formatPrice(data.pricing?.adultPrice),
+  );
+  appendPriceValue(
+    html.childPrice,
+    'childPriceValue',
+    'row-start-2 col-start-2',
+    formatPrice(data.pricing?.childPrice),
+  );
+  appendPriceValue(
+    html.serviceFee,
+    'serviceFeeValue',
+    'row-start-3 col-start-2',
+    formatPrice(data.pricing?.serviceFee),
+  );
 
-    html.minNights.textContent = `최소 ${originData.bookingPolicy.minNights}박부터 예약 가능`;
-    html.booking.appendChild(fillBlockedDate());
+  if (html.minNights) {
+    html.minNights.textContent = data.bookingPolicy?.minNights
+      ? `최소 ${data.bookingPolicy.minNights}박부터 예약 가능`
+      : '';
+  }
+
+  fillBlockedDate(mode, html.blockedDates);
+
+  if (mode !== constants.FORM_MODE.VIEW) {
+    fillEditInputs(html, data);
   }
 }
 
-function fillImages() {
-  if (originData.images.length > 0) {
-    const container = document.createElement('div');
-    container.id = 'imagesContainer';
-    container.className =
-      'w-full flex flex-nowrap gap-5 overflow-x-auto thin-scroll py-4';
+function appendPriceValue(target, valueClass, rowClass, amount) {
+  if (!target) {
+    return;
+  }
 
-    for (let image of originData.images) {
-      if (!image.url) {
-        continue;
-      }
+  target.querySelector(`.${valueClass}`)?.remove();
 
-      const div = document.createElement('div');
+  if (!amount) {
+    return;
+  }
 
-      const img = document.createElement('img');
-      img.className = 'min-w-80 w-full aspect-square object-cover rounded-lg';
-      img.src = image.url;
+  const value = document.createElement('span');
+  value.className = `${valueClass} ${rowClass} font-semibold`;
+  value.textContent = `: ₩${amount}`;
+  target.appendChild(value);
+}
 
-      const title = document.createElement('h3');
-      title.textContent = image.title;
-
-      const description = document.createElement('p');
-      description.textContent = image.description;
-
-      div.append(img, title, description);
-      container.appendChild(div);
-    }
-
-    return container;
-  } else {
-    const div = document.createElement('div');
-    div.className =
-      'min-h-70 flex items-center justify-center bg-primary-50/50 border-2 border-primary-50 rounded-lg text-shark-700 text-sm';
-    div.textContent = '숙박장소 이미지가 없습니다.';
-
-    return div;
+function fillEditInputs(html, data) {
+  if (html.thumbnailURL) {
+    html.thumbnailURL.value = data.thumbnailUrl ?? '';
+  }
+  if (html.titleInput) {
+    html.titleInput.value = data.title ?? '';
+  }
+  if (html.regionInput) {
+    html.regionInput.value = data.location?.region ?? '';
+  }
+  if (html.detailAddressInput) {
+    html.detailAddressInput.value = data.location?.address ?? '';
+  }
+  if (html.maxGuestInput) {
+    html.maxGuestInput.value = data.maxGuest ?? '';
+  }
+  if (html.descriptionInput) {
+    html.descriptionInput.value = data.description ?? '';
+  }
+  if (html.adultPriceInput) {
+    html.adultPriceInput.value = data.pricing?.adultPrice ?? '';
+  }
+  if (html.childPriceInput) {
+    html.childPriceInput.value = data.pricing?.childPrice ?? '';
+  }
+  if (html.serviceFeeInput) {
+    html.serviceFeeInput.value = data.pricing?.serviceFee ?? '';
+  }
+  if (html.minNightsInput) {
+    html.minNightsInput.value = data.bookingPolicy?.minNights ?? '';
   }
 }
 
-function fillBlockedDate(mode = constants.FORM_MODE.VIEW) {
-  if (originData !== null && originData.bookingPolicy.blockedDates.length > 0) {
-    const container = document.createElement('div');
-    container.id = 'blockedDates';
-    container.className = 'thin-scroll max-h-100 overflow-y-scroll';
+function fillImages(mode, container, images = []) {
+  if (!container) {
+    return;
+  }
 
-    for (let blockedDate of originData.bookingPolicy.blockedDates) {
-      const div = document.createElement('div');
-      div.className =
-        'relative bg-primary-50/50 border-2 border-primary-50 rounded-lg mr-2 my-4 px-4 py-2';
-      const blockedRange = document.createElement('p');
-      blockedRange.className = 'blockedRange text-shark-700 font-semibold';
-      blockedRange.textContent =
-        '예약 불가 날짜: ' +
-        `${blockedDate.startDate} ~ ${blockedDate.endDate}`;
+  imageMap.clear();
+  container.replaceChildren();
 
-      const blockedReason = document.createElement('p');
-      blockedReason.innerHTML = `
-      <span>사유 : </span>`;
-      blockedReason.className = 'blockedReason text-sm text-shark-600';
-      blockedReason.appendChild(
-        document.createTextNode(
-          blockedDate.reason === 'RESERVATION' ? '예약상태' : '관리자지정',
-        ),
-      );
+  const validImages = images.filter((image) => image?.url);
+  if (validImages.length === 0) {
+    container.appendChild(buildEmptyImage());
+    return;
+  }
 
-      div.append(blockedRange, blockedReason);
+  for (const image of validImages) {
+    const imageHTML = new FormImage(
+      image.url,
+      mode,
+      image.title ?? '',
+      image.description ?? '',
+    );
+    imageMap.set(imageHTML.getId(), imageHTML);
+    container.appendChild(imageHTML.getElement());
+  }
+}
 
-      if (
-        mode === constants.FORM_MODE.EDIT ||
-        mode === constants.FORM_MODE.ADD
-      ) {
-        const button = document.createElement('button');
-        button.className =
-          'absolute bg-primary-500 text-white top-1/2 -translate-y-1/2 right-2 hover:bg-primary-500/80 p-2 rounded-lg text-sm';
-        button.textContent = '삭제';
-        div.appendChild(button);
-      }
+function buildEmptyBlockedDate() {
+  const div = document.createElement('div');
+  div.className =
+    'min-h-70 flex items-center justify-center bg-primary-50/50 border-2 border-primary-50 rounded-lg text-shark-700 text-sm';
+  div.textContent = '설정된 예약 불가 날짜가 없습니다.';
+  return div;
+}
 
-      container.appendChild(div);
+function fillBlockedDate(mode = constants.FORM_MODE.VIEW, container) {
+  if (!container) {
+    return;
+  }
+
+  container.replaceChildren();
+
+  if (blockedDateMap.size === 0) {
+    container.appendChild(buildEmptyBlockedDate());
+    return;
+  }
+
+  for (const [blockedDateId, blockedDate] of blockedDateMap.entries()) {
+    const div = document.createElement('div');
+    div.dataset.id = blockedDateId;
+    div.className =
+      'relative bg-primary-50/50 border-2 border-primary-50 rounded-lg mr-2 my-4 px-4 py-2';
+
+    const blockedRange = document.createElement('p');
+    blockedRange.className = 'blockedRange text-shark-700 font-semibold';
+    blockedRange.textContent = `예약 불가 날짜: ${blockedDate.startDate} ~ ${blockedDate.endDate}`;
+
+    const blockedReason = document.createElement('p');
+    blockedReason.className = 'blockedReason text-sm text-shark-600';
+    blockedReason.innerHTML = `<span>사유 : </span>`;
+    blockedReason.appendChild(
+      document.createTextNode(
+        blockedDate.reason === 'RESERVATION' ? '예약상태' : '관리자지정',
+      ),
+    );
+
+    div.append(blockedRange, blockedReason);
+
+    if (mode !== constants.FORM_MODE.VIEW) {
+      const button = document.createElement('button');
+      button.className =
+        'absolute bg-primary-500 text-white top-1/2 -translate-y-1/2 right-2 hover:bg-primary-500/80 p-2 rounded-lg text-sm';
+      button.textContent = '삭제';
+      div.appendChild(button);
     }
 
-    return container;
-  } else {
-    const div = document.createElement('div');
-    div.className =
-      'min-h-70 flex items-center justify-center bg-primary-50/50 border-2 border-primary-50 rounded-lg text-shark-700 text-sm';
-    div.textContent = '설정된 예약 불가 날짜가 없습니다.';
-
-    return div;
+    container.appendChild(div);
   }
 }
 
 function getHTMLReference() {
+  const thumbnail = element.querySelector('#thumbnail');
   const title = element.querySelector('#title');
   const address = element.querySelector('#address');
   const region = element.querySelector('#region');
   const maxGuest = element.querySelector('#maxGuest');
   const description = element.querySelector('#description');
   const images = element.querySelector('#images');
+  const imagesContainer = element.querySelector('#imagesContainer');
   const adultPrice = element.querySelector('#adultPrice');
   const childPrice = element.querySelector('#childPrice');
   const serviceFee = element.querySelector('#serviceFee');
   const minNights = element.querySelector('#minNights');
   const booking = element.querySelector('#booking');
+  const blockedDates = element.querySelector('#blockedDates');
+
+  const thumbnailURL = element.querySelector('#thumbnailURL');
+  const titleInput = element.querySelector('#titleInput');
+  const regionInput = element.querySelector('#regionInput');
+  const detailAddressInput = element.querySelector('#detailAddressInput');
+  const maxGuestInput = element.querySelector('#maxGuestInput');
+  const descriptionInput = element.querySelector('#descriptionInput');
+  const adultPriceInput = element.querySelector('#adultPriceInput');
+  const childPriceInput = element.querySelector('#childPriceInput');
+  const serviceFeeInput = element.querySelector('#serviceFeeInput');
+  const minNightsInput = element.querySelector('#minNightsInput');
 
   return {
+    thumbnail,
     title,
     address,
     region,
     maxGuest,
     description,
     images,
+    imagesContainer,
     adultPrice,
     childPrice,
     serviceFee,
     minNights,
     booking,
+    blockedDates,
+    thumbnailURL,
+    titleInput,
+    regionInput,
+    detailAddressInput,
+    maxGuestInput,
+    descriptionInput,
+    adultPriceInput,
+    childPriceInput,
+    serviceFeeInput,
+    minNightsInput,
   };
 }
 
