@@ -99,6 +99,7 @@ function buildForm(mode = constants.FORM_MODE.VIEW) {
   );
 
   fillData(mode);
+  bindNumberInputControls();
 
   return element;
 }
@@ -202,7 +203,31 @@ function buildInfo(mode) {
       </div>
       <div class="w-full grid grid-cols-subgrid col-start-1 -col-end-1 items-center gap-2">
         <label for="maxGuestInput" class="text-shark-600 text-sm font-semibold col-span-3 md:col-span-1">최대 숙박 인원</label>
-        <input type="number" id="maxGuestInput" class="w-full col-span-2 md:col-span-1 bg-white text-shark-600 text-sm rounded-lg px-2 py-1 border-1 border-primary-200"/>
+        <div class="w-full col-span-2 md:col-span-1 flex items-center gap-2">
+          <button
+            type="button"
+            data-number-control="decrement"
+            data-target-input="maxGuestInput"
+            aria-label="최대 숙박 인원 감소"
+            class="h-8 w-8 shrink-0 rounded-full bg-primary-500 text-white text-lg leading-none hover:bg-primary-500/80"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="pointer-events-none m-auto h-4 w-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14"/>
+            </svg>
+          </button>
+          <input type="number" id="maxGuestInput" min="1" class="w-full bg-white text-shark-600 text-sm rounded-lg px-2 py-1 border-1 border-primary-200"/>
+          <button
+            type="button"
+            data-number-control="increment"
+            data-target-input="maxGuestInput"
+            aria-label="최대 숙박 인원 증가"
+            class="h-8 w-8 shrink-0 rounded-full bg-primary-500 text-white text-lg leading-none hover:bg-primary-500/80"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="pointer-events-none m-auto h-4 w-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/>
+            </svg>
+          </button>
+        </div>
         <button type="button" class="bg-primary-500 hover:bg-primary-500/80 text-white text-sm px-2 py-1 rounded-lg">적용</button>
       </div>
     </div>
@@ -437,7 +462,31 @@ function buildBooking(mode) {
       <span class="absolute top-0 left-4 -translate-y-1/2 text-sm px-2 text-shark-600 bg-white border-primary-200 border-2 rounded-xl">숙소 예약 정책 수정</span>
       <div class="w-full grid grid-cols-subgrid col-start-1 -col-end-1 items-center gap-2">
         <label for="minNightsInput" class="text-shark-600 text-sm font-semibold col-span-3 md:col-span-1">최소 숙박 가능일</label>
-        <input type="number" id="minNightsInput" class="w-full col-span-2 md:col-span-1 bg-white text-shark-600 text-sm rounded-lg px-2 py-1 border-1 border-primary-200"/>
+        <div class="w-full col-span-2 md:col-span-1 flex items-center gap-2">
+          <button
+            type="button"
+            data-number-control="decrement"
+            data-target-input="minNightsInput"
+            aria-label="최소 숙박 가능일 감소"
+            class="h-8 w-8 shrink-0 rounded-full bg-primary-500 text-white text-lg leading-none hover:bg-primary-500/80"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="pointer-events-none m-auto h-4 w-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14"/>
+            </svg>
+          </button>
+          <input type="number" id="minNightsInput" min="1" class="w-full bg-white text-shark-600 text-sm rounded-lg px-2 py-1 border-1 border-primary-200"/>
+          <button
+            type="button"
+            data-number-control="increment"
+            data-target-input="minNightsInput"
+            aria-label="최소 숙박 가능일 증가"
+            class="h-8 w-8 shrink-0 rounded-full bg-primary-500 text-white text-lg leading-none hover:bg-primary-500/80"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="pointer-events-none m-auto h-4 w-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/>
+            </svg>
+          </button>
+        </div>
         <button type="button" class="bg-primary-500 hover:bg-primary-500/80 text-white text-sm px-2 py-1 rounded-lg">적용</button>
       </div>
       <div class="w-full grid grid-cols-subgrid col-start-1 -col-end-1 gap-2">
@@ -567,6 +616,111 @@ function fillEditInputs(html, data) {
   }
   if (html.minNightsInput) {
     html.minNightsInput.value = data.bookingPolicy?.minNights ?? '';
+  }
+}
+
+function getNumberStep(input) {
+  const rawStep = Number.parseFloat(input.step);
+  if (!Number.isFinite(rawStep) || rawStep <= 0) {
+    return 1;
+  }
+  return rawStep;
+}
+
+function clampNumberByInput(input, value) {
+  let nextValue = value;
+
+  if (input.min !== '') {
+    nextValue = Math.max(nextValue, Number.parseFloat(input.min));
+  }
+  if (input.max !== '') {
+    nextValue = Math.min(nextValue, Number.parseFloat(input.max));
+  }
+
+  return nextValue;
+}
+
+function bindNumberInputControls() {
+  if (!element) {
+    return;
+  }
+
+  const controls = element.querySelectorAll('[data-number-control]');
+  for (const button of controls) {
+    button.addEventListener('click', () => {
+      const inputId = button.dataset.targetInput;
+      if (!inputId) {
+        return;
+      }
+
+      const input = element.querySelector(`#${inputId}`);
+      if (!(input instanceof HTMLInputElement)) {
+        return;
+      }
+
+      const step = getNumberStep(input);
+      const direction = button.dataset.numberControl === 'decrement' ? -1 : 1;
+      const currentValue = Number.parseFloat(input.value);
+      const baseValue = Number.isNaN(currentValue) ? 0 : currentValue;
+      const nextValue = clampNumberByInput(input, baseValue + direction * step);
+
+      input.value = String(nextValue);
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      input.focus();
+    });
+  }
+
+  const numberInputs = [element.querySelector('#maxGuestInput'), element.querySelector('#minNightsInput')];
+  for (const input of numberInputs) {
+    if (!(input instanceof HTMLInputElement)) {
+      continue;
+    }
+
+    input.addEventListener('keydown', (e) => {
+      const allowedKeys = [
+        'Backspace',
+        'Delete',
+        'ArrowLeft',
+        'ArrowRight',
+        'Tab',
+        'Home',
+        'End',
+      ];
+      if (allowedKeys.includes(e.key) || (e.ctrlKey || e.metaKey)) {
+        return;
+      }
+      if (!/^\d$/.test(e.key)) {
+        e.preventDefault();
+      }
+    });
+
+    input.addEventListener('paste', (e) => {
+      const pastedText = e.clipboardData?.getData('text') ?? '';
+      if (!/^\d+$/.test(pastedText)) {
+        e.preventDefault();
+      }
+    });
+
+    input.addEventListener('input', () => {
+      const onlyDigits = input.value.replace(/[^\d]/g, '');
+      if (input.value !== onlyDigits) {
+        input.value = onlyDigits;
+      }
+      if (input.value && Number.parseInt(input.value, 10) < 1) {
+        input.value = '1';
+      }
+    });
+
+    input.addEventListener(
+      'wheel',
+      (e) => {
+        if (document.activeElement === input) {
+          e.preventDefault();
+        }
+      },
+      { passive: false },
+    );
   }
 }
 
