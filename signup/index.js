@@ -1,6 +1,6 @@
+import { openModal } from '../src/components/modal.js';
 import { signupApi, loginApi } from '../src/api/auth.js';
 import { passwordToggle } from '../src/components/togglePassword.js';
-import { openModal } from '../src/components/modal.js';
 import {
   isValidUsername,
   isValidPassword,
@@ -138,7 +138,6 @@ const modal = {
 
 signupForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-
   clearMessages();
 
   const signupData = getSignupData();
@@ -160,11 +159,13 @@ signupForm.addEventListener('submit', async (e) => {
     signupForm.reset();
 
     openModal(modal.modalContainer);
-
-    document.activeElement.blur();
     modal.signupConfirmBtn.focus();
   } catch (e) {
-    errorMessage.common.textContent = `형식에 맞지 않습니다. 회원 정보를 다시 입력해주세요.`;
+    const msg =
+      e.status === 409
+        ? `이미 사용 중인 아이디 입니다.`
+        : `형식에 맞지 않습니다. 회원 정보를 다시 입력해주세요.`;
+    errorMessage.common.textContent = msg;
   }
 });
 

@@ -1,7 +1,5 @@
 import { loginApi } from '../src/api/auth.js';
-import { isValidUsername, isValidPassword } from '../src/utils/validate.js';
 import { passwordToggle } from '../src/components/togglePassword.js';
-import { openModal } from '../src/components/modal.js';
 
 const formElements = {
   id: document.getElementById('loginId'),
@@ -54,14 +52,14 @@ function getLoginData() {
 }
 
 function validationData(loginData) {
-  if (!isValidUsername(loginData.username)) {
+  if (!loginData.username) {
     return {
       field: 'id',
       message: '아이디를 입력해주세요.',
     };
   }
 
-  if (!isValidPassword(loginData.password)) {
+  if (!loginData.password) {
     return {
       field: 'pw',
       message: '비밀번호를 입력해주세요.',
@@ -75,17 +73,10 @@ function showError(field, message) {
   errorMessage[field].textContent = message;
 }
 
-const modal = {
-  modalContainer: document.getElementById('modalContainer'),
-  loginModal: document.getElementById('loginModal'),
-  loginConfirmBtn: document.getElementById('loginConfirmBtn'),
-};
-
 const loginForm = document.getElementById('loginForm');
 
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-
   clearMessages();
 
   const loginData = getLoginData();
@@ -99,21 +90,11 @@ loginForm.addEventListener('submit', async (e) => {
   try {
     await loginApi(loginData);
 
-    clearMessages();
-    loginForm.reset();
-
-    openModal(modal.modalContainer);
-
-    document.activeElement.blur();
-    modal.loginConfirmBtn.focus();
+    location.href = `../`;
   } catch (e) {
     errorMessage.common.textContent =
       '아이디 또는 비밀번호를 다시 입력해주세요.';
   }
-});
-
-modal.loginConfirmBtn.addEventListener('click', () => {
-  location.href = `../`;
 });
 
 enterPress();

@@ -1,14 +1,12 @@
-import { buildEmptyState } from '../src/components/emptyState.js';
 import { getToken } from '../src/utils/auth.js';
 import { showReservations } from '../src/api/reservation.js';
+import { buildEmptyState } from '../src/components/emptyState.js';
 import pagination from '../src/components/pagination.js';
 
 const elements = {
   list: document.getElementById('reservation-list'),
   result: document.getElementById('result'),
 };
-
-getToken();
 
 function showError(message) {
   elements.result.textContent = message;
@@ -25,7 +23,7 @@ function formatMonthDay(dateString) {
   return `${Number(month)}월 ${Number(day)}일`;
 }
 
-function getReservations(reservations) {
+function filterCancelled(reservations) {
   return reservations.filter(
     (reservation) => reservation.status !== 'CANCELLED',
   );
@@ -37,8 +35,6 @@ function renderEmptyState() {
 
   const emptyState = buildEmptyState(`예약 목록이`);
   elements.list.appendChild(emptyState);
-
-  return;
 }
 
 function createReservationItem(reservation) {
@@ -49,7 +45,7 @@ function createReservationItem(reservation) {
 
   const item = document.createElement('li');
   item.className =
-    'w-full max-w-[600px] mx-auto shadow-xl rounded-xl overflow-hidden';
+    'w-full max-w-[600px] mx-auto shadow-xl rounded-xl overflow-hidden cursor-pointer';
 
   item.innerHTML = `
     <img class="w-full h-40 object-cover" />
@@ -80,20 +76,30 @@ function renderReservations(reservations) {
 }
 
 async function changePage() {
-  const data = await showReservations({
-    page: pagination.paginationData.page,
-    pageLimit: 20,
-  });
-  const rsv = data.data.reservations;
-  const cancelledReservations = getReservations(rsv);
-  renderReservations(cancelledReservations);
-  pagination.setPrevNext(data.meta.pagination);
+  try {
+    const data = await showReservations({
+      page: pagination.paginationData.page,
+      pageLimit: 20,
+    });
+
+    const rsv = data.data.reservations;
+    const cancelledReservations = filterCancelled(rsv);
+
+    if (cancelledReservations.length === 0) {
+      renderEmptyState();
+      return;
+    }
+
+    renderReservations(cancelledReservations);
+    pagination.setPrevNext(data.meta.pagination);
+  } catch (e) {
+    showError(`에러 발생: ${e.message}`);
+  }
 }
 
 async function loadReservation() {
   try {
     clearMessage();
-
     const token = getToken();
 
     if (!token) {
@@ -103,7 +109,7 @@ async function loadReservation() {
 
     const data = await showReservations({ pageLimit: 20 });
     const rsv = data.data.reservations;
-    const cancelledReservations = getReservations(rsv);
+    const cancelledReservations = filterCancelled(rsv);
 
     if (cancelledReservations.length === 0) {
       renderEmptyState();

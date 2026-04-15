@@ -34,6 +34,7 @@
             <input
               type="text"
               id="latteId"
+              autocomplete="username"
               placeholder="아이디를 입력해주세요."
               class="w-full px-3 py-3 border border-shark-200 rounded-lg text-sm outline-none focus:border-primary-400 placeholder:text-shark-300" />
             <p id="errorUsername" class="text-xs text-negative-500"></p>
@@ -47,6 +48,7 @@
               <input
                 type="password"
                 id="lattePw"
+                autocomplete="new-password"
                 placeholder="비밀번호를 입력해주세요."
                 class="w-full px-3 py-3 pr-10 border border-shark-200 rounded-lg text-sm outline-none focus:border-primary-400 placeholder:text-shark-300" />
               <button
@@ -93,6 +95,7 @@
             <input
               type="text"
               id="latteNm"
+              autocomplete="name"
               placeholder="이름을 입력해주세요."
               class="w-full px-3 py-3 border border-shark-200 rounded-lg text-sm outline-none focus:border-primary-400 placeholder:text-shark-300" />
             <p id="errorName" class="text-xs text-negative-500"></p>
@@ -105,6 +108,7 @@
             <input
               type="text"
               id="lattePn"
+              autocomplete="tel"
               placeholder="(- 없이 입력) 01012345678"
               class="w-full px-3 py-3 border border-shark-200 rounded-lg text-sm outline-none focus:border-primary-400 placeholder:text-shark-300" />
             <p id="errorPhone" class="text-xs text-negative-500"></p>
@@ -130,6 +134,9 @@
         </p>
       </div>
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalTitle"
         id="modalContainer"
         class="hidden fixed inset-0 items-center justify-center bg-[color-mix(in_oklab,var(--color-black)_50%,transparent)]">
         <div
