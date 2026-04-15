@@ -1,6 +1,16 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'IsYun';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/LeeSeoyun.woff')
+    format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+
 @theme {
+  --font-sans: 'IsYun', sans-serif;
+
   --color-primary-50: #fff1f2;
   --color-primary-100: #ffe3e5;
   --color-primary-200: #ffccd3;
