@@ -94,7 +94,7 @@ export class RoomCard {
 
   #syncDOM() {
     this.#titleNode.textContent = this.#title;
-    this.#priceNode.textContent = `₩ ${this.#pricing.adultPrice} / 1박`;
+    this.#priceNode.textContent = `₩ ${this.#pricing.adultPrice.toLocaleString()} / 1박`;
     this.#maxGuestNode.textContent = `최대 ${this.#maxGuest}명`;
     this.#locationNode.textContent = `${this.#location}`;
   }
