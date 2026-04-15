@@ -74,6 +74,8 @@ function initializeFormState(mode = constants.FORM_MODE.VIEW) {
 
   if (mode === constants.FORM_MODE.ADD) {
     modifiedData = createEmptyFormData();
+    modifiedData.maxGuest = '1';
+    modifiedData.bookingPolicy.minNights = '1';
   } else if (originData) {
     modifiedData = cloneData(originData);
   } else {
@@ -677,6 +679,11 @@ function appendPriceValue(target, valueClass, rowClass, amount) {
 }
 
 function fillEditInputs(html, data) {
+  const { region, detailAddress } = splitAddressParts(
+    data.location?.region ?? '',
+    data.location?.address ?? '',
+  );
+
   if (html.thumbnailURL) {
     html.thumbnailURL.value = data.thumbnailUrl ?? '';
   }
@@ -684,10 +691,10 @@ function fillEditInputs(html, data) {
     html.titleInput.value = data.title ?? '';
   }
   if (html.regionInput) {
-    html.regionInput.value = data.location?.region ?? '';
+    html.regionInput.value = region;
   }
   if (html.detailAddressInput) {
-    html.detailAddressInput.value = data.location?.address ?? '';
+    html.detailAddressInput.value = detailAddress;
   }
   if (html.maxGuestInput) {
     html.maxGuestInput.value = data.maxGuest ?? '';
@@ -754,18 +761,63 @@ function renderThumbnail(mode = currentMode) {
   }
 }
 
-function syncSelectedImageInputs() {
+function normalizeAddressValue(value) {
+  return `${value ?? ''}`.trim().replace(/\s+/g, ' ');
+}
+
+function combineAddress(region, detailAddress) {
+  const normalizedRegion = normalizeAddressValue(region);
+  const normalizedDetail = normalizeAddressValue(detailAddress);
+  if (!normalizedRegion) {
+    return normalizedDetail;
+  }
+  if (!normalizedDetail) {
+    return normalizedRegion;
+  }
+  if (normalizedDetail.startsWith(normalizedRegion)) {
+    return normalizedDetail;
+  }
+  return `${normalizedRegion} ${normalizedDetail}`;
+}
+
+function splitAddressParts(region, fullAddress) {
+  const normalizedRegion = normalizeAddressValue(region);
+  const normalizedAddress = normalizeAddressValue(fullAddress);
+
+  if (!normalizedRegion) {
+    return {
+      region: '',
+      detailAddress: normalizedAddress,
+    };
+  }
+
+  if (normalizedAddress.startsWith(normalizedRegion)) {
+    return {
+      region: normalizedRegion,
+      detailAddress: normalizedAddress.slice(normalizedRegion.length).trim(),
+    };
+  }
+
+  return {
+    region: normalizedRegion,
+    detailAddress: normalizedAddress,
+  };
+}
+
+function syncSelectedImageInputs(options = {}) {
   if (!element) {
     return;
   }
 
   const html = getHTMLReference();
   const selectedImage = selectedImageId ? imageMap.get(selectedImageId) : null;
+  const preserveTitle = options.preserveTitle === true;
+  const preserveDescription = options.preserveDescription === true;
 
-  if (html.imageTitleInput) {
+  if (html.imageTitleInput && !preserveTitle) {
     html.imageTitleInput.value = selectedImage?.title ?? '';
   }
-  if (html.imageDescriptionInput) {
+  if (html.imageDescriptionInput && !preserveDescription) {
     html.imageDescriptionInput.value = selectedImage?.description ?? '';
   }
 }
@@ -1044,7 +1096,7 @@ function bindBookingControls() {
   syncBlockedDateAddButtonState();
 }
 
-function fillImages(mode, container, images = []) {
+function fillImages(mode, container, images = [], syncOptions = {}) {
   if (!container) {
     return;
   }
@@ -1053,7 +1105,7 @@ function fillImages(mode, container, images = []) {
 
   if (imageMap.size === 0) {
     container.appendChild(buildEmptyImage());
-    syncSelectedImageInputs();
+    syncSelectedImageInputs(syncOptions);
     return;
   }
 
@@ -1071,7 +1123,7 @@ function fillImages(mode, container, images = []) {
     container.appendChild(imageHTML.getElement());
   }
 
-  syncSelectedImageInputs();
+  syncSelectedImageInputs(syncOptions);
 }
 
 function buildEmptyBlockedDate() {
@@ -1266,7 +1318,9 @@ function updateSelectedImageTitle(title) {
   syncModifiedImagesFromMap();
 
   const html = getHTMLReference();
-  fillImages(currentMode, html.imagesContainer);
+  fillImages(currentMode, html.imagesContainer, [], {
+    preserveDescription: true,
+  });
 }
 
 function updateSelectedImageDescription(description) {
@@ -1283,7 +1337,9 @@ function updateSelectedImageDescription(description) {
   syncModifiedImagesFromMap();
 
   const html = getHTMLReference();
-  fillImages(currentMode, html.imagesContainer);
+  fillImages(currentMode, html.imagesContainer, [], {
+    preserveTitle: true,
+  });
 }
 
 function getImageFiles() {
@@ -1309,10 +1365,13 @@ function updateAccommodationAddress(region, address) {
     return;
   }
 
+  const normalizedRegion = normalizeAddressValue(region);
+  const fullAddress = combineAddress(region, address);
+
   modifiedData.location = {
     ...(modifiedData.location ?? {}),
-    region: region.trim(),
-    address: address.trim(),
+    region: normalizedRegion,
+    address: fullAddress,
   };
 
   const html = getHTMLReference();
@@ -1443,7 +1502,7 @@ function addBlockedDate(startDate, endDate) {
   blockedDateMap.set(crypto.randomUUID(), {
     startDate,
     endDate,
-    reason: 'MANUAL',
+    reason: 'HOST_BLOCK',
   });
   syncModifiedBlockedDatesFromMap();
 
@@ -1474,6 +1533,14 @@ function removeBlockedDate(blockedDateId) {
   const html = getHTMLReference();
   fillBlockedDate(currentMode, html.blockedDates);
   syncBlockedDateAddButtonState();
+}
+
+function getModifiedData() {
+  if (!modifiedData) {
+    return null;
+  }
+
+  return cloneData(modifiedData);
 }
 
 function fillBlockedDate(mode = constants.FORM_MODE.VIEW, container) {
@@ -1645,4 +1712,5 @@ export default {
   updateAccommodationMinNights,
   addBlockedDate,
   removeBlockedDate,
+  getModifiedData,
 };
