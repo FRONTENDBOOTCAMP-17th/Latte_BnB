@@ -24,47 +24,7 @@
         class="border-t-2 pt-5 border-primary-400/45 w-full col-start-1 col-span-4 text-center text-2xl font-extrabold text-shark-700">
         현재 등록된 숙소 목록
       </h1>
-      <div
-        class="flex max-w-xl w-full relative justify-self-center px-2 pr-12 col-start-1 col-span-4">
-        <input
-          type="text"
-          id="searchInput"
-          class="w-full h-10 bg-white text-shark-800 px-4 py-2 rounded-3xl shadow-md placeholder:text-shark-600 placeholder:font-medium placeholder:text-center placeholder:bg-[url(/src/assets/search.svg)] placeholder:bg-no-repeat placeholder:bg-position-[calc(50%-6rem)_75%] placeholder:bg-size-[16px_16px]"
-          placeholder="숙소 검색(숙소명, 지역)" />
-        <button
-          id="searchBtn"
-          type="button"
-          class="bg-primary-500 hover:bg-primary-500/85 text-white absolute p-2 right-13 top-1/2 -translate-y-1/2 rounded-[50%]">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="size-4 pointer-events-none">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-          </svg>
-        </button>
-        <a
-          href="/admin/add/"
-          class="absolute right-2 top-1/2 -translate-y-1/2 text-white rounded-[50%] bg-primary-500 hover:bg-primary-500/80 p-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="1.5"
-            class="size-6">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-        </a>
-      </div>
+      <div id="adminControls" class="col-start-1 col-span-4"></div>
       <ul
         id="accommodationList"
         class="col-start-1 -col-end-1 justify-self-center w-full max-w-3xl px-2"></ul>
