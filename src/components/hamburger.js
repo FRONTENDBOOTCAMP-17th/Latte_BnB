@@ -6,8 +6,8 @@ function buildHamburger() {
   div.className = 'hamburger relative lg:ml-auto';
 
   div.innerHTML = `
-  <button type="button" class="hidden lg:bg-primary-500 lg:hover:bg-primary-500/85 text-white w-10 aspect-square lg:flex lg:items-center lg:justify-center lg:rounded-[50%] cursor-pointer">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+  <button type="button" class="hidden lg:bg-primary-500 lg:hover:bg-primary-500/85 text-white w-12 aspect-square lg:flex lg:items-center lg:justify-center lg:rounded-[50%] cursor-pointer transition-colors">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
       <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
     </svg>
   </button>
@@ -19,7 +19,7 @@ function buildHamburger() {
 function buildMenu(result) {
   const div = document.createElement('div');
   div.className =
-    'hidden absolute mt-2 right-0 bg-white flex-col shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_12px_30px_rgba(0,0,0,0.08)] gap-2 py-4 rounded-xl z-100';
+    'hidden absolute mt-2 right-0 bg-white flex-col items-center shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_12px_30px_rgba(0,0,0,0.08)] gap-2 py-4 rounded-xl z-100';
 
   if (result.isAuth) {
     div.classList.add('w-60');
@@ -30,17 +30,20 @@ function buildMenu(result) {
       <span class="col-start-2 row-start-2 text-shark-600 text-sm">방문을 환영합니다.</span>
     </div>
     <hr class="w-[90%] self-center border-t-2 border-shark-200" />
-    <a href="/profile/" class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
+    <a href="/" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
+      <img src="/src/assets/home.svg" alt="홈 svg 이미지" class="w-6 m-2" />홈
+    </a>
+    <a href="/profile/" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
       <img src="/src/assets/profile.svg" alt="프로필 svg 이미지" class="w-6 m-2" />프로필
     </a>
-    <a href="/wishlist/" class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
+    <a href="/wishlist/" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
       <img src="/src/assets/wish.svg" alt="위시리스트 svg 이미지" class="w-6 m-2" />위시 리스트
     </a>
-    <a href="/reservations-check/" class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
+    <a href="/reservations-check/" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
       <img src="/src/assets/reservation.svg" alt="예약목록 svg 이미지" class="w-6 m-2" />내 예약 확인
     </a>
     <hr class="w-[90%] self-center border-t-2 border-shark-200" />
-    <button type="button" class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
+    <button type="button" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
       <img src="/src/assets/logout.svg" alt="로그아웃 svg 이미지" class="w-6 m-2" />로그아웃
     </button>
     `;
@@ -55,7 +58,10 @@ function buildMenu(result) {
       Latte BnB에 오신 걸 환영합니다.
     </p>
     <hr class="w-[90%] self-center border-t-2 border-shark-200" />
-    <a href="/login/" class="h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
+    <a href="/" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
+      <img src="/src/assets/home.svg" alt="홈 svg 이미지" class="w-6 m-2" />홈
+    </a>
+    <a href="/login/" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
       <img src="/src/assets/login.svg" alt="로그인 svg 이미지" class="w-6 m-2" />로그인
     </a>
     `;

@@ -1,6 +1,7 @@
 import { RoomCard } from './RoomCard.js';
 import pagination from './components/pagination.js';
 import toast from './components/toast.js';
+import heroSlider from './components/heroSlider.js';
 import { checkWish } from './api/auth.js';
 import { request } from './api/client.js';
 
@@ -9,6 +10,8 @@ let searchBtn = null;
 const sortBox = document.getElementById('sort');
 const content = document.getElementById('content');
 const roomList = document.getElementById('roomList');
+
+content.prepend(heroSlider.buildSlider());
 
 let roomData = new Map();
 let pageLimit = 20;
