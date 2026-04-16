@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>latte-bnb</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/landing.js"></script>
+  </head>
+  <body
+    data-header="true"
+    data-footer="true"
+    data-nav="true"
+    data-search="true"
+    class="overflow-x-hidden max-[1023px]:[&_footer]:hidden">
+    <div
+      id="toast"
+      class="border-2 rounded-2xl p-4 top-4/5 left-1/2 -translate-x-1/2"
+      popover>
+      <p id="toastMessage" class="font-semibold"></p>
+      <p id="toastDetail" class="text-sm"></p>
+    </div>
+    <main id="content" class="min-w-100 pb-20 flex flex-col items-center">
+      <div class="self-end mx-[clamp(1.25rem,4vw,5rem)] my-4">
+        <select
+          id="sort"
+          class="border border-shark-200 rounded-lg px-3 py-2 text-sm text-shark-700 cursor-pointer hover:border-shark-400 focus:outline-primary-500">
+          <option value="dictAsc" selected>가나다 순</option>
+          <option value="dictDesc">가나다 역순</option>
+          <option value="priceAsc">가격 낮은 순</option>
+          <option value="priceDesc">가격 높은 순</option>
+        </select>
+      </div>
+      <ul
+        id="roomList"
+        class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 px-[clamp(20px,4vw,80px)]"></ul>
+    </main>
+  </body>
+</html>

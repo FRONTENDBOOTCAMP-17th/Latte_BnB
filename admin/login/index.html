@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>latte-bnb | 관리자 로그인</title>
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <main
+      id="content"
+      class="min-w-100 h-screen grid grid-col-[400px] grid-rows-[0.4fr_1fr] gap-4 bg-linear-to-t from-primary-50 via-primary-400 to-primary-100">
+      <form
+        method="post"
+        id="adminLoginForm"
+        class="min-w-100 w-fit self-start justify-self-center p-10 md:border-shark-50 md:border-2 md:rounded-3xl bg-transparent">
+        <fieldset class="flex flex-col gap-8">
+          <legend class="text-3xl text-white font-semibold text-center mb-10">
+            관리자 로그인
+          </legend>
+          <input
+            type="text"
+            id="adminId"
+            name="adminId"
+            class="border-shark-50 text-white border rounded-md px-4 py-2 focus:outline-primary-500 placeholder:text-shark-100"
+            placeholder="아이디" />
+          <input
+            type="password"
+            id="adminPassword"
+            name="adminPassword"
+            class="border-shark-50 text-white border rounded-md px-4 py-2 focus:outline-primary-500 placeholder:text-shark-100"
+            placeholder="비밀번호" />
+          <button
+            type="submit"
+            class="font-extrabold text-white border-shark-50 border rounded-md py-2 hover:bg-primary-100/50 hover:text-shark-500 focus:outline-primary-500">
+            로그인
+          </button>
+        </fieldset>
+      </form>
+    </main>
+  </body>
+</html>

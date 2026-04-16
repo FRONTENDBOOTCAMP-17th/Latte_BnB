@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>latte-bnb | 관리자</title>
+    <script type="module" src="./index.js"></script>
+  </head>
+  <style>
+    #logo,
+    #pagination {
+      grid-column: 1 / -1;
+      margin-top: 1.25rem;
+    }
+    #pagination {
+      margin-bottom: 1.25rem;
+    }
+  </style>
+  <body>
+    <main
+      id="content"
+      class="min-w-100 min-h-screen h-full grid grid-cols-[repeat(4,1fr)] grid-rows-[repeat(3,min-content)_1fr] gap-4 bg-linear-to-t from-primary-50 via-primary-400 to-primary-100">
+      <h1
+        class="border-t-2 pt-5 border-primary-400/45 w-full col-start-1 col-span-4 text-center text-2xl font-extrabold text-shark-700">
+        현재 등록된 숙소 목록
+      </h1>
+      <div id="adminControls" class="col-start-1 col-span-4"></div>
+      <ul
+        id="accommodationList"
+        class="col-start-1 -col-end-1 justify-self-center w-full max-w-3xl px-2"></ul>
+    </main>
+  </body>
+</html>

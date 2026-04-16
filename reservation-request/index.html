@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>latte-bnb | 예약 요청</title>
+    <link rel="stylesheet" href="../src/style.css" />
+  </head>
+  <body class="bg-white text-shark-800">
+    <div id="reservation-wrapper" class="max-w-280 mx-auto px-6 pb-20">
+      <div
+        id="reservation-header"
+        class="flex items-center gap-3 py-4 border-b border-shark-200">
+        <button
+          id="btn-back"
+          class="bg-transparent border-0 cursor-pointer text-lg text-shark-800">
+          &lt;
+        </button>
+        <h1 class="text-lg font-bold">예약 요청</h1>
+      </div>
+
+      <div class="md:grid md:grid-cols-[60%_auto] md:gap-16 md:pt-6">
+        <div>
+          <section
+            id="reservation-info"
+            class="flex items-center gap-3 py-5 border-b border-shark-200">
+            <img
+              id="thumb"
+              alt="썸네일 이미지"
+              class="w-20 h-20 rounded-lg object-cover bg-shark-200" />
+            <p id="title" class="text-[15px] font-semibold"></p>
+          </section>
+
+          <section id="reservation-date" class="py-5 border-b border-shark-200">
+            <h2 class="text-base font-bold mb-3">일정 선택</h2>
+            <button
+              id="btn-date"
+              class="w-full py-3.5 px-4 border border-shark-200 rounded-[10px] bg-white text-left text-sm text-shark-800 cursor-pointer hover:bg-shark-100">
+              날짜를 선택해 주세요
+            </button>
+          </section>
+
+          <section id="reservation-guest" class="py-5 border-b border-shark-200 md:border-b-0">
+            <h2 class="text-base font-bold mb-3">인원 선택</h2>
+            <button
+              id="btn-guest"
+              class="w-full py-3.5 px-4 border border-shark-200 rounded-[10px] bg-white text-left text-sm text-shark-800 cursor-pointer hover:bg-shark-100">
+              성인 1명
+            </button>
+          </section>
+        </div>
+
+        <div class="md:w-80 md:border md:border-shark-200 md:rounded-2xl md:p-6 md:h-fit md:sticky md:top-6 md:shadow-lg">
+          <section id="reservation-pricing" class="py-5 md:pt-0 md:pb-4 border-b border-shark-200">
+            <h2 class="text-base font-bold mb-3 md:hidden">요금 세부 정보</h2>
+            <div class="flex justify-between text-sm py-1.5 text-shark-700">
+              <span id="adult-subtotal-label"></span>
+              <span id="adult-subtotal"></span>
+            </div>
+            <div class="flex justify-between text-sm py-1.5 text-shark-700">
+              <span id="child-subtotal-label"></span>
+              <span id="child-subtotal"></span>
+            </div>
+            <div class="flex justify-between text-sm py-1.5 text-shark-700">
+              <span>서비스 수수료</span>
+              <span id="service-fee"></span>
+            </div>
+            <div
+              id="pricing-total"
+              class="flex justify-between text-base font-bold text-shark-900 border-t border-shark-200 mt-2 pt-3.5">
+              <span>총 합계</span>
+              <span id="total-price"></span>
+            </div>
+          </section>
+
+          <section id="reservation-btn" class="py-4 md:py-0 md:pt-4">
+            <button
+              id="btn-submit"
+              class="w-full py-4 border-0 rounded-xl bg-primary-500 text-white text-base font-bold cursor-pointer hover:bg-primary-400">
+              예약 신청
+            </button>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal-calendar"
+      class="fixed inset-0 bg-black/50 items-center justify-center z-100 hidden">
+      <div class="bg-white rounded-2xl p-6 w-[90%] max-w-105">
+        <div id="cal-header" class="flex items-center justify-between mb-4">
+          <button
+            id="cal-btn-pre"
+            class="border border-shark-200 rounded-full w-8 h-8 cursor-pointer text-sm text-shark-800 hover:bg-shark-100">
+            &lt;
+          </button>
+          <span
+            id="cal-month"
+            class="text-base font-bold text-shark-800"></span>
+          <button
+            id="cal-btn-next"
+            class="border border-shark-200 rounded-full w-8 h-8 cursor-pointer text-sm text-shark-800 hover:bg-shark-100">
+            &gt;
+          </button>
+        </div>
+        <table class="w-full text-center border-collapse">
+          <thead>
+            <tr>
+              <th class="text-xs text-shark-400 pb-3">일</th>
+              <th class="text-xs text-shark-400 pb-3">월</th>
+              <th class="text-xs text-shark-400 pb-3">화</th>
+              <th class="text-xs text-shark-400 pb-3">수</th>
+              <th class="text-xs text-shark-400 pb-3">목</th>
+              <th class="text-xs text-shark-400 pb-3">금</th>
+              <th class="text-xs text-shark-400 pb-3">토</th>
+            </tr>
+          </thead>
+          <tbody id="cal-tbody"></tbody>
+        </table>
+        <div class="flex gap-2 mt-4">
+          <button
+            id="modal-calendar-cancel"
+            class="flex-1 py-3 border-0 rounded-lg text-[15px] font-semibold cursor-pointer bg-shark-100 text-shark-800 hover:bg-shark-200">
+            취소
+          </button>
+          <button
+            id="modal-calendar-save"
+            class="flex-1 py-3 border-0 rounded-lg text-[15px] font-semibold cursor-pointer bg-primary-500 text-white hover:bg-primary-400">
+            저장
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal-guest"
+      class="fixed inset-0 bg-black/50 items-center justify-center z-100 hidden">
+      <div class="bg-white rounded-2xl p-6 w-[90%] max-w-105">
+        <p id="max-guest"></p>
+        <div
+          class="flex items-center justify-between py-3 border-b border-shark-100">
+          <div>
+            <p class="text-sm font-semibold">성인</p>
+            <p class="text-xs text-shark-500 mt-0.5">13세 이상</p>
+            <p class="text-xs text-shark-500 mt-0.5" id="adult-price"></p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button
+              id="btn-adult-minus"
+              class="w-8 h-8 border border-shark-300 rounded-full bg-transparent cursor-pointer text-base text-shark-800 hover:bg-shark-100">
+              -
+            </button>
+            <span id="adult-cnt" class="text-[15px] min-w-5 text-center"
+              >1</span
+            >
+            <button
+              id="btn-adult-plus"
+              class="w-8 h-8 border border-shark-300 rounded-full bg-transparent cursor-pointer text-base text-shark-800 hover:bg-shark-100">
+              +
+            </button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between py-3">
+          <div>
+            <p class="text-sm font-semibold">어린이</p>
+            <p class="text-xs text-shark-500 mt-0.5">13세 미만</p>
+            <p class="text-xs text-shark-500 mt-0.5" id="child-price"></p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button
+              id="btn-child-minus"
+              class="w-8 h-8 border border-shark-300 rounded-full bg-transparent cursor-pointer text-base text-shark-800 hover:bg-shark-100">
+              -
+            </button>
+            <span id="child-cnt" class="text-[15px] min-w-5 text-center"
+              >0</span
+            >
+            <button
+              id="btn-child-plus"
+              class="w-8 h-8 border border-shark-300 rounded-full bg-transparent cursor-pointer text-base text-shark-800 hover:bg-shark-100">
+              +
+            </button>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-4">
+          <button
+            id="modal-guest-cancel"
+            class="flex-1 py-3 border-0 rounded-lg text-[15px] font-semibold cursor-pointer bg-shark-100 text-shark-800 hover:bg-shark-200">
+            취소
+          </button>
+          <button
+            id="modal-guest-save"
+            class="flex-1 py-3 border-0 rounded-lg text-[15px] font-semibold cursor-pointer bg-primary-500 text-white hover:bg-primary-400">
+            저장
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./reservation-request.js"></script>
+  </body>
+</html>

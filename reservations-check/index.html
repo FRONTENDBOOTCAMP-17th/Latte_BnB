@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../src/style.css" />
+    <script type="module" src="../src/main.js"></script>
+    <script type="module" src="./index.js"></script>
+    <title>latte-bnb | 예약 목록</title>
+  </head>
+  <body
+    data-header="true"
+    data-footer="true"
+    data-nav="true"
+    class="overflow-x-hidden max-[1023px]:[&_footer]:hidden">
+    <main class="min-w-100 pb-20 flex flex-col items-center">
+      <h1
+        id="list"
+        class="self-start scroll-m-20 text-[clamp(1.25rem,4vw,2.25rem)] font-extrabold tracking-tight break-keep py-8 mx-[clamp(1.25rem,4vw,5rem)]">
+        나의 예약 목록
+      </h1>
+      <p id="result" class="self-center font-bold"></p>
+      <ul
+        id="reservation-list"
+        class="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 px-[clamp(20px,4vw,80px)]"></ul>
+    </main>
+  </body>
+</html>

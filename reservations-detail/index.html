@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../src/style.css" />
+    <script type="module" src="../src/main.js"></script>
+    <script type="module" src="./index.js"></script>
+    <title>latte-bnb | 예약 상세</title>
+  </head>
+  <body
+    data-header="true"
+    data-footer="true"
+    data-nav="true"
+    class="overflow-x-hidden max-lg:[&_footer]:hidden">
+    <main class="min-w-87.5">
+      <p
+        id="info"
+        class="mx-4 mt-4 border-b-2 border-shark-300 px-4 pb-4 text-[2rem] font-black md:flex md:w-lg md:flex-col md:flex-wrap md:justify-self-center lg:w-170.5">
+        예약 상세정보
+      </p>
+      <button
+        id="cancel"
+        type="button"
+        class="m-6 flex justify-center justify-self-center gap-2 rounded-lg p-4 font-bold text-negative-600 shadow-[0_0_0_2px_var(--color-negative-600)] max-md:w-[calc(100%-2rem)] max-lg:mb-24 md:w-lg lg:w-170.5">
+        예약 취소
+        <img src="../src/assets/reservation-cancel.svg" alt="취소 이미지" />
+      </button>
+      <div
+        id="modalContainer"
+        class="hidden fixed inset-0 z-1 items-center justify-center bg-[color-mix(in_oklab,var(--color-black)_50%,transparent)]">
+        <div
+          id="cancelModal"
+          class="hidden w-[min(80%,22rem)] flex-nowrap flex-col items-center gap-8 rounded-lg bg-shark-50 p-6">
+          <h2 class="font-bold">예약을 취소하시겠습니까?</h2>
+          <div
+            id="cancelBtn"
+            class="flex w-full gap-4 font-bold justify-around">
+            <button
+              id="cancelYes"
+              class="flex-1 rounded-lg bg-primary-500 py-2 text-white">
+              예
+            </button>
+            <button
+              id="cancelNo"
+              class="flex-1 rounded-lg bg-shark-200 py-2 text-black">
+              아니요
+            </button>
+          </div>
+        </div>
+        <div
+          id="cancelConfirmModal"
+          class="hidden w-[min(80%,22rem)] flex-nowrap flex-col items-center gap-8 rounded-lg bg-shark-50 p-6">
+          <h2 class="font-bold">취소가 완료되었습니다.</h2>
+          <div id="confirmBtn" class="flex w-full justify-around font-bold">
+            <button
+              id="confirmYes"
+              class="flex-1 rounded-lg bg-primary-500 py-2 text-white">
+              확인
+            </button>
+          </div>
+        </div>
+        <div
+          id="cancelFaultModal"
+          class="hidden w-[min(80%,22rem)] flex-nowrap flex-col items-center gap-8 rounded-lg bg-shark-50 p-6">
+          <h2 id="cancelFault" class="whitespace-pre-line font-bold"></h2>
+          <div id="faultBtn" class="flex w-full justify-around font-bold">
+            <button
+              id="faultYes"
+              class="flex-1 rounded-lg bg-primary-500 py-2 text-white">
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

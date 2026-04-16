@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../src/style.css" />
+    <script type="module" src="../src/main.js"></script>
+    <title>latte-bnb | 프로필</title>
+  </head>
+
+  <body data-nav="true" data-header="true" data-footer="true">
+    <main class="max-w-280 mx-auto pb-16">
+      <h1 class="text-[1.3rem] font-semibold tracking-wide m-0 px-8 pt-8 pb-2">
+        프로필
+      </h1>
+
+      <section class="px-6 pt-4 pb-2">
+        <div class="max-w-[850px] mx-auto rounded-[1.25rem] shadow-[0_2px_16px_rgba(0,0,0,0.2)]">
+          <div class="p-6 pb-0 flex items-center gap-6">
+            <div class="relative shrink-0">
+              <img
+                id="avatar"
+                class="w-24 h-24 rounded-full object-cover"
+                alt="프로필 아바타" />
+
+              <span
+                id="phoneCheck"
+                class="hidden absolute right-0 bottom-0 w-6 h-6 rounded-full items-center justify-center bg-positive-600">
+                <svg
+                  class="w-3.5 h-3.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              </span>
+            </div>
+
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <p id="name" class="m-0 text-[1.3rem] font-semibold"></p>
+                <button
+                  id="editProfileBtn"
+                  class="px-5 py-1.5 text-xs font-semibold rounded-full border border-primary-500 text-primary-500 bg-transparent cursor-pointer hover:bg-primary-500 hover:text-white transition-colors">
+                  수정
+                </button>
+              </div>
+
+              <p id="role" class="m-0 text-[0.9rem] text-shark-400"></p>
+
+              <div
+                class="mt-1 flex items-center gap-1.5 text-xs text-shark-400">
+                <span id="createdAt"></span>
+
+                <span id="regionDot" class="hidden">
+                  · <span id="region"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <p
+            id="bio"
+            class="m-0 px-6 py-4 text-sm text-shark-500 leading-relaxed"></p>
+        </div>
+      </section>
+
+      <ul class="px-6 pt-4 pb-2 flex flex-col gap-3 list-none m-0">
+        <li
+          class="profile-accordion-item group border border-shark-200 rounded-lg">
+          <div
+            class="profile-accordion-header flex p-4 items-center justify-between cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">개인정보 처리 방침</h3>
+            <span
+              class="profile-accordion-icon open text-shark-400 text-xs group-[.active]:hidden"
+              >+</span
+            >
+            <span
+              class="profile-accordion-icon close text-shark-400 text-xs hidden group-[.active]:block"
+              >-</span
+            >
+          </div>
+          <div
+            class="profile-accordion-content max-h-0 overflow-hidden transition-all duration-300 group-[.active]:max-h-50 group-[.active]:border-t group-[.active]:border-shark-200">
+            <p class="p-4 m-0 text-sm text-shark-600 leading-relaxed">
+              라떼비앤비는 이용자의 개인정보를 관련 법령에 따라 안전하게
+              처리합니다. 수집하는 항목은 이름, 이메일, 연락처 등 서비스 제공에
+              필요한 최소한의 정보이며, 수집 목적 달성 후에는 지체 없이
+              파기합니다. 법령에 의해 보관이 필요한 경우 해당 기간 동안만
+              보관하며, 이용자의 동의 없이 제3자에게 개인정보를 제공하지
+              않습니다. 이용자는 언제든지 자신의 개인정보에 대한 열람, 수정,
+              삭제를 요청할 수 있습니다. 멋쟁이 사자 부트캠프 FE 17기 화이팅
+            </p>
+          </div>
+        </li>
+
+        <li
+          class="profile-accordion-item group border border-shark-200 rounded-lg">
+          <div
+            class="profile-accordion-header flex p-4 items-center justify-between cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">서비스 이용 약관</h3>
+            <span
+              class="profile-accordion-icon open text-shark-400 text-xs group-[.active]:hidden"
+              >+</span
+            >
+            <span
+              class="profile-accordion-icon close text-shark-400 text-xs hidden group-[.active]:block"
+              >-</span
+            >
+          </div>
+          <div
+            class="profile-accordion-content max-h-0 overflow-hidden transition-all duration-300 group-[.active]:max-h-50 group-[.active]:border-t group-[.active]:border-shark-200">
+            <p class="p-4 m-0 text-sm text-shark-600 leading-relaxed">
+              본 약관은 라떼비앤비가 제공하는 숙소 예약 서비스의 이용 조건 및
+              절차에 관한 사항을 규정합니다. 이용자는 회원가입 시 본 약관에
+              동의한 것으로 간주되며, 서비스 이용 중 관련 법령 및 약관을
+              준수해야 합니다. 부정 이용이 확인될 경우 서비스 이용이 제한될 수
+              있습니다. 약관의 변경 사항은 서비스 내 공지를 통해 안내드리며,
+              변경 후에도 서비스를 계속 이용하실 경우 변경된 약관에 동의한
+              것으로 봅니다. 바닐라라떼조 화이팅
+            </p>
+          </div>
+        </li>
+
+        <li
+          class="profile-accordion-item group border border-shark-200 rounded-lg">
+          <div
+            class="profile-accordion-header flex p-4 items-center justify-between cursor-pointer">
+            <h3 class="text-sm font-semibold m-0">회사 세부정보</h3>
+            <span
+              class="profile-accordion-icon open text-shark-400 text-xs group-[.active]:hidden"
+              >+</span
+            >
+            <span
+              class="profile-accordion-icon close text-shark-400 text-xs hidden group-[.active]:block"
+              >-</span
+            >
+          </div>
+          <div
+            class="profile-accordion-content max-h-0 overflow-hidden transition-all duration-300 group-[.active]:max-h-50 group-[.active]:border-t group-[.active]:border-shark-200">
+            <p class="p-4 m-0 text-sm text-shark-600 leading-relaxed">
+              상호명: 라떼비앤비(Latte BnB) | 대표 : 이동근 이선우 방효진 |
+              주소: 서울특별시 종로구 종로3길 17, D1동 16, 17층(청진동, D타워)
+              멋쟁이사자처럼
+            </p>
+          </div>
+        </li>
+      </ul>
+
+      <section class="px-6 pt-4 pb-10 flex gap-3">
+        <button
+          id="logoutBtn"
+          class="flex-1 p-3.5 border-none rounded-lg text-sm font-semibold cursor-pointer bg-secondary-500 text-white hover:bg-white hover:text-primary-500 hover:border hover:border-primary-500 transition-colors">
+          로그아웃
+        </button>
+        <button
+          id="withdrawBtn"
+          class="flex-1 p-3.5 border-none rounded-lg text-sm cursor-pointer bg-shark-300 text-shark-600 hover:bg-white hover:text-shark-600 hover:border hover:border-shark-400 transition-colors">
+          회원탈퇴
+        </button>
+      </section>
+    </main>
+
+    <div
+      id="editProfileModal"
+      class="hidden fixed inset-0 bg-black/50 items-center justify-center">
+      <div class="p-6 w-[85%] max-w-100 bg-shark-50 rounded-lg">
+        <h3 class="text-base m-0 mb-4">프로필 수정</h3>
+        <div class="flex flex-col gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-shark-700 mb-1"
+              >자기소개</label
+            >
+            <textarea
+              id="editBio"
+              maxlength="200"
+              rows="3"
+              placeholder="자기소개를 입력해주세요. (최대 200자)"
+              class="w-full p-2.5 text-sm border border-shark-300 rounded box-border resize-none"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-shark-700 mb-1"
+              >거주 지역</label
+            >
+            <select
+              id="editRegion"
+              class="w-full p-2.5 text-sm border border-shark-300 rounded box-border bg-white">
+              <option value="">선택 안함</option>
+              <option value="서울">서울</option>
+              <option value="경기">경기</option>
+              <option value="인천">인천</option>
+              <option value="강원">강원</option>
+              <option value="충남">충남</option>
+              <option value="충북">충북</option>
+              <option value="대전">대전</option>
+              <option value="세종">세종</option>
+              <option value="경남">경남</option>
+              <option value="경북">경북</option>
+              <option value="대구">대구</option>
+              <option value="울산">울산</option>
+              <option value="부산">부산</option>
+              <option value="전남">전남</option>
+              <option value="전북">전북</option>
+              <option value="광주">광주</option>
+              <option value="제주">제주</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-4">
+          <button
+            id="editProfileCancel"
+            class="flex-1 text-sm p-2.5 rounded cursor-pointer bg-shark-200">
+            취소
+          </button>
+          <button
+            id="editProfileOk"
+            class="flex-1 text-sm p-2.5 rounded cursor-pointer bg-primary-500 text-shark-50">
+            저장
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      id="withdrawModal"
+      class="hidden fixed inset-0 bg-black/50 items-center justify-center">
+      <div class="p-6 w-[85%] max-w-100 bg-shark-50 rounded-lg">
+        <h3 class="text-base m-0 mb-3">회원 탈퇴하기</h3>
+        <p class="m-0 mb-3 text-sm text-shark-500">
+          회원 탈퇴를 위해 비밀번호를 입력해주세요.
+          <input
+            id="withdrawPassword"
+            type="password"
+            placeholder="비밀번호"
+            class="w-full mt-2 p-2.5 text-sm border border-shark-300 rounded box-border" />
+        </p>
+        <div class="flex gap-2 mt-3">
+          <button
+            id="withdrawCancel"
+            class="flex-1 text-sm p-2.5 rounded cursor-pointer bg-shark-200">
+            취소
+          </button>
+          <button
+            id="withdrawOk"
+            class="flex-1 text-sm p-2.5 rounded cursor-pointer bg-primary-500 text-shark-50">
+            탈퇴
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./profile.js"></script>
+  </body>
+</html>
