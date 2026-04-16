@@ -5,6 +5,12 @@ import hamburger from './components/hamburger';
 import navigation from './components/navigation';
 import { getProfile } from '../src/api/auth.js';
 
+const favicon = document.createElement('link');
+favicon.rel = 'icon';
+favicon.type = 'image/svg+xml';
+favicon.href = '/favicon.svg';
+document.head.appendChild(favicon);
+
 let result = null;
 
 if (document.body.dataset.header === 'true') {
