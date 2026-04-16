@@ -5,6 +5,11 @@ import constants from '../../src/constants.js';
 import adminLogo from '../adminLogo.js';
 import { checkAdmin } from '../../src/api/auth.js';
 import { imageRequest, request } from '../../src/api/client.js';
+import { buildHistoryBackButton } from '../../src/components/historyBackButton.js';
+import {
+  makeRegionInputSearchable,
+  openPostcodePopup,
+} from '../../src/components/postcodeSearch.js';
 
 checkAdmin();
 
@@ -23,39 +28,6 @@ if (!Number.isFinite(accommodationId)) {
 } else {
   bindDelegatedEvents();
   loadAccommodationForEdit();
-}
-
-function canNavigateBack() {
-  if (history.length <= 1 || !document.referrer) {
-    return false;
-  }
-
-  try {
-    return new URL(document.referrer).origin === location.origin;
-  } catch {
-    return false;
-  }
-}
-
-function buildHistoryBackButton(fallbackHref) {
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.setAttribute('aria-label', '뒤로가기');
-  button.className =
-    'fixed top-4 left-4 z-100 rounded-full bg-primary-500 hover:bg-primary-500/80 text-white p-2';
-  button.innerHTML = `
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-6">
-    <path stroke-linecap="round" stroke-linejoin="round" d="M10.75 19.25 3.5 12m0 0 7.25-7.25M3.5 12h17" />
-  </svg>
-  `;
-  button.addEventListener('click', () => {
-    if (canNavigateBack()) {
-      history.back();
-      return;
-    }
-    location.href = fallbackHref;
-  });
-  return button;
 }
 
 async function loadAccommodationForEdit() {
@@ -86,6 +58,7 @@ function renderEditPage() {
   const formElement = accommodationForm.buildForm(constants.FORM_MODE.EDIT);
   formElement.appendChild(buildSubmitButton());
   content.replaceChildren(formElement);
+  applyRegionSearchInputUI();
 }
 
 function buildSubmitButton() {
@@ -104,206 +77,56 @@ function bindDelegatedEvents() {
 }
 
 async function handleClick(e) {
-  const deleteButton = e.target.closest('#thumbnailDeleteBtn');
-  if (deleteButton) {
-    accommodationForm.removeThumbnail();
-    return;
-  }
-
-  const insertButton = e.target.closest('#thumbnailInsertBtn');
-  if (insertButton) {
-    const thumbnailURLInput = content.querySelector('#thumbnailURL');
-    const url = thumbnailURLInput?.value.trim() ?? '';
-    if (!url) {
-      return;
-    }
-
-    accommodationForm.setThumbnailFromUrl(url);
-    return;
-  }
-
-  const imageDeleteButton = e.target.closest('.imageDeleteBtn');
-  if (imageDeleteButton) {
-    const imageElement = imageDeleteButton.closest('[data-id]');
-    const imageId = imageElement?.dataset.id;
-    if (!imageId) {
-      return;
-    }
-
-    accommodationForm.removeImage(imageId);
-    return;
-  }
-
-  const imageInsertButton = e.target.closest('#imageInsertBtn');
-  if (imageInsertButton) {
-    const imageURLInput = content.querySelector('#imageURL');
-    const url = imageURLInput?.value.trim() ?? '';
-    if (!url) {
-      return;
-    }
-
-    accommodationForm.addImageFromUrl(url);
-    return;
-  }
-
-  const imageTitleApplyButton = e.target.closest('#imageTitleApplyBtn');
-  if (imageTitleApplyButton) {
-    const imageTitleInput = content.querySelector('#imageTitleInput');
-    accommodationForm.updateSelectedImageTitle(imageTitleInput?.value ?? '');
-    return;
-  }
-
-  const imageDescriptionApplyButton = e.target.closest(
-    '#imageDescriptionApplyBtn',
-  );
-  if (imageDescriptionApplyButton) {
-    const imageDescriptionInput = content.querySelector(
-      '#imageDescriptionInput',
-    );
-    accommodationForm.updateSelectedImageDescription(
-      imageDescriptionInput?.value ?? '',
-    );
-    return;
-  }
-
-  const titleApplyButton = e.target.closest('#titleApplyBtn');
-  if (titleApplyButton) {
-    const titleInput = content.querySelector('#titleInput');
-    accommodationForm.updateAccommodationTitle(titleInput?.value ?? '');
-    return;
-  }
-
-  const addressApplyButton = e.target.closest('#addressApplyBtn');
-  if (addressApplyButton) {
-    const regionInput = content.querySelector('#regionInput');
-    const detailAddressInput = content.querySelector('#detailAddressInput');
-    accommodationForm.updateAccommodationAddress(
-      regionInput?.value ?? '',
-      detailAddressInput?.value ?? '',
-    );
-    return;
-  }
-
-  const maxGuestApplyButton = e.target.closest('#maxGuestApplyBtn');
-  if (maxGuestApplyButton) {
-    const maxGuestInput = content.querySelector('#maxGuestInput');
-    accommodationForm.updateAccommodationMaxGuest(maxGuestInput?.value ?? '');
-    return;
-  }
-
-  const descriptionApplyButton = e.target.closest('#descriptionApplyBtn');
-  if (descriptionApplyButton) {
-    const descriptionInput = content.querySelector('#descriptionInput');
-    accommodationForm.updateAccommodationDescription(
-      descriptionInput?.value ?? '',
-    );
-    return;
-  }
-
-  const adultPriceApplyButton = e.target.closest('#adultPriceApplyBtn');
-  if (adultPriceApplyButton) {
-    const adultPriceInput = content.querySelector('#adultPriceInput');
-    accommodationForm.updateAccommodationPrice(
-      'adultPrice',
-      adultPriceInput?.value ?? '',
-    );
-    return;
-  }
-
-  const childPriceApplyButton = e.target.closest('#childPriceApplyBtn');
-  if (childPriceApplyButton) {
-    const childPriceInput = content.querySelector('#childPriceInput');
-    accommodationForm.updateAccommodationPrice(
-      'childPrice',
-      childPriceInput?.value ?? '',
-    );
-    return;
-  }
-
-  const serviceFeeApplyButton = e.target.closest('#serviceFeeApplyBtn');
-  if (serviceFeeApplyButton) {
-    const serviceFeeInput = content.querySelector('#serviceFeeInput');
-    accommodationForm.updateAccommodationPrice(
-      'serviceFee',
-      serviceFeeInput?.value ?? '',
-    );
-    return;
-  }
-
-  const minNightsApplyButton = e.target.closest('#minNightsApplyBtn');
-  if (minNightsApplyButton) {
-    const minNightsInput = content.querySelector('#minNightsInput');
-    accommodationForm.updateAccommodationMinNights(minNightsInput?.value ?? '');
-    return;
-  }
-
-  const blockedDateAddButton = e.target.closest('#blockedDateAddBtn');
-  if (blockedDateAddButton) {
-    const startDateInput = content.querySelector('#startDateInput');
-    const endDateInput = content.querySelector('#endDateInput');
-    const result = accommodationForm.addBlockedDate(
-      startDateInput?.value ?? '',
-      endDateInput?.value ?? '',
-    );
-    if (!result.success && result.message) {
-      alert(result.message);
-    }
-    return;
-  }
-
-  const blockedDateDeleteButton = e.target.closest('.blockedDateDeleteBtn');
-  if (blockedDateDeleteButton) {
-    const blockedDateId = blockedDateDeleteButton.dataset.id;
-    if (!blockedDateId) {
-      return;
-    }
-
-    accommodationForm.removeBlockedDate(blockedDateId);
-    return;
-  }
-
   const submitButton = e.target.closest('#submitAccommodationEditBtn');
   if (submitButton) {
     await submitAccommodation(submitButton);
+    return;
+  }
+
+  const { handled, result } = await accommodationForm.handleDelegatedClick(
+    e.target,
+    {
+      onRegionInputClick: handleRegionInputClick,
+    },
+  );
+  if (!handled) {
+    return;
+  }
+
+  if (result?.success === false && result.message) {
+    toast.warn('예약 불가 날짜 추가 실패', result.message, 4);
   }
 }
 
 function handleChange(e) {
-  const fileInput = e.target.closest('#thumbnailFile');
-  if (fileInput instanceof HTMLInputElement) {
-    const file = fileInput.files?.[0];
-    if (!file) {
-      return;
-    }
+  accommodationForm.handleDelegatedChange(e.target);
+}
 
-    accommodationForm.setThumbnailFromFile(file);
-    return;
-  }
+function applyRegionSearchInputUI() {
+  const regionInput = content.querySelector('#regionInput');
+  makeRegionInputSearchable(regionInput);
+}
 
-  const imageFileInput = e.target.closest('#imageFile');
-  if (imageFileInput instanceof HTMLInputElement) {
-    const files = Array.from(imageFileInput.files ?? []);
-    if (files.length === 0) {
-      return;
-    }
-
-    accommodationForm.addImagesFromFiles(files);
-    return;
-  }
-
-  const imageRadio = e.target.closest('input[name="image"]');
-  if (imageRadio instanceof HTMLInputElement) {
-    accommodationForm.setSelectedImage(imageRadio.value);
+async function handleRegionInputClick(regionInput) {
+  const detailInput = content.querySelector('#detailAddressInput');
+  try {
+    await openPostcodePopup(regionInput, detailInput);
+  } catch {
+    toast.warn(
+      '주소 검색 실패',
+      '카카오 우편번호 서비스를 불러오지 못했습니다.',
+      4,
+    );
   }
 }
 
 function getRequiredMessages(modified) {
   const messages = [];
-  const title = modified.title?.trim() ?? '';
-  const region = modified.location?.region?.trim() ?? '';
-  const maxGuest = Number.parseInt(modified.maxGuest, 10);
-  const adultPrice = `${modified.pricing?.adultPrice ?? ''}`.trim();
-  const childPrice = `${modified.pricing?.childPrice ?? ''}`.trim();
+  const title = normalizeText(modified.title);
+  const region = normalizeText(modified.location?.region);
+  const maxGuest = normalizeRequiredNumber(modified.maxGuest);
+  const adultPrice = normalizeRequiredNumber(modified.pricing?.adultPrice);
+  const childPrice = normalizeRequiredNumber(modified.pricing?.childPrice);
 
   if (!title) {
     messages.push('숙소 이름');
@@ -312,148 +135,128 @@ function getRequiredMessages(modified) {
     messages.push('지역');
   }
   if (!Number.isFinite(maxGuest) || maxGuest < 1) {
-    messages.push('최대 수용 인원');
+    messages.push('최대 허용 인원');
   }
-  if (!adultPrice) {
-    messages.push('성인 1박 요금');
+  if (!Number.isFinite(adultPrice) || adultPrice < 0) {
+    messages.push('성인 1박당 요금');
   }
-  if (!childPrice) {
-    messages.push('어린이 1박 요금');
+  if (!Number.isFinite(childPrice) || childPrice < 0) {
+    messages.push('어린이 1박당 요금');
   }
 
   return messages;
-}
-
-function buildRequestPayload(data) {
-  const payload = {
-    title: data.title.trim(),
-    region: data.location?.region?.trim() ?? '',
-    maxGuest: Number.parseInt(data.maxGuest, 10),
-    adultPrice: Number.parseInt(data.pricing?.adultPrice, 10),
-    childPrice: Number.parseInt(data.pricing?.childPrice, 10),
-  };
-
-  const address = data.location?.address?.trim() ?? '';
-  if (address) {
-    payload.address = address;
-  }
-
-  const description = data.description?.trim() ?? '';
-  if (description) {
-    payload.description = description;
-  }
-
-  const serviceFee = `${data.pricing?.serviceFee ?? ''}`.trim();
-  if (serviceFee) {
-    payload.serviceFee = Number.parseInt(serviceFee, 10);
-  }
-
-  const minNights = Number.parseInt(data.bookingPolicy?.minNights, 10);
-  if (Number.isFinite(minNights) && minNights >= 1) {
-    payload.minNights = minNights;
-  }
-
-  const blockedDates = Array.isArray(data.bookingPolicy?.blockedDates)
-    ? data.bookingPolicy.blockedDates
-    : [];
-  if (blockedDates.length > 0) {
-    const sanitizedBlockedDates = blockedDates
-      .filter(
-        (blockedDate) =>
-          blockedDate?.startDate &&
-          blockedDate?.endDate &&
-          blockedDate.startDate <= blockedDate.endDate,
-      )
-      .map((blockedDate) => ({
-        startDate: blockedDate.startDate,
-        endDate: blockedDate.endDate,
-        reason:
-          blockedDate.reason === 'RESERVATION' ? 'RESERVATION' : 'HOST_BLOCK',
-      }));
-    if (sanitizedBlockedDates.length > 0) {
-      payload.blockedDates = sanitizedBlockedDates;
-    }
-  }
-
-  return payload;
 }
 
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
-function getSafeArray(value) {
-  return Array.isArray(value) ? value : [];
+function normalizeText(value) {
+  return `${value ?? ''}`.trim();
 }
 
-function mergeAccommodationData(origin, modified) {
-  const originImages = getSafeArray(origin?.images);
-  const modifiedImages = getSafeArray(modified?.images);
-  const originBlockedDates = getSafeArray(origin?.bookingPolicy?.blockedDates);
-  const modifiedBlockedDates = getSafeArray(
-    modified?.bookingPolicy?.blockedDates,
-  );
-
-  return {
-    ...clone(origin ?? {}),
-    ...clone(modified ?? {}),
-    thumbnailUrl: `${modified?.thumbnailUrl ?? origin?.thumbnailUrl ?? ''}`,
-    location: {
-      ...(origin?.location ?? {}),
-      ...(modified?.location ?? {}),
-    },
-    pricing: {
-      ...(origin?.pricing ?? {}),
-      ...(modified?.pricing ?? {}),
-    },
-    bookingPolicy: {
-      ...(origin?.bookingPolicy ?? {}),
-      ...(modified?.bookingPolicy ?? {}),
-      blockedDates:
-        modifiedBlockedDates.length > 0 || originBlockedDates.length === 0
-          ? modifiedBlockedDates
-          : originBlockedDates,
-    },
-    images:
-      modifiedImages.length > 0 || originImages.length === 0
-        ? modifiedImages
-        : originImages,
-  };
+function normalizeRequiredNumber(value) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
-function normalizeMediaUrl(url) {
-  const trimmed = `${url ?? ''}`.trim();
+function normalizeOptionalNumber(value) {
+  const normalized = normalizeText(value);
+  if (!normalized) {
+    return null;
+  }
+
+  const parsed = Number.parseInt(normalized, 10);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function normalizeMediaUrl(url, useBlobPlaceholder = false) {
+  const trimmed = normalizeText(url);
   if (!trimmed) {
     return '';
   }
+
   if (trimmed.startsWith('blob:')) {
-    return '__blob__';
+    return useBlobPlaceholder ? '__blob__' : '';
   }
+
   return trimmed;
 }
 
-function buildComparablePayload(data) {
-  const payload = buildRequestPayload(data);
-  payload.thumbnailUrl = normalizeMediaUrl(data.thumbnailUrl);
+function normalizeBlockedDates(blockedDates) {
+  const safeBlockedDates = Array.isArray(blockedDates) ? blockedDates : [];
 
-  const images = Array.isArray(data.images) ? data.images : [];
-  payload.images = images
+  return safeBlockedDates
+    .filter(
+      (blockedDate) =>
+        blockedDate?.startDate &&
+        blockedDate?.endDate &&
+        blockedDate.startDate <= blockedDate.endDate,
+    )
+    .map((blockedDate) => ({
+      startDate: blockedDate.startDate,
+      endDate: blockedDate.endDate,
+      reason: blockedDate.reason === 'RESERVATION' ? 'RESERVATION' : 'HOST_BLOCK',
+    }));
+}
+
+function normalizeImages(images, { useBlobPlaceholder = false } = {}) {
+  const safeImages = Array.isArray(images) ? images : [];
+
+  return safeImages
     .map((image) => ({
-      url: normalizeMediaUrl(image?.url),
-      title: image?.title ?? '',
-      description: image?.description ?? '',
+      url: normalizeMediaUrl(image?.url, useBlobPlaceholder),
+      title: normalizeText(image?.title),
+      description: normalizeText(image?.description),
     }))
     .filter((image) => image.url);
+}
 
-  return payload;
+function buildNormalizedSnapshot(data, options = {}) {
+  return {
+    title: normalizeText(data?.title),
+    region: normalizeText(data?.location?.region),
+    address: normalizeText(data?.location?.address),
+    maxGuest: normalizeRequiredNumber(data?.maxGuest),
+    description: normalizeText(data?.description),
+    adultPrice: normalizeRequiredNumber(data?.pricing?.adultPrice),
+    childPrice: normalizeRequiredNumber(data?.pricing?.childPrice),
+    serviceFee: normalizeOptionalNumber(data?.pricing?.serviceFee),
+    minNights: normalizeOptionalNumber(data?.bookingPolicy?.minNights),
+    thumbnailUrl: normalizeMediaUrl(data?.thumbnailUrl, options.useBlobPlaceholder),
+    blockedDates: normalizeBlockedDates(data?.bookingPolicy?.blockedDates),
+    images: normalizeImages(data?.images, options),
+  };
+}
+
+function isSameValue(origin, modified) {
+  return JSON.stringify(origin) === JSON.stringify(modified);
+}
+
+function buildRequestPayload(snapshot) {
+  return {
+    title: snapshot.title,
+    region: snapshot.region,
+    address: snapshot.address,
+    maxGuest: snapshot.maxGuest,
+    description: snapshot.description,
+    adultPrice: snapshot.adultPrice,
+    childPrice: snapshot.childPrice,
+    serviceFee: snapshot.serviceFee,
+    minNights: snapshot.minNights,
+    thumbnailUrl: snapshot.thumbnailUrl,
+    blockedDates: snapshot.blockedDates,
+    images: snapshot.images,
+  };
 }
 
 function hasAccommodationChanged(origin, modified) {
-  const originComparable = buildComparablePayload(origin);
-  const modifiedComparable = buildComparablePayload(modified);
-  return (
-    JSON.stringify(originComparable) !== JSON.stringify(modifiedComparable)
-  );
+  const originSnapshot = buildNormalizedSnapshot(origin);
+  const modifiedSnapshot = buildNormalizedSnapshot(modified, {
+    useBlobPlaceholder: true,
+  });
+
+  return !isSameValue(originSnapshot, modifiedSnapshot);
 }
 
 async function uploadImage(file) {
@@ -467,31 +270,27 @@ async function uploadImage(file) {
   return data.imageUrl;
 }
 
-async function applyThumbnailUpload(requestData, modified) {
+async function resolveThumbnailUrl(modified) {
   const thumbnailFile = accommodationForm.getThumbnailFile();
   if (thumbnailFile) {
-    requestData.thumbnailUrl = await uploadImage(thumbnailFile);
-    return;
+    return uploadImage(thumbnailFile);
   }
 
-  const thumbnailUrl = `${modified.thumbnailUrl ?? ''}`.trim();
-  if (thumbnailUrl && !thumbnailUrl.startsWith('blob:')) {
-    requestData.thumbnailUrl = thumbnailUrl;
-  }
+  return normalizeMediaUrl(modified?.thumbnailUrl);
 }
 
-async function applyImageUploads(requestData, modified) {
-  const images = Array.isArray(modified.images) ? modified.images : [];
-  if (images.length === 0) {
-    return;
+async function resolveImages(modified) {
+  const sourceImages = Array.isArray(modified?.images) ? modified.images : [];
+  if (sourceImages.length === 0) {
+    return [];
   }
 
   const files = accommodationForm.getImageFiles();
   let fileIndex = 0;
   const uploadedImages = [];
 
-  for (const image of images) {
-    const sourceUrl = `${image.url ?? ''}`.trim();
+  for (const image of sourceImages) {
+    const sourceUrl = normalizeText(image?.url);
     if (!sourceUrl) {
       continue;
     }
@@ -499,20 +298,28 @@ async function applyImageUploads(requestData, modified) {
     let finalUrl = sourceUrl;
     if (sourceUrl.startsWith('blob:')) {
       const file = files[fileIndex++];
-      if (!file) {
+      if (!(file instanceof File)) {
         continue;
       }
+
       finalUrl = await uploadImage(file);
     }
 
     uploadedImages.push({
       url: finalUrl,
-      title: image.title ?? '',
-      description: image.description ?? '',
+      title: normalizeText(image?.title),
+      description: normalizeText(image?.description),
     });
   }
 
-  requestData.images = uploadedImages;
+  return uploadedImages;
+}
+
+async function buildResolvedModifiedData(modified) {
+  const resolved = clone(modified);
+  resolved.thumbnailUrl = await resolveThumbnailUrl(modified);
+  resolved.images = await resolveImages(modified);
+  return resolved;
 }
 
 async function submitAccommodation(button) {
@@ -527,7 +334,7 @@ async function submitAccommodation(button) {
   if (requiredMessages.length > 0) {
     toast.warn(
       '필수 값 입력',
-      `${requiredMessages.join(', ')} 필드는 필수로 입력해야합니다.`,
+      `${requiredMessages.join(', ')} 필드는 필수로 입력해야 합니다.`,
       5,
     );
     return;
@@ -536,7 +343,7 @@ async function submitAccommodation(button) {
   if (!hasAccommodationChanged(origin, modified)) {
     toast.message(
       '변경 사항 없음',
-      '수정된 내용이 없어 저장 요청을 생략했습니다.',
+      '수정할 내용이 없어 저장 요청을 생략했습니다.',
       3,
     );
     return;
@@ -544,10 +351,9 @@ async function submitAccommodation(button) {
 
   button.disabled = true;
   try {
-    const merged = mergeAccommodationData(origin, modified);
-    const requestData = buildRequestPayload(merged);
-    await applyThumbnailUpload(requestData, merged);
-    await applyImageUploads(requestData, merged);
+    const resolvedModified = await buildResolvedModifiedData(modified);
+    const modifiedSnapshot = buildNormalizedSnapshot(resolvedModified);
+    const requestData = buildRequestPayload(modifiedSnapshot);
 
     const { success, message } = await request(
       `/admin/accommodations/${accommodationId}`,

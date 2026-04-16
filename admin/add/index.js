@@ -5,13 +5,14 @@ import constants from '../../src/constants.js';
 import adminLogo from '../adminLogo.js';
 import { checkAdmin } from '../../src/api/auth.js';
 import { imageRequest, request } from '../../src/api/client.js';
+import {
+  makeRegionInputSearchable,
+  openPostcodePopup,
+} from '../../src/components/postcodeSearch.js';
 
 checkAdmin();
 
 const content = document.getElementById('content');
-const KAKAO_POSTCODE_SCRIPT_URL =
-  'https://t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
-let postcodeScriptPromise = null;
 
 document.body.prepend(adminLogo.build());
 renderAddPage();
@@ -24,11 +25,7 @@ function renderAddPage() {
   content.replaceChildren(formElement);
 
   const regionInput = content.querySelector('#regionInput');
-  if (regionInput instanceof HTMLInputElement) {
-    regionInput.readOnly = true;
-    regionInput.placeholder = '주소 검색을 위해 클릭하세요';
-    regionInput.classList.add('cursor-pointer');
-  }
+  makeRegionInputSearchable(regionInput);
 }
 
 function buildSubmitButton() {
@@ -47,200 +44,41 @@ function bindDelegatedEvents() {
 }
 
 async function handleClick(e) {
-  const regionInput = e.target.closest('#regionInput');
-  if (regionInput instanceof HTMLInputElement) {
-    await openPostcodePopup(regionInput);
-    return;
-  }
-
-  const deleteButton = e.target.closest('#thumbnailDeleteBtn');
-  if (deleteButton) {
-    accommodationForm.removeThumbnail();
-    return;
-  }
-
-  const insertButton = e.target.closest('#thumbnailInsertBtn');
-  if (insertButton) {
-    const thumbnailURLInput = content.querySelector('#thumbnailURL');
-    const url = thumbnailURLInput?.value.trim() ?? '';
-    if (!url) {
-      return;
-    }
-
-    accommodationForm.setThumbnailFromUrl(url);
-    return;
-  }
-
-  const imageDeleteButton = e.target.closest('.imageDeleteBtn');
-  if (imageDeleteButton) {
-    const imageElement = imageDeleteButton.closest('[data-id]');
-    const imageId = imageElement?.dataset.id;
-    if (!imageId) {
-      return;
-    }
-
-    accommodationForm.removeImage(imageId);
-    return;
-  }
-
-  const imageInsertButton = e.target.closest('#imageInsertBtn');
-  if (imageInsertButton) {
-    const imageURLInput = content.querySelector('#imageURL');
-    const url = imageURLInput?.value.trim() ?? '';
-    if (!url) {
-      return;
-    }
-
-    accommodationForm.addImageFromUrl(url);
-    return;
-  }
-
-  const imageTitleApplyButton = e.target.closest('#imageTitleApplyBtn');
-  if (imageTitleApplyButton) {
-    const imageTitleInput = content.querySelector('#imageTitleInput');
-    accommodationForm.updateSelectedImageTitle(imageTitleInput?.value ?? '');
-    return;
-  }
-
-  const imageDescriptionApplyButton = e.target.closest(
-    '#imageDescriptionApplyBtn',
-  );
-  if (imageDescriptionApplyButton) {
-    const imageDescriptionInput = content.querySelector('#imageDescriptionInput');
-    accommodationForm.updateSelectedImageDescription(
-      imageDescriptionInput?.value ?? '',
-    );
-    return;
-  }
-
-  const titleApplyButton = e.target.closest('#titleApplyBtn');
-  if (titleApplyButton) {
-    const titleInput = content.querySelector('#titleInput');
-    accommodationForm.updateAccommodationTitle(titleInput?.value ?? '');
-    return;
-  }
-
-  const addressApplyButton = e.target.closest('#addressApplyBtn');
-  if (addressApplyButton) {
-    const regionInput = content.querySelector('#regionInput');
-    const detailAddressInput = content.querySelector('#detailAddressInput');
-    accommodationForm.updateAccommodationAddress(
-      regionInput?.value ?? '',
-      detailAddressInput?.value ?? '',
-    );
-    return;
-  }
-
-  const maxGuestApplyButton = e.target.closest('#maxGuestApplyBtn');
-  if (maxGuestApplyButton) {
-    const maxGuestInput = content.querySelector('#maxGuestInput');
-    accommodationForm.updateAccommodationMaxGuest(maxGuestInput?.value ?? '');
-    return;
-  }
-
-  const descriptionApplyButton = e.target.closest('#descriptionApplyBtn');
-  if (descriptionApplyButton) {
-    const descriptionInput = content.querySelector('#descriptionInput');
-    accommodationForm.updateAccommodationDescription(
-      descriptionInput?.value ?? '',
-    );
-    return;
-  }
-
-  const adultPriceApplyButton = e.target.closest('#adultPriceApplyBtn');
-  if (adultPriceApplyButton) {
-    const adultPriceInput = content.querySelector('#adultPriceInput');
-    accommodationForm.updateAccommodationPrice(
-      'adultPrice',
-      adultPriceInput?.value ?? '',
-    );
-    return;
-  }
-
-  const childPriceApplyButton = e.target.closest('#childPriceApplyBtn');
-  if (childPriceApplyButton) {
-    const childPriceInput = content.querySelector('#childPriceInput');
-    accommodationForm.updateAccommodationPrice(
-      'childPrice',
-      childPriceInput?.value ?? '',
-    );
-    return;
-  }
-
-  const serviceFeeApplyButton = e.target.closest('#serviceFeeApplyBtn');
-  if (serviceFeeApplyButton) {
-    const serviceFeeInput = content.querySelector('#serviceFeeInput');
-    accommodationForm.updateAccommodationPrice(
-      'serviceFee',
-      serviceFeeInput?.value ?? '',
-    );
-    return;
-  }
-
-  const minNightsApplyButton = e.target.closest('#minNightsApplyBtn');
-  if (minNightsApplyButton) {
-    const minNightsInput = content.querySelector('#minNightsInput');
-    accommodationForm.updateAccommodationMinNights(minNightsInput?.value ?? '');
-    return;
-  }
-
-  const blockedDateAddButton = e.target.closest('#blockedDateAddBtn');
-  if (blockedDateAddButton) {
-    const startDateInput = content.querySelector('#startDateInput');
-    const endDateInput = content.querySelector('#endDateInput');
-    const result = accommodationForm.addBlockedDate(
-      startDateInput?.value ?? '',
-      endDateInput?.value ?? '',
-    );
-    if (!result.success && result.message) {
-      alert(result.message);
-    }
-    return;
-  }
-
-  const blockedDateDeleteButton = e.target.closest('.blockedDateDeleteBtn');
-  if (blockedDateDeleteButton) {
-    const blockedDateId = blockedDateDeleteButton.dataset.id;
-    if (!blockedDateId) {
-      return;
-    }
-
-    accommodationForm.removeBlockedDate(blockedDateId);
-    return;
-  }
-
   const submitButton = e.target.closest('#submitAccommodationBtn');
   if (submitButton) {
     await submitAccommodation(submitButton);
+    return;
+  }
+
+  const { handled, result } = await accommodationForm.handleDelegatedClick(
+    e.target,
+    {
+      onRegionInputClick: handleRegionInputClick,
+    },
+  );
+  if (!handled) {
+    return;
+  }
+
+  if (result?.success === false && result.message) {
+    toast.warn('예약 불가 날짜 추가 실패', result.message, 4);
   }
 }
 
 function handleChange(e) {
-  const fileInput = e.target.closest('#thumbnailFile');
-  if (fileInput instanceof HTMLInputElement) {
-    const file = fileInput.files?.[0];
-    if (!file) {
-      return;
-    }
+  accommodationForm.handleDelegatedChange(e.target);
+}
 
-    accommodationForm.setThumbnailFromFile(file);
-    return;
-  }
-
-  const imageFileInput = e.target.closest('#imageFile');
-  if (imageFileInput instanceof HTMLInputElement) {
-    const files = Array.from(imageFileInput.files ?? []);
-    if (files.length === 0) {
-      return;
-    }
-
-    accommodationForm.addImagesFromFiles(files);
-    return;
-  }
-
-  const imageRadio = e.target.closest('input[name="image"]');
-  if (imageRadio instanceof HTMLInputElement) {
-    accommodationForm.setSelectedImage(imageRadio.value);
+async function handleRegionInputClick(regionInput) {
+  const detailInput = content.querySelector('#detailAddressInput');
+  try {
+    await openPostcodePopup(regionInput, detailInput);
+  } catch {
+    toast.warn(
+      '주소 검색 실패',
+      '카카오 우편번호 서비스를 불러오지 못했습니다.',
+      4,
+    );
   }
 }
 
@@ -323,72 +161,6 @@ function buildRequestPayload(modified) {
   }
 
   return payload;
-}
-
-function ensurePostcodeScriptLoaded() {
-  if (window.kakao?.Postcode || window.daum?.Postcode) {
-    return Promise.resolve();
-  }
-
-  if (postcodeScriptPromise) {
-    return postcodeScriptPromise;
-  }
-
-  postcodeScriptPromise = new Promise((resolve, reject) => {
-    const existing = document.querySelector('script[data-kakao-postcode]');
-    if (existing) {
-      existing.addEventListener('load', () => resolve(), { once: true });
-      existing.addEventListener(
-        'error',
-        () => reject(new Error('kakao postcode load failed')),
-        { once: true },
-      );
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.src = KAKAO_POSTCODE_SCRIPT_URL;
-    script.async = true;
-    script.dataset.kakaoPostcode = 'true';
-    script.addEventListener('load', () => resolve(), { once: true });
-    script.addEventListener(
-      'error',
-      () => reject(new Error('kakao postcode load failed')),
-      { once: true },
-    );
-    document.head.appendChild(script);
-  });
-
-  return postcodeScriptPromise;
-}
-
-function getPostcodeConstructor() {
-  return window.kakao?.Postcode ?? window.daum?.Postcode ?? null;
-}
-
-async function openPostcodePopup(regionInput) {
-  try {
-    await ensurePostcodeScriptLoaded();
-  } catch (error) {
-    toast.warn('주소 검색 실패', '카카오 우편번호 스크립트를 불러오지 못했습니다.', 4);
-    return;
-  }
-
-  const Postcode = getPostcodeConstructor();
-  if (!Postcode) {
-    toast.warn('주소 검색 실패', '카카오 우편번호를 사용할 수 없습니다.', 4);
-    return;
-  }
-
-  new Postcode({
-    oncomplete(data) {
-      const selectedAddress =
-        data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
-      regionInput.value = `${selectedAddress ?? ''}`.trim();
-      const detailInput = content.querySelector('#detailAddressInput');
-      detailInput?.focus();
-    },
-  }).open();
 }
 
 async function uploadImage(file) {

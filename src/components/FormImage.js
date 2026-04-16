@@ -23,7 +23,7 @@ export class FormImage {
     const img = document.createElement('img');
     img.src = this.#src;
     img.alt = 'accommodation image';
-    img.className = 'w-full min-w-80 aspect-square object-cover rounded-2xl';
+    img.className = 'max-w-80 min-w-80 aspect-square object-cover rounded-2xl';
 
     if (mode !== constants.FORM_MODE.VIEW) {
       const button = document.createElement('button');
