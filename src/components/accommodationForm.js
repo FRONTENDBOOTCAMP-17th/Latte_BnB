@@ -1,6 +1,26 @@
 import { request } from '../api/client.js';
 import { FormImage } from './FormImage.js';
 import constants from '../constants.js';
+import toast from './toast.js';
+import {
+  clampNumberByInput,
+  cloneData,
+  combineAddress,
+  formatPrice,
+  getNumberStep,
+  getTodayString,
+  normalizeAddressValue,
+  parsePositiveInteger,
+  splitAddressParts,
+} from './accommodationForm.utils.js';
+import {
+  getAccommodationFormHTMLReference,
+  getInputValue,
+} from './accommodationForm.dom.js';
+import {
+  handleAccommodationDelegatedChange,
+  handleAccommodationDelegatedClick,
+} from './accommodationForm.delegated.js';
 
 let originData = null;
 let modifiedData = null;
@@ -33,10 +53,6 @@ const EMPTY_FORM_DATA = {
   },
 };
 
-function cloneData(data) {
-  return JSON.parse(JSON.stringify(data));
-}
-
 function createEmptyFormData() {
   return cloneData(EMPTY_FORM_DATA);
 }
@@ -61,11 +77,11 @@ function syncModifiedBlockedDatesFromMap() {
     };
   }
 
-  modifiedData.bookingPolicy.blockedDates = Array.from(blockedDateMap.values()).map(
-    (blockedDate) => ({
-      ...blockedDate,
-    }),
-  );
+  modifiedData.bookingPolicy.blockedDates = Array.from(
+    blockedDateMap.values(),
+  ).map((blockedDate) => ({
+    ...blockedDate,
+  }));
 }
 
 function initializeFormState(mode = constants.FORM_MODE.VIEW) {
@@ -84,20 +100,6 @@ function initializeFormState(mode = constants.FORM_MODE.VIEW) {
 
   syncImageMap(modifiedData.images ?? []);
   syncBlockedDateMap(modifiedData.bookingPolicy?.blockedDates ?? []);
-}
-
-function formatPrice(value) {
-  const parsed = Number.parseInt(value, 10);
-  if (Number.isNaN(parsed)) {
-    return '';
-  }
-  return parsed.toLocaleString();
-}
-
-function getTodayString() {
-  const now = new Date();
-  const offset = now.getTimezoneOffset() * 60000;
-  return new Date(now.getTime() - offset).toISOString().slice(0, 10);
 }
 
 function clearThumbnailPreviewUrl() {
@@ -301,7 +303,7 @@ function buildInfo(mode) {
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14"/>
             </svg>
           </button>
-          <input type="number" id="maxGuestInput" min="1" class="w-full bg-white text-shark-600 text-sm rounded-lg px-2 py-1 border-1 border-primary-200"/>
+          <input type="text" id="maxGuestInput" min="1" class="w-full bg-white text-shark-600 text-sm rounded-lg px-2 py-1 border-1 border-primary-200"/>
           <button
             type="button"
             data-number-control="increment"
@@ -478,7 +480,7 @@ function buildPricing(mode) {
   <span class="row-start-1 col-start-1 flex justify-between gap-2 mr-1">
      <span>성</span>
      <span>인</span>
-     : ₩
+     : 
    </span>
   `;
 
@@ -490,7 +492,7 @@ function buildPricing(mode) {
     <span>어</span>
     <span>린</span>
     <span>이</span>
-    : ₩
+    : 
   </span>
   `;
 
@@ -501,7 +503,7 @@ function buildPricing(mode) {
   <span class="row-start-3 col-start-1 flex justify-between gap-2 mr-1">
     <span>서비스</span>
     <span>수수료</span>
-    : ₩
+    : 
   </span>
   `;
 
@@ -568,7 +570,7 @@ function buildBooking(mode) {
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14"/>
             </svg>
           </button>
-          <input type="number" id="minNightsInput" min="1" class="w-full bg-white text-shark-600 text-sm rounded-lg px-2 py-1 border-1 border-primary-200"/>
+          <input type="text" id="minNightsInput" min="1" class="w-full bg-white text-shark-600 text-sm rounded-lg px-2 py-1 border-1 border-primary-200"/>
           <button
             type="button"
             data-number-control="increment"
@@ -627,7 +629,7 @@ function fillData(mode = constants.FORM_MODE.VIEW) {
     html.description.textContent = data.description || '숙소 설명';
   }
 
-  fillImages(mode, html.imagesContainer, data.images ?? []);
+  fillImages(mode, html.imagesContainer);
 
   appendPriceValue(
     html.adultPrice,
@@ -674,7 +676,7 @@ function appendPriceValue(target, valueClass, rowClass, amount) {
 
   const value = document.createElement('span');
   value.className = `${valueClass} ${rowClass} font-semibold`;
-  value.textContent = `: ₩${amount}`;
+  value.textContent = `₩${amount}`;
   target.appendChild(value);
 }
 
@@ -750,7 +752,9 @@ function renderThumbnail(mode = currentMode) {
   html.thumbnailDisplay.replaceChildren();
 
   if (modifiedData?.thumbnailUrl) {
-    html.thumbnailDisplay.appendChild(createThumbnailImage(modifiedData.thumbnailUrl));
+    html.thumbnailDisplay.appendChild(
+      createThumbnailImage(modifiedData.thumbnailUrl),
+    );
   } else {
     html.thumbnailDisplay.appendChild(createEmptyThumbnail());
   }
@@ -759,49 +763,6 @@ function renderThumbnail(mode = currentMode) {
     deleteBtn.classList.toggle('hidden', !modifiedData?.thumbnailUrl);
     html.thumbnailDisplay.appendChild(deleteBtn);
   }
-}
-
-function normalizeAddressValue(value) {
-  return `${value ?? ''}`.trim().replace(/\s+/g, ' ');
-}
-
-function combineAddress(region, detailAddress) {
-  const normalizedRegion = normalizeAddressValue(region);
-  const normalizedDetail = normalizeAddressValue(detailAddress);
-  if (!normalizedRegion) {
-    return normalizedDetail;
-  }
-  if (!normalizedDetail) {
-    return normalizedRegion;
-  }
-  if (normalizedDetail.startsWith(normalizedRegion)) {
-    return normalizedDetail;
-  }
-  return `${normalizedRegion} ${normalizedDetail}`;
-}
-
-function splitAddressParts(region, fullAddress) {
-  const normalizedRegion = normalizeAddressValue(region);
-  const normalizedAddress = normalizeAddressValue(fullAddress);
-
-  if (!normalizedRegion) {
-    return {
-      region: '',
-      detailAddress: normalizedAddress,
-    };
-  }
-
-  if (normalizedAddress.startsWith(normalizedRegion)) {
-    return {
-      region: normalizedRegion,
-      detailAddress: normalizedAddress.slice(normalizedRegion.length).trim(),
-    };
-  }
-
-  return {
-    region: normalizedRegion,
-    detailAddress: normalizedAddress,
-  };
 }
 
 function syncSelectedImageInputs(options = {}) {
@@ -820,27 +781,6 @@ function syncSelectedImageInputs(options = {}) {
   if (html.imageDescriptionInput && !preserveDescription) {
     html.imageDescriptionInput.value = selectedImage?.description ?? '';
   }
-}
-
-function getNumberStep(input) {
-  const rawStep = Number.parseFloat(input.step);
-  if (!Number.isFinite(rawStep) || rawStep <= 0) {
-    return 1;
-  }
-  return rawStep;
-}
-
-function clampNumberByInput(input, value) {
-  let nextValue = value;
-
-  if (input.min !== '') {
-    nextValue = Math.max(nextValue, Number.parseFloat(input.min));
-  }
-  if (input.max !== '') {
-    nextValue = Math.min(nextValue, Number.parseFloat(input.max));
-  }
-
-  return nextValue;
 }
 
 function bindNumberInputControls() {
@@ -874,57 +814,6 @@ function bindNumberInputControls() {
     });
   }
 
-  const numberInputs = [element.querySelector('#maxGuestInput'), element.querySelector('#minNightsInput')];
-  for (const input of numberInputs) {
-    if (!(input instanceof HTMLInputElement)) {
-      continue;
-    }
-
-    input.addEventListener('keydown', (e) => {
-      const allowedKeys = [
-        'Backspace',
-        'Delete',
-        'ArrowLeft',
-        'ArrowRight',
-        'Tab',
-        'Home',
-        'End',
-      ];
-      if (allowedKeys.includes(e.key) || (e.ctrlKey || e.metaKey)) {
-        return;
-      }
-      if (!/^\d$/.test(e.key)) {
-        e.preventDefault();
-      }
-    });
-
-    input.addEventListener('paste', (e) => {
-      const pastedText = e.clipboardData?.getData('text') ?? '';
-      if (!/^\d+$/.test(pastedText)) {
-        e.preventDefault();
-      }
-    });
-
-    input.addEventListener('input', () => {
-      const onlyDigits = input.value.replace(/[^\d]/g, '');
-      if (input.value !== onlyDigits) {
-        input.value = onlyDigits;
-      }
-      if (input.value && Number.parseInt(input.value, 10) < 1) {
-        input.value = '1';
-      }
-    });
-
-    input.addEventListener(
-      'wheel',
-      (e) => {
-        if (document.activeElement === input) {
-          e.preventDefault();
-        }
-      },
-      { passive: false },
-    );
-  }
 }
 
 function bindNonNegativeIntegerTextInputs() {
@@ -995,7 +884,11 @@ function isDateBlocked(date, ignoredBlockedDateId = null) {
   return false;
 }
 
-function doesBlockedDateRangeOverlap(startDate, endDate, ignoredBlockedDateId = null) {
+function doesBlockedDateRangeOverlap(
+  startDate,
+  endDate,
+  ignoredBlockedDateId = null,
+) {
   if (!startDate || !endDate) {
     return false;
   }
@@ -1025,8 +918,8 @@ function syncBlockedDateAddButtonState() {
 
   const canAdd = Boolean(
     html.startDateInput?.value &&
-      html.endDateInput?.value &&
-      html.startDateInput.value <= html.endDateInput.value,
+    html.endDateInput?.value &&
+    html.startDateInput.value <= html.endDateInput.value,
   );
   html.blockedDateAddBtn.disabled = !canAdd;
 }
@@ -1046,8 +939,15 @@ function bindBookingControls() {
         html.startDateInput.value = '';
       }
 
-      if (html.startDateInput.value && isDateBlocked(html.startDateInput.value)) {
-        alert('이미 예약 불가로 설정된 날짜는 선택할 수 없습니다.');
+      if (
+        html.startDateInput.value &&
+        isDateBlocked(html.startDateInput.value)
+      ) {
+        toast.warn(
+          '예약 불가 날짜 선택',
+          '이미 예약 불가로 설정된 날짜는 선택할 수 없습니다.',
+          3,
+        );
         html.startDateInput.value = '';
       }
 
@@ -1076,7 +976,11 @@ function bindBookingControls() {
       }
 
       if (html.endDateInput.value && isDateBlocked(html.endDateInput.value)) {
-        alert('이미 예약 불가로 설정된 날짜는 선택할 수 없습니다.');
+        toast.warn(
+          '예약 불가 날짜 선택',
+          '이미 예약 불가로 설정된 날짜는 선택할 수 없습니다.',
+          3,
+        );
         html.endDateInput.value = '';
       }
 
@@ -1096,7 +1000,7 @@ function bindBookingControls() {
   syncBlockedDateAddButtonState();
 }
 
-function fillImages(mode, container, images = [], syncOptions = {}) {
+function fillImages(mode, container, syncOptions = {}) {
   if (!container) {
     return;
   }
@@ -1318,7 +1222,7 @@ function updateSelectedImageTitle(title) {
   syncModifiedImagesFromMap();
 
   const html = getHTMLReference();
-  fillImages(currentMode, html.imagesContainer, [], {
+  fillImages(currentMode, html.imagesContainer, {
     preserveDescription: true,
   });
 }
@@ -1337,7 +1241,7 @@ function updateSelectedImageDescription(description) {
   syncModifiedImagesFromMap();
 
   const html = getHTMLReference();
-  fillImages(currentMode, html.imagesContainer, [], {
+  fillImages(currentMode, html.imagesContainer, {
     preserveTitle: true,
   });
 }
@@ -1388,9 +1292,12 @@ function updateAccommodationMaxGuest(maxGuest) {
     return;
   }
 
-  modifiedData.maxGuest = maxGuest;
+  modifiedData.maxGuest = `${maxGuest ?? ''}`.trim();
 
   const html = getHTMLReference();
+  if (html.maxGuestInput) {
+    html.maxGuestInput.value = modifiedData.maxGuest;
+  }
   if (html.maxGuest) {
     html.maxGuest.textContent = modifiedData.maxGuest
       ? `최대 ${modifiedData.maxGuest}명까지 숙박 가능`
@@ -1425,29 +1332,39 @@ function updateAccommodationPrice(type, value) {
   }
 
   const sanitizedValue = String(value).replace(/[^\d]/g, '');
-  modifiedData.pricing[type] = sanitizedValue;
+  const normalizedPriceValue = sanitizedValue || '0';
+  modifiedData.pricing[type] = normalizedPriceValue;
 
   const html = getHTMLReference();
   if (type === 'adultPrice') {
+    if (html.adultPriceInput) {
+      html.adultPriceInput.value = normalizedPriceValue;
+    }
     appendPriceValue(
       html.adultPrice,
       'adultPriceValue',
       'row-start-1 col-start-2',
-      formatPrice(sanitizedValue),
+      formatPrice(normalizedPriceValue),
     );
   } else if (type === 'childPrice') {
+    if (html.childPriceInput) {
+      html.childPriceInput.value = normalizedPriceValue;
+    }
     appendPriceValue(
       html.childPrice,
       'childPriceValue',
       'row-start-2 col-start-2',
-      formatPrice(sanitizedValue),
+      formatPrice(normalizedPriceValue),
     );
   } else if (type === 'serviceFee') {
+    if (html.serviceFeeInput) {
+      html.serviceFeeInput.value = normalizedPriceValue;
+    }
     appendPriceValue(
       html.serviceFee,
       'serviceFeeValue',
       'row-start-3 col-start-2',
-      formatPrice(sanitizedValue),
+      formatPrice(normalizedPriceValue),
     );
   }
 }
@@ -1464,14 +1381,36 @@ function updateAccommodationMinNights(minNights) {
     };
   }
 
-  modifiedData.bookingPolicy.minNights = String(minNights).replace(/[^\d]/g, '');
+  modifiedData.bookingPolicy.minNights = `${minNights ?? ''}`.trim();
 
   const html = getHTMLReference();
+  if (html.minNightsInput) {
+    html.minNightsInput.value = modifiedData.bookingPolicy.minNights;
+  }
   if (html.minNights) {
     html.minNights.textContent = modifiedData.bookingPolicy.minNights
       ? `최소 ${modifiedData.bookingPolicy.minNights}박부터 예약 가능`
       : '';
   }
+}
+
+function tryApplyPositiveIntegerField(input, applyUpdate) {
+  const parsed = parsePositiveInteger(getInputValue(input));
+  if (parsed !== null) {
+    applyUpdate(String(parsed));
+    return { success: true };
+  }
+
+  if (input instanceof HTMLInputElement) {
+    input.value = '1';
+  }
+
+  toast.warn(
+    '숫자 입력 오류',
+    '음수와 숫자가 아닌 값을 제외한 양의 정수만 입력이 가능합니다.',
+    4,
+  );
+  return { success: false };
 }
 
 function addBlockedDate(startDate, endDate) {
@@ -1481,7 +1420,10 @@ function addBlockedDate(startDate, endDate) {
 
   const today = getTodayString();
   if (startDate < today || endDate < today) {
-    return { success: false, message: '오늘보다 이전 날짜는 선택할 수 없습니다.' };
+    return {
+      success: false,
+      message: '오늘보다 이전 날짜는 선택할 수 없습니다.',
+    };
   }
 
   if (endDate < startDate) {
@@ -1495,7 +1437,8 @@ function addBlockedDate(startDate, endDate) {
   ) {
     return {
       success: false,
-      message: '이미 예약 불가로 설정된 날짜와 겹치는 기간은 추가할 수 없습니다.',
+      message:
+        '이미 예약 불가로 설정된 날짜와 겹치는 기간은 추가할 수 없습니다.',
     };
   }
 
@@ -1522,8 +1465,17 @@ function addBlockedDate(startDate, endDate) {
   return { success: true };
 }
 
+function canRemoveBlockedDate(blockedDate) {
+  return blockedDate?.reason !== 'RESERVATION';
+}
+
 function removeBlockedDate(blockedDateId) {
-  if (!blockedDateMap.has(blockedDateId)) {
+  const blockedDate = blockedDateMap.get(blockedDateId);
+  if (!blockedDate) {
+    return;
+  }
+
+  if (!canRemoveBlockedDate(blockedDate)) {
     return;
   }
 
@@ -1533,6 +1485,38 @@ function removeBlockedDate(blockedDateId) {
   const html = getHTMLReference();
   fillBlockedDate(currentMode, html.blockedDates);
   syncBlockedDateAddButtonState();
+}
+
+async function handleDelegatedClick(target, options = {}) {
+  return handleAccommodationDelegatedClick(target, options, {
+    element,
+    getHTMLReference,
+    getInputValue,
+    removeThumbnail,
+    setThumbnailFromUrl,
+    removeImage,
+    addImageFromUrl,
+    updateSelectedImageTitle,
+    updateSelectedImageDescription,
+    updateAccommodationTitle,
+    updateAccommodationAddress,
+    tryApplyPositiveIntegerField,
+    updateAccommodationMaxGuest,
+    updateAccommodationDescription,
+    updateAccommodationPrice,
+    updateAccommodationMinNights,
+    addBlockedDate,
+    removeBlockedDate,
+  });
+}
+
+function handleDelegatedChange(target) {
+  return handleAccommodationDelegatedChange(target, {
+    element,
+    setThumbnailFromFile,
+    addImagesFromFiles,
+    setSelectedImage,
+  });
 }
 
 function getModifiedData() {
@@ -1584,7 +1568,10 @@ function fillBlockedDate(mode = constants.FORM_MODE.VIEW, container) {
 
     div.append(blockedRange, blockedReason);
 
-    if (mode !== constants.FORM_MODE.VIEW) {
+    if (
+      mode !== constants.FORM_MODE.VIEW &&
+      canRemoveBlockedDate(blockedDate)
+    ) {
       const button = document.createElement('button');
       button.type = 'button';
       button.className =
@@ -1599,102 +1586,7 @@ function fillBlockedDate(mode = constants.FORM_MODE.VIEW, container) {
 }
 
 function getHTMLReference() {
-  const thumbnail = element.querySelector('#thumbnail');
-  const thumbnailDisplay = element.querySelector('#thumbnailDisplay');
-  const thumbnailDeleteBtn = element.querySelector('#thumbnailDeleteBtn');
-  const title = element.querySelector('#title');
-  const address = element.querySelector('#address');
-  const region = element.querySelector('#region');
-  const maxGuest = element.querySelector('#maxGuest');
-  const description = element.querySelector('#description');
-  const images = element.querySelector('#images');
-  const imagesContainer = element.querySelector('#imagesContainer');
-  const adultPrice = element.querySelector('#adultPrice');
-  const childPrice = element.querySelector('#childPrice');
-  const serviceFee = element.querySelector('#serviceFee');
-  const minNights = element.querySelector('#minNights');
-  const booking = element.querySelector('#booking');
-  const blockedDates = element.querySelector('#blockedDates');
-
-  const thumbnailURL = element.querySelector('#thumbnailURL');
-  const thumbnailInsertBtn = element.querySelector('#thumbnailInsertBtn');
-  const thumbnailFileInput = element.querySelector('#thumbnailFile');
-  const imageURL = element.querySelector('#imageURL');
-  const imageInsertBtn = element.querySelector('#imageInsertBtn');
-  const imageFileInput = element.querySelector('#imageFile');
-  const imageTitleInput = element.querySelector('#imageTitleInput');
-  const imageTitleApplyBtn = element.querySelector('#imageTitleApplyBtn');
-  const imageDescriptionInput = element.querySelector('#imageDescriptionInput');
-  const imageDescriptionApplyBtn = element.querySelector('#imageDescriptionApplyBtn');
-  const titleInput = element.querySelector('#titleInput');
-  const titleApplyBtn = element.querySelector('#titleApplyBtn');
-  const regionInput = element.querySelector('#regionInput');
-  const detailAddressInput = element.querySelector('#detailAddressInput');
-  const addressApplyBtn = element.querySelector('#addressApplyBtn');
-  const maxGuestInput = element.querySelector('#maxGuestInput');
-  const maxGuestApplyBtn = element.querySelector('#maxGuestApplyBtn');
-  const descriptionInput = element.querySelector('#descriptionInput');
-  const descriptionApplyBtn = element.querySelector('#descriptionApplyBtn');
-  const adultPriceInput = element.querySelector('#adultPriceInput');
-  const adultPriceApplyBtn = element.querySelector('#adultPriceApplyBtn');
-  const childPriceInput = element.querySelector('#childPriceInput');
-  const childPriceApplyBtn = element.querySelector('#childPriceApplyBtn');
-  const serviceFeeInput = element.querySelector('#serviceFeeInput');
-  const serviceFeeApplyBtn = element.querySelector('#serviceFeeApplyBtn');
-  const minNightsInput = element.querySelector('#minNightsInput');
-  const minNightsApplyBtn = element.querySelector('#minNightsApplyBtn');
-  const startDateInput = element.querySelector('#startDateInput');
-  const endDateInput = element.querySelector('#endDateInput');
-  const blockedDateAddBtn = element.querySelector('#blockedDateAddBtn');
-
-  return {
-    thumbnail,
-    thumbnailDisplay,
-    thumbnailDeleteBtn,
-    title,
-    address,
-    region,
-    maxGuest,
-    description,
-    images,
-    imagesContainer,
-    adultPrice,
-    childPrice,
-    serviceFee,
-    minNights,
-    booking,
-    blockedDates,
-    thumbnailURL,
-    thumbnailInsertBtn,
-    thumbnailFileInput,
-    imageURL,
-    imageInsertBtn,
-    imageFileInput,
-    imageTitleInput,
-    imageTitleApplyBtn,
-    imageDescriptionInput,
-    imageDescriptionApplyBtn,
-    titleInput,
-    titleApplyBtn,
-    regionInput,
-    detailAddressInput,
-    addressApplyBtn,
-    maxGuestInput,
-    maxGuestApplyBtn,
-    descriptionInput,
-    descriptionApplyBtn,
-    adultPriceInput,
-    adultPriceApplyBtn,
-    childPriceInput,
-    childPriceApplyBtn,
-    serviceFeeInput,
-    serviceFeeApplyBtn,
-    minNightsInput,
-    minNightsApplyBtn,
-    startDateInput,
-    endDateInput,
-    blockedDateAddBtn,
-  };
+  return getAccommodationFormHTMLReference(element);
 }
 
 export default {
@@ -1720,6 +1612,8 @@ export default {
   updateAccommodationMinNights,
   addBlockedDate,
   removeBlockedDate,
+  handleDelegatedClick,
+  handleDelegatedChange,
   getOriginData,
   getModifiedData,
 };
