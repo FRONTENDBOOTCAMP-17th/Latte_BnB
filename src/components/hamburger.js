@@ -1,3 +1,11 @@
+import homeIcon from '../assets/home.svg';
+import profileIcon from '../assets/profile.svg';
+import wishIcon from '../assets/wish.svg';
+import reservationIcon from '../assets/reservation.svg';
+import logoutIcon from '../assets/logout.svg';
+import loginIcon from '../assets/login.svg';
+import avatar from '../assets/avatar1.jpg';
+
 let hamburgerBtn = null;
 let hamburgerMenu = null;
 
@@ -25,26 +33,26 @@ function buildMenu(result) {
     div.classList.add('w-60');
     div.innerHTML = `
     <div class="w-full grid grid-cols-[0.5fr_1.5fr] grid-rows-2 gap-2 m-2">
-      <img class="col-start-1 row-span-2 w-10 aspect-square rounded-[50%] place-self-center" src="/src/assets/avatar1.jpg" alt="user avatar"/>
+      <img class="col-start-1 row-span-2 w-10 aspect-square rounded-[50%] place-self-center" src="${avatar}" alt="user avatar"/>
       <strong class="hamburgerUsername col-start-2 row-start-1 text-shark-800"></strong>
       <span class="col-start-2 row-start-2 text-shark-600 text-sm">방문을 환영합니다.</span>
     </div>
     <hr class="w-[90%] self-center border-t-2 border-shark-200" />
     <a href="/" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
-      <img src="/src/assets/home.svg" alt="홈 svg 이미지" class="w-6 m-2" />홈
+      <img src="${homeIcon}" alt="홈 svg 이미지" class="w-6 m-2" />홈
     </a>
     <a href="/profile/" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
-      <img src="/src/assets/profile.svg" alt="프로필 svg 이미지" class="w-6 m-2" />프로필
+      <img src="${profileIcon}" alt="프로필 svg 이미지" class="w-6 m-2" />프로필
     </a>
     <a href="/wishlist/" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
-      <img src="/src/assets/wish.svg" alt="위시리스트 svg 이미지" class="w-6 m-2" />위시 리스트
+      <img src="${wishIcon}" alt="위시리스트 svg 이미지" class="w-6 m-2" />위시 리스트
     </a>
     <a href="/reservations-check/" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
-      <img src="/src/assets/reservation.svg" alt="예약목록 svg 이미지" class="w-6 m-2" />내 예약 확인
+      <img src="${reservationIcon}" alt="예약목록 svg 이미지" class="w-6 m-2" />내 예약 확인
     </a>
     <hr class="w-[90%] self-center border-t-2 border-shark-200" />
     <button type="button" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
-      <img src="/src/assets/logout.svg" alt="로그아웃 svg 이미지" class="w-6 m-2" />로그아웃
+      <img src="${logoutIcon}" alt="로그아웃 svg 이미지" class="w-6 m-2" />로그아웃
     </button>
     `;
     div.getElementsByTagName('strong')[0].textContent =
@@ -59,10 +67,10 @@ function buildMenu(result) {
     </p>
     <hr class="w-[90%] self-center border-t-2 border-shark-200" />
     <a href="/" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
-      <img src="/src/assets/home.svg" alt="홈 svg 이미지" class="w-6 m-2" />홈
+      <img src="${homeIcon}" alt="홈 svg 이미지" class="w-6 m-2" />홈
     </a>
     <a href="/login/" class="w-full h-10 font-semibold flex items-center text-shark-700 hover:bg-shark-500/10 px-4">
-      <img src="/src/assets/login.svg" alt="로그인 svg 이미지" class="w-6 m-2" />로그인
+      <img src="${loginIcon}" alt="로그인 svg 이미지" class="w-6 m-2" />로그인
     </a>
     `;
     hamburgerMenu = div;
