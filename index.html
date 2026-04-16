@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>latte-bnb</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script type="module" src="./src/main.js"></script>
     <script type="module" src="./src/landing.js"></script>
   </head>
@@ -21,13 +22,10 @@
       <p id="toastDetail" class="text-sm"></p>
     </div>
     <main id="content" class="min-w-100 pb-20 flex flex-col items-center">
-      <h1
-        class="self-start scroll-m-20 text-[clamp(1.25rem,4vw,2.25rem)] font-extrabold tracking-tight break-keep py-8 mx-[clamp(1.25rem,4vw,5rem)]">
-        특별한 추억을 남길 수 있는 공간을 찾아보세요.
-      </h1>
       <div class="self-end mx-[clamp(1.25rem,4vw,5rem)] my-4">
-        <span>정렬: </span>
-        <select id="sort">
+        <select
+          id="sort"
+          class="border border-shark-200 rounded-lg px-3 py-2 text-sm text-shark-700 cursor-pointer hover:border-shark-400 focus:outline-primary-500">
           <option value="dictAsc" selected>가나다 순</option>
           <option value="dictDesc">가나다 역순</option>
           <option value="priceAsc">가격 낮은 순</option>

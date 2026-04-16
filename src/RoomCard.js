@@ -41,25 +41,27 @@ export class RoomCard {
     li.dataset.id = this.#id;
 
     li.innerHTML = `
-      <div class="min-w-[320px] w-full h-full relative bg-slate-50 text-shark-800 rounded-xl overflow-clip shadow-lg cursor-pointer ">
-        <a href="/accommodations-detail/?id=${this.#id}">
-          <img src='${this.#thumbnailUrl}' alt='대표 이미지' class="accommodationThumbnail w-full h-46 object-cover"/>
-          <div class="p-4 pt-2 grid grid-cols-2 grid-rows-[repeat(3,minmax(56px,1fr))] gap-1">
-            <p class="accommodationTitle text-lg col-start-1 line-clamp-2"></p>
-            <p class="accommodationPrice text-xl break-keep text-end font-semibold col-start-2 justify-self-end">
-            </p>
-            <p class="accommodationMaxGuest text-sm row-start-3 col-start-1 self-start"></p>
-            <p class="accommodationLocation text-sm row-start-3 col-start-1 self-end"></p>
-
+      <div class="min-w-[320px] w-full h-full relative bg-white text-shark-800 rounded-2xl overflow-clip shadow-[0_1px_6px_rgba(0,0,0,0.08)] cursor-pointer hover:scale-[1.02] transition-transform duration-200">
+        <a href="/accommodations-detail/?id=${this.#id}" class="focus:outline-none">
+          <div class="relative overflow-hidden">
+            <img src='${this.#thumbnailUrl}' alt='대표 이미지' class="accommodationThumbnail w-full aspect-2/1 object-cover"/>
+          </div>
+          <div class="p-4 flex flex-col gap-2">
+            <p class="accommodationTitle text-base font-semibold line-clamp-1"></p>
+            <p class="accommodationLocation text-sm text-shark-400"></p>
+            <div class="flex items-center justify-between mt-1">
+              <p class="accommodationPrice text-lg font-bold text-shark-900 break-keep"></p>
+              <p class="accommodationMaxGuest text-xs text-shark-400"></p>
+            </div>
           </div>
         </a>
-        <div class="wishHeart absolute text-transparent right-4 bottom-4 hover:scale-110 transition-[scale] duration-300">
+        <div class="wishHeart absolute text-transparent right-3 top-3 hover:scale-110 transition-[scale] duration-300 drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
             viewBox="0 0 24 24"
-            stroke-width="1"
-            stroke="black"
+            stroke-width="2"
+            stroke="white"
             class="size-6 pointer-events-none">
             <path
               stroke-linecap="round"
