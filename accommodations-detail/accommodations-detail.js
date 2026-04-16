@@ -25,9 +25,9 @@ async function fetchAccommodation() {
     data.images.forEach((img) => {
       const figure = document.createElement('figure');
 
-      figure.className = 'min-w-50 snap-start m-0 cursor-pointer';
+      figure.className = 'min-w-50 w-50 snap-start m-0 cursor-pointer';
       figure.innerHTML =
-        `<img src="${img.url}" alt="${img.title || '숙소 이미지'}" class="w-full aspect-4/3 object-cover rounded-lg" />` +
+        `<img src="${img.url}" alt="${img.title || '숙소 이미지'}" class="w-full h-36 object-cover rounded-lg" />` +
         `<figcaption class="flex flex-col mt-1.5">` +
         `<span class="text-sm font-semibold text-shark-800">${img.title || ''}</span>` +
         `<span class="text-[13px] text-shark-500">${img.description || ''}</span>` +
