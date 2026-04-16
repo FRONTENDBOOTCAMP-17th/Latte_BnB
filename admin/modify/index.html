@@ -3,13 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>latte-bnb | 관리자 숙소 상세</title>
+    <title>latte-bnb | 관리자 숙소 수정</title>
     <script type="module" src="./index.js"></script>
   </head>
   <body class="min-h-[100vh] bg-linear-to-t from-primary-50 to-primary-200">
     <div
-      id="btnContainer"
-      class="fixed z-100 flex gap-2 items-center justify-center min-w-50 p-3 min-h-fit bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-primary-200 border-2 border-primary-300"></div>
+      id="toast"
+      class="border-2 rounded-2xl p-4 top-4/5 left-1/2 -translate-x-1/2"
+      popover>
+      <p id="toastMessage" class="font-semibold"></p>
+      <p id="toastDetail" class="text-sm"></p>
+    </div>
     <main id="content" class="w-full flex justify-center"></main>
   </body>
 </html>
