@@ -29,7 +29,7 @@ function buildMenu(result) {
   div.className =
     'hidden absolute mt-2 right-0 bg-white flex-col items-center shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_12px_30px_rgba(0,0,0,0.08)] gap-2 py-4 rounded-xl z-100';
 
-  if (result.isAuth) {
+  if (!result && result.isAuth) {
     div.classList.add('w-60');
     div.innerHTML = `
     <div class="w-full grid grid-cols-[0.5fr_1.5fr] grid-rows-2 gap-2 m-2">

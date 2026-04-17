@@ -20,12 +20,7 @@ export async function request(endpoint, options = {}) {
   });
 
   if (!res.ok) {
-    let message = '';
-    try {
-      ({ message } = await res.json());
-    } catch {
-      // 서버가 JSON을 안 보내면 무시
-    }
+    const { message } = await res.json();
     const error = new Error(`HTTP 에러: ${res.status}`);
     error.status = res.status;
     error.data = { message };
