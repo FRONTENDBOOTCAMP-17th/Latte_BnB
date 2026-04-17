@@ -29,7 +29,7 @@ export async function loginApi(loginData) {
 }
 
 export async function checkWish(accommodationIds) {
-  return authRequest('/me/wishlist/check', {
+  return request('/me/wishlist/check', {
     method: 'POST',
     body: JSON.stringify({ accommodationIds }),
   });
@@ -50,7 +50,7 @@ export function checkAdmin() {
 }
 
 export async function getProfile() {
-  return authRequest('/me/profile', {
+  return request('/me/profile', {
     method: 'GET',
   });
 }
