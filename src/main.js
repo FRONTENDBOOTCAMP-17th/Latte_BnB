@@ -48,10 +48,13 @@ if (document.body.dataset.footer === 'true') {
 async function checkAuth() {
   try {
     const res = await getProfile();
+    const user = res?.data?.user;
 
-    if (res) {
-      return { isAuth: true, data: res.data.user };
+    if (user) {
+      return { isAuth: true, data: user };
     }
+
+    return { isAuth: false, data: null };
   } catch {
     return { isAuth: false, data: null };
   }
