@@ -10,7 +10,9 @@ let searchBtn = null;
 const sortBox = document.getElementById('sort');
 const content = document.getElementById('content');
 const roomList = document.getElementById('roomList');
+const topBtn = document.getElementById('btn-top');
 let cardFadeDone = false;
+let lineCount = getCardsPerLine();
 
 content.prepend(heroSlider.buildSlider());
 
@@ -53,6 +55,7 @@ function renderRooms() {
     roomList.appendChild(value.getElement());
   }
 
+  lineCount = getCardsPerLine();
   setCardFade();
   checkCardFade();
 }
@@ -99,6 +102,16 @@ function setCardFade() {
       'ease-out',
     );
   });
+}
+
+function showAllCards() {
+  const cards = roomList.querySelectorAll('.accommodationCard');
+
+  cards.forEach((card) => {
+    card.classList.remove('opacity-0', 'translate-y-8');
+  });
+
+  cardFadeDone = true;
 }
 
 function checkCardFade() {
@@ -217,11 +230,9 @@ document.addEventListener('change', async (e) => {
 });
 
 window.addEventListener('scroll', () => {
-  if (cardFadeDone) {
-    return;
+  if (!cardFadeDone) {
+    checkCardFade();
   }
-
-  checkCardFade();
 });
 
 window.addEventListener('resize', () => {
@@ -229,5 +240,20 @@ window.addEventListener('resize', () => {
     return;
   }
 
+  const newLineCount = getCardsPerLine();
+
+  if (lineCount !== newLineCount) {
+    lineCount = newLineCount;
+    showAllCards();
+    return;
+  }
+
   checkCardFade();
+});
+
+topBtn.addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
 });
