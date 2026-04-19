@@ -7,9 +7,9 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>latte-bnb | 숙소 상세</title>
   </head>
-  <body class="bg-white text-shark-800 pb-20 m-0 overflow-x-hidden">
-    <div class="max-w-280 mx-auto relative">
-      <nav class="absolute top-4 left-4 z-10">
+  <body class="m-0 overflow-x-hidden bg-white pb-20 text-shark-800 lg:pb-0">
+    <div class="relative mx-auto max-w-280">
+      <nav class="absolute left-4 top-4 z-10">
         <button
           class="w-9 h-9 rounded-full border-none bg-white cursor-pointer flex items-center justify-center shadow-md transition-colors hover:bg-shark-100"
           onclick="location.href = '/'">
@@ -28,22 +28,24 @@
         </button>
       </nav>
 
-      <section class="relative w-full aspect-4/3 bg-shark-200 max-h-100">
+      <section class="relative aspect-4/3 max-h-100 w-full overflow-hidden bg-shark-200 lg:aspect-[16/9] lg:max-h-[32rem]">
         <img
           class="accommodation-thumb-img w-full h-full object-cover"
           src=""
           alt="썸네일 이미지" />
       </section>
 
-      <section class="px-6 pt-6 pb-4 text-center border-b border-shark-200">
-        <h1 id="title" class="text-2xl font-bold mb-2"></h1>
+      <main class="lg:grid lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-10 lg:px-6 lg:py-8">
+        <div class="min-w-0">
+      <section class="border-b border-shark-200 px-6 pb-4 pt-6 text-center lg:border-b-0 lg:px-0 lg:pb-6 lg:pt-0 lg:text-left">
+        <h1 id="title" class="mb-2 text-2xl font-bold lg:text-4xl"></h1>
         <p class="text-base text-shark-500 mb-1" id="address"></p>
         <p class="text-base text-shark-500 mb-2" id="details"></p>
-        <p class="mt-5 text-base font-semibold text-center">★ 5.0 · 후기 3개</p>
+        <p class="mt-5 text-base font-semibold text-center lg:text-left">★ 5.0 · 후기 3개</p>
       </section>
 
       <section
-        class="px-6 py-4 flex items-center gap-3 border-b border-shark-200">
+        class="flex items-center gap-3 border-b border-shark-200 px-6 py-4 lg:px-0">
         <img
           src="../src/assets/avatar1.jpg"
           alt="호스트 아바타"
@@ -52,12 +54,12 @@
       </section>
 
       <section
-        class="px-6 py-4 flex flex-col items-center border-b border-shark-200">
+        class="flex flex-col items-center border-b border-shark-200 px-6 py-4 lg:px-0">
         <p
           class="text-base text-shark-600 leading-[1.7] text-left"
           id="description"></p>
         <button
-          class="w-4/5 bg-shark-300 text-center p-4 rounded-lg text-xl border-none cursor-pointer mt-3 hover:bg-shark-400 transition-colors"
+          class="mt-3 w-4/5 rounded-lg border-none bg-shark-300 p-4 text-center text-xl cursor-pointer transition-colors hover:bg-shark-400 lg:min-w-40 lg:self-center lg:px-8"
           id="btn-desc-more">
           더 보기
         </button>
@@ -94,10 +96,10 @@
         </div>
       </div>
 
-      <section class="px-6 py-4 border-b border-shark-200">
+      <section class="border-b border-shark-200 px-6 py-4 lg:px-0">
         <div class="flex items-center justify-between mb-4">
           <p class="text-lg font-bold m-0">숙박 장소</p>
-          <div class="flex gap-2">
+          <div class="flex gap-2 lg:hidden">
             <button
               class="scroll-btn w-8 h-8 rounded-full border border-shark-300 bg-white cursor-pointer flex items-center justify-center"
               data-target="place-gallery"
@@ -113,7 +115,7 @@
           </div>
         </div>
         <div
-          class="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth"
+          class="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-smooth lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible"
           id="place-gallery"></div>
       </section>
 
@@ -146,10 +148,10 @@
         </div>
       </div>
 
-      <section class="px-6 py-4 flex flex-col items-center">
+      <section class="flex flex-col items-center px-6 py-4 lg:px-0">
         <div class="flex items-center justify-between w-full mb-4">
           <p class="text-lg font-bold m-0">★ · 후기 3개</p>
-          <div class="flex gap-2">
+          <div class="flex gap-2 lg:hidden">
             <button
               class="scroll-btn w-8 h-8 rounded-full border border-shark-300 bg-white cursor-pointer flex items-center justify-center"
               data-target="review-scroll"
@@ -165,10 +167,10 @@
           </div>
         </div>
         <div
-          class="flex gap-4 overflow-x-auto w-full snap-x snap-mandatory scroll-smooth"
+          class="flex w-full gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth lg:grid lg:grid-cols-3 lg:gap-4 lg:overflow-visible"
           id="review-scroll">
           <div
-            class="min-w-60 border border-shark-200 rounded-lg p-4 snap-start">
+            class="min-w-60 snap-start rounded-lg border border-shark-200 p-4 lg:min-w-0">
             <div class="flex items-center gap-2 mb-2">
               <img
                 src="../src/assets/avatar2.jpg"
@@ -184,7 +186,7 @@
             </p>
           </div>
           <div
-            class="min-w-60 border border-shark-200 rounded-lg p-4 snap-start">
+            class="min-w-60 snap-start rounded-lg border border-shark-200 p-4 lg:min-w-0">
             <div class="flex items-center gap-2 mb-2">
               <img
                 src="../src/assets/avatar2.jpg"
@@ -199,7 +201,7 @@
             </p>
           </div>
           <div
-            class="min-w-60 border border-shark-200 rounded-lg p-4 snap-start">
+            class="min-w-60 snap-start rounded-lg border border-shark-200 p-4 lg:min-w-0">
             <div class="flex items-center gap-2 mb-2">
               <img
                 src="../src/assets/avatar1.jpg"
@@ -215,11 +217,23 @@
           </div>
         </div>
         <button
-          class="w-4/5 bg-shark-300 text-center p-4 rounded-lg text-xl border-none cursor-pointer mt-3 hover:bg-shark-400 transition-colors"
+          class="mt-3 w-4/5 rounded-lg border-none bg-shark-300 p-4 text-center text-xl cursor-pointer transition-colors hover:bg-shark-400 lg:min-w-40 lg:self-center lg:px-8"
           id="btn-review-more">
           더 보기
         </button>
       </section>
+        </div>
+
+        <aside class="hidden lg:block">
+          <section class="sticky top-8 border border-shark-200 bg-white p-6">
+            <p class="reservation-price m-0 border-b border-shark-200 pb-4 text-sm text-shark-600"></p>
+            <button
+              class="reservation-button mt-5 w-full rounded-lg border-none bg-primary-500 px-8 py-4 text-lg font-bold text-white cursor-pointer transition-colors hover:bg-primary-400">
+              예약하기
+            </button>
+          </section>
+        </aside>
+      </main>
     </div>
     <div
       class="hidden fixed inset-0 z-50 bg-black/50"
@@ -295,12 +309,11 @@
     </div>
 
     <section
-      class="fixed bottom-0 left-0 right-0 bg-white border-t border-shark-200">
-      <div class="max-w-280 mx-auto px-6 py-3 flex items-center justify-between">
-        <p class="text-sm text-shark-600 m-0" id="reservation-price"></p>
+      class="fixed bottom-0 left-0 right-0 border-t border-shark-200 bg-white lg:hidden">
+      <div class="mx-auto flex max-w-280 items-center justify-between px-6 py-3">
+        <p class="reservation-price m-0 text-sm text-shark-600"></p>
         <button
-          class="bg-primary-500 text-center text-white px-8 py-3 rounded-lg text-lg border-none cursor-pointer font-bold hover:bg-primary-400 transition-colors"
-          id="btn-reservation">
+          class="reservation-button cursor-pointer rounded-lg border-none bg-primary-500 px-8 py-3 text-center text-lg font-bold text-white transition-colors hover:bg-primary-400">
           예약하기
         </button>
       </div>
