@@ -22,22 +22,22 @@ function createDetail(detailData) {
   const checkIn = formatMonthDay(schedule.checkInDate);
   const checkOut = formatMonthDay(schedule.checkOutDate);
 
-  const container = document.createElement('div');
-  container.id = 'container';
+  const content = document.createElement('div');
+  const side = document.createElement('div');
 
-  container.innerHTML = `
+  content.innerHTML = `
   <div
     id='roomInfo'
-    class='mx-4 border-b-2 border-shark-300 p-4 md:mx-auto md:w-lg lg:w-170.5 lg:flex lg:items-start lg:gap-4'>
+    class='mx-4 mb-2 border-b-2 border-shark-300 py-5 md:mx-auto md:w-lg lg:mx-0 lg:w-full lg:py-6 lg:flex lg:items-start lg:gap-6'>
     <img
-      class='block w-full h-55 object-cover rounded-md lg:h-55 lg:w-70 lg:shrink-0' />
+      class='block w-full h-55 object-cover rounded-md lg:h-55 lg:w-80 lg:shrink-0' />
     <div id='room' class='mt-4 lg:mt-0 lg:min-w-0 lg:flex-1'>
       <p id='name' class='text-2xl font-bold break-keep'></p>
       <p id='location' class='mt-4 text-base font-semibold text-shark-500'></p>
     </div>
   </div>
 
-  <div id="schedule" class="mx-4 grid grid-cols-2 gap-y-4 border-b-2 border-shark-300 p-4 md:w-lg md:justify-self-center lg:w-170.5">
+  <div id="schedule" class="mx-4 mb-2 grid grid-cols-2 gap-y-4 border-b-2 border-shark-300 py-6 md:w-lg md:justify-self-center lg:mx-0 lg:w-full lg:py-6">
     <p id="check" class="text-2xl font-bold"></p>
     <p id="nights"></p>
     <p id="checkIn" class="text-base font-semibold text-shark-500"></p>
@@ -45,15 +45,17 @@ function createDetail(detailData) {
     <p id="inDay" class="text-xl font-bold"></p>
     <p id="outDay" class="text-xl font-bold"></p>
   </div>
+  `;
 
+  side.innerHTML = `
   <div
     id='guestInfo'
-    class='mx-4 border-b-2 border-shark-300 p-4 md:w-lg md:justify-self-center lg:w-170.5'>
+    class='mx-4 mb-2 border-b-2 border-shark-300 py-6 md:w-lg md:justify-self-center lg:mx-0 lg:mb-0 lg:w-full lg:py-0 lg:pb-5 lg:border-b lg:border-shark-200'>
     <p id='guest' class='text-2xl font-bold'></p>
     <p id='people' class='mt-4 text-base font-semibold text-shark-500'></p>
   </div>
 
-  <div id="priceInfo" class="mx-4 grid grid-cols-2 gap-y-4 border-b-2 border-shark-300 p-4  md:w-lg md:justify-self-center lg:w-170.5">
+  <div id="priceInfo" class="mx-4 mb-8 grid grid-cols-2 gap-y-4 border-b-2 border-shark-300 py-6 md:w-lg md:justify-self-center lg:mx-0 lg:mb-0 lg:w-full lg:border-b-0 lg:py-5">
     <p id="price" class="text-2xl font-bold"></p>
     <p id="blank"></p>
     <p id="totalPrice" class="self-center text-base font-semibold text-shark-500"></p>
@@ -61,29 +63,29 @@ function createDetail(detailData) {
   </div>
   `;
 
-  container.querySelector('img').src = accommodation.thumbnailUrl;
-  container.querySelector('img').alt = accommodation.title;
-  container.querySelector('#name').textContent = accommodation.title;
-  container.querySelector('#location').textContent = accommodation.location;
+  content.querySelector('img').src = accommodation.thumbnailUrl;
+  content.querySelector('img').alt = accommodation.title;
+  content.querySelector('#name').textContent = accommodation.title;
+  content.querySelector('#location').textContent = accommodation.location;
 
-  container.querySelector('#check').textContent = `예약 일정`;
-  container.querySelector('#checkIn').textContent = `체크인`;
-  container.querySelector('#checkOut').textContent = `체크아웃`;
-  container.querySelector('#inDay').textContent =
+  content.querySelector('#check').textContent = `예약 일정`;
+  content.querySelector('#checkIn').textContent = `체크인`;
+  content.querySelector('#checkOut').textContent = `체크아웃`;
+  content.querySelector('#inDay').textContent =
     `${checkIn} ${schedule.checkInTime}`;
-  container.querySelector('#outDay').textContent =
+  content.querySelector('#outDay').textContent =
     `${checkOut} ${schedule.checkOutTime}`;
 
-  container.querySelector('#guest').textContent = `게스트`;
-  container.querySelector('#people').textContent =
+  side.querySelector('#guest').textContent = `게스트`;
+  side.querySelector('#people').textContent =
     `성인 ${guestCount.adults}명, 어린이 ${guestCount.children}명`;
 
-  container.querySelector('#price').textContent = `결제 정보`;
-  container.querySelector('#totalPrice').textContent = `총 결제 금액`;
-  container.querySelector('#total').textContent =
+  side.querySelector('#price').textContent = `결제 정보`;
+  side.querySelector('#totalPrice').textContent = `총 결제 금액`;
+  side.querySelector('#total').textContent =
     `${pricing.totalPrice.toLocaleString()}원`;
 
-  return container;
+  return { content, side };
 }
 
 const elements = {
@@ -100,8 +102,9 @@ const elements = {
 };
 
 function renderDetail(detailData) {
-  const container = createDetail(detailData);
-  elements.cancel.parentNode.insertBefore(container, elements.cancel);
+  const detail = createDetail(detailData);
+  document.getElementById('detail-content').appendChild(detail.content);
+  document.getElementById('detail-side').prepend(detail.side);
 }
 
 async function loadDetail() {

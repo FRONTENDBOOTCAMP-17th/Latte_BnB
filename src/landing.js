@@ -10,6 +10,9 @@ let searchBtn = null;
 const sortBox = document.getElementById('sort');
 const content = document.getElementById('content');
 const roomList = document.getElementById('roomList');
+const topBtn = document.getElementById('btn-top');
+let cardFadeDone = false;
+let lineCount = getCardsPerLine();
 
 content.prepend(heroSlider.buildSlider());
 
@@ -50,6 +53,93 @@ function renderRooms() {
   roomList.replaceChildren();
   for (const value of roomData.values()) {
     roomList.appendChild(value.getElement());
+  }
+
+  lineCount = getCardsPerLine();
+  setCardFade();
+  checkCardFade();
+}
+
+function getCardsPerLine() {
+  if (window.innerWidth >= 1536) {
+    return 4;
+  }
+
+  if (window.innerWidth >= 1024) {
+    return 3;
+  }
+
+  if (window.innerWidth >= 768) {
+    return 2;
+  }
+
+  return 1;
+}
+
+function showCardLine(start) {
+  const cards = roomList.querySelectorAll('.accommodationCard');
+  const cardsPerLine = getCardsPerLine();
+
+  for (let i = start; i < start + cardsPerLine; i++) {
+    if (!cards[i]) {
+      return;
+    }
+
+    cards[i].classList.remove('opacity-0', 'translate-y-8');
+  }
+}
+
+function setCardFade() {
+  const cards = roomList.querySelectorAll('.accommodationCard');
+  cardFadeDone = false;
+
+  cards.forEach((card) => {
+    card.classList.add(
+      'opacity-0',
+      'translate-y-8',
+      'transition-all',
+      'duration-700',
+      'ease-out',
+    );
+  });
+}
+
+function showAllCards() {
+  const cards = roomList.querySelectorAll('.accommodationCard');
+
+  cards.forEach((card) => {
+    card.classList.remove('opacity-0', 'translate-y-8');
+  });
+
+  cardFadeDone = true;
+}
+
+function checkCardFade() {
+  const cards = roomList.querySelectorAll('.accommodationCard');
+  const cardsPerLine = getCardsPerLine();
+  const viewBottom = window.scrollY + window.innerHeight - 40;
+  let hiddenCount = 0;
+
+  for (let i = 0; i < cards.length; i += cardsPerLine) {
+    const card = cards[i];
+
+    if (!card) {
+      break;
+    }
+
+    if (!card.classList.contains('opacity-0')) {
+      continue;
+    }
+
+    hiddenCount++;
+
+    if (viewBottom > card.offsetTop) {
+      showCardLine(i);
+    }
+  }
+
+  if (hiddenCount === 0) {
+    cardFadeDone = true;
   }
 }
 
@@ -137,4 +227,33 @@ document.addEventListener('change', async (e) => {
       toast.warn('[sort]: 데이터 로딩 실패', error.message, 5);
     }
   }
+});
+
+window.addEventListener('scroll', () => {
+  if (!cardFadeDone) {
+    checkCardFade();
+  }
+});
+
+window.addEventListener('resize', () => {
+  if (roomList.children.length === 0) {
+    return;
+  }
+
+  const newLineCount = getCardsPerLine();
+
+  if (lineCount !== newLineCount) {
+    lineCount = newLineCount;
+    showAllCards();
+    return;
+  }
+
+  checkCardFade();
+});
+
+topBtn.addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
 });
