@@ -101,24 +101,10 @@ function buildCalendar() {
     cell.textContent = currentDate.getDate();
 
     if (checkin && date.getTime() === checkin.getTime()) {
-      cell.classList.add(
-        'bg-primary-300',
-        'font-bold',
-        'rounded-lg',
-        'outline',
-        'outline-1',
-        'outline-shark-500',
-      );
+      cell.classList.add('bg-primary-300', 'font-bold', 'rounded-lg');
     }
     if (checkout && date.getTime() === checkout.getTime()) {
-      cell.classList.add(
-        'bg-primary-300',
-        'font-bold',
-        'rounded-lg',
-        'outline',
-        'outline-1',
-        'outline-shark-500',
-      );
+      cell.classList.add('bg-primary-300', 'font-bold', 'rounded-lg');
     }
 
     if (checkin && checkout) {
@@ -189,7 +175,6 @@ function buildCalendar() {
     currentDate.setDate(currentDate.getDate() + 1);
   }
 
-  // 마지막 7일이 추가 안 되는 경우에 빈 칸 채워넣기
   const lastRow = tbody.rows[tbody.rows.length - 1];
   const remainingCells = 7 - lastRow.cells.length;
 

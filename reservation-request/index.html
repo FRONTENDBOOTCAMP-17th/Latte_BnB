@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="../src/style.css" />
   </head>
   <body class="bg-white text-shark-800">
-    <div id="reservation-wrapper" class="max-w-280 mx-auto px-6 pb-20">
+    <div id="reservation-wrapper" class="max-w-280 mx-auto px-6 pb-24 md:px-8">
       <div
         id="reservation-header"
-        class="flex items-center gap-3 py-4 border-b border-shark-200">
+        class="flex items-center gap-3 py-5 border-b border-shark-200">
         <button
           id="btn-back"
           class="bg-transparent border-0 cursor-pointer text-lg text-shark-800">
@@ -20,8 +20,19 @@
         <h1 class="text-lg font-bold">예약 요청</h1>
       </div>
 
-      <div class="md:grid md:grid-cols-[60%_auto] md:gap-16 md:pt-6">
-        <div>
+      <div class="hidden md:block md:pt-8">
+        <p class="text-[2rem] font-black leading-tight text-shark-900">
+          예약 정보를 확인하고
+          <br />
+          일정을 선택해 주세요
+        </p>
+        <p class="mt-3 text-sm leading-6 text-shark-500">
+          숙소, 날짜, 인원 정보를 한 번에 확인한 뒤 바로 예약할 수 있어요.
+        </p>
+      </div>
+
+      <div class="md:grid md:grid-cols-[minmax(0,38rem)_23rem] md:justify-center md:gap-14 md:pt-8">
+        <div class="min-w-0">
           <section
             id="reservation-info"
             class="flex items-center gap-3 py-5 border-b border-shark-200">
@@ -32,8 +43,8 @@
             <p id="title" class="text-[15px] font-semibold"></p>
           </section>
 
-          <section id="reservation-date" class="py-5 border-b border-shark-200">
-            <h2 class="text-base font-bold mb-3">일정 선택</h2>
+          <section id="reservation-date" class="py-6 border-b border-shark-200">
+            <h2 class="text-base font-bold mb-4">일정 선택</h2>
             <button
               id="btn-date"
               class="w-full py-3.5 px-4 border border-shark-200 rounded-[10px] bg-white text-left text-sm text-shark-800 cursor-pointer hover:bg-shark-100">
@@ -41,8 +52,8 @@
             </button>
           </section>
 
-          <section id="reservation-guest" class="py-5 border-b border-shark-200 md:border-b-0">
-            <h2 class="text-base font-bold mb-3">인원 선택</h2>
+          <section id="reservation-guest" class="py-6 border-b border-shark-200 md:border-b-0">
+            <h2 class="text-base font-bold mb-4">인원 선택</h2>
             <button
               id="btn-guest"
               class="w-full py-3.5 px-4 border border-shark-200 rounded-[10px] bg-white text-left text-sm text-shark-800 cursor-pointer hover:bg-shark-100">
@@ -51,9 +62,9 @@
           </section>
         </div>
 
-        <div class="md:w-80 md:border md:border-shark-200 md:rounded-2xl md:p-6 md:h-fit md:sticky md:top-6 md:shadow-lg">
-          <section id="reservation-pricing" class="py-5 md:pt-0 md:pb-4 border-b border-shark-200">
-            <h2 class="text-base font-bold mb-3 md:hidden">요금 세부 정보</h2>
+        <div class="md:w-92 md:border md:border-shark-200 md:rounded-2xl md:p-7 md:h-fit md:sticky md:top-8 md:shadow-lg">
+          <section id="reservation-pricing" class="py-6 md:pt-0 md:pb-5 border-b border-shark-200">
+            <h2 class="text-base font-bold mb-4">요금 세부 정보</h2>
             <div class="flex justify-between text-sm py-1.5 text-shark-700">
               <span id="adult-subtotal-label"></span>
               <span id="adult-subtotal"></span>
@@ -74,7 +85,7 @@
             </div>
           </section>
 
-          <section id="reservation-btn" class="py-4 md:py-0 md:pt-4">
+          <section id="reservation-btn" class="py-5 md:py-0 md:pt-5">
             <button
               id="btn-submit"
               class="w-full py-4 border-0 rounded-xl bg-primary-500 text-white text-base font-bold cursor-pointer hover:bg-primary-400">
