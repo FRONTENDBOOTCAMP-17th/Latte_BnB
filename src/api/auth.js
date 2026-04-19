@@ -50,7 +50,7 @@ export function checkAdmin() {
 }
 
 export async function getProfile() {
-  return request('/me/profile', {
+  return authRequest('/me/profile', {
     method: 'GET',
   });
 }
