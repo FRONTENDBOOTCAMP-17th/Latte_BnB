@@ -296,7 +296,7 @@ Latte_BnB/
 -
     | 모바일 | 데스크탑 | 햄버거 메뉴 |  
     | :---: | :---: | :---: |   
-    | ![landing_mobile](./docs/screenshot/landing_mobile.jpg) | ![landing_desktop](./docs/screenshot/landing_desktop.JPG) | ![hamburger_menu](./docs/screenshot/hamburger_menu.JPG)
+    | ![landing_mobile](./docs/screenshot/landing_mobile.JPG) | ![landing_desktop](./docs/screenshot/landing_desktop.JPG) | ![hamburger_menu](./docs/screenshot/hamburger_menu.JPG)
 
 ### 숙소 상세 페이지
 
@@ -307,7 +307,7 @@ Latte_BnB/
 -
     | 모바일 | 데스크탑 | 설명 모달 | 후기 모달 |   
     | :---: | :---: | :---: | :---: |   
-    | ![detail_mobile](./docs/screenshot/detail_mobile.jpg) | ![detail_desktop](./docs/screenshot/detail_desktop.JPG) | ![desc_modal](./docs/screenshot/desc_modal.JPG) | ![review_modal](./docs/screenshot/review_modal.JPG)
+    | ![detail_mobile](./docs/screenshot/detail_mobile.JPG) | ![detail_desktop](./docs/screenshot/detail_desktop.JPG) | ![desc_modal](./docs/screenshot/desc_modal.JPG) | ![review_modal](./docs/screenshot/review_modal.JPG)
 
 ### 예약 요청 페이지
 
@@ -318,7 +318,7 @@ Latte_BnB/
 -
     | 모바일 | 데스크탑 | 캘린더 | 인원 선택 |   
     | :---: | :---: | :---: | :---: |   
-    | ![reservation_request_mobile](./docs/screenshot/reservation_request_mobile.jpg) | ![reservation_request_desktop](./docs/screenshot/reservation_request_desktop.JPG) | ![reservation_request_calander](./docs/screenshot/reservation_request_calander.JPG) | ![reservation_request_guest_selector](./docs/screenshot/reservation_request_guest_selector.JPG)
+    | ![reservation_request_mobile](./docs/screenshot/reservation_request_mobile.JPG) | ![reservation_request_desktop](./docs/screenshot/reservation_request_desktop.JPG) | ![reservation_request_calander](./docs/screenshot/reservation_request_calander.JPG) | ![reservation_request_guest_selector](./docs/screenshot/reservation_request_guest_selector.JPG)
 
 ### 예약 목록 / 예약 상세 페이지
 
@@ -329,11 +329,11 @@ Latte_BnB/
 - 예약목록 스크린샷
     | 모바일 | 데스크탑 |   
     | :---: | :---: |   
-    | ![my_reservation_mobile](./docs/screenshot/my_reservation_mobile.jpg) | ![my_reservation_desktop](./docs/screenshot/my_reservation_desktop.JPG) |
+    | ![my_reservation_mobile](./docs/screenshot/my_reservation_mobile.JPG) | ![my_reservation_desktop](./docs/screenshot/my_reservation_desktop.JPG) |
 - 예약 상세 페이지 스크린샷
     | 모바일 | 데스크탑 |   
     | :---: | :---: |   
-    | ![reservation_detail_mobile](./docs/screenshot/reservation_detail_mobile.jpg) | ![reservation_detail_desktop](./docs/screenshot/reservation_detail_desktop.JPG) |
+    | ![reservation_detail_mobile](./docs/screenshot/reservation_detail_mobile.JPG) | ![reservation_detail_desktop](./docs/screenshot/reservation_detail_desktop.JPG) |
 
 ### 위시리스트 / 프로필 페이지
 
@@ -343,11 +343,11 @@ Latte_BnB/
 - 위시리스트 스크린샷
     | 모바일 | 데스크탑 |   
     | :---: | :---: |   
-    | ![wish_mobile](./docs/screenshot/wish_mobile.jpg) | ![wish_desktop](./docs/screenshot/wish_desktop.JPG) |
+    | ![wish_mobile](./docs/screenshot/wish_mobile.JPG) | ![wish_desktop](./docs/screenshot/wish_desktop.JPG) |
 - 프로필 스크린샷
     | 모바일 | 데스크탑 | 정보 수정 |   
     | :---: | :---: | :---: |   
-    | ![profile_mobile](./docs/screenshot/profile_mobile.jpg) | ![profile_desktop](./docs/screenshot/profile_desktop.JPG) | ![profile_modify](./docs/screenshot/profile_modify.JPG)
+    | ![profile_mobile](./docs/screenshot/profile_mobile.JPG) | ![profile_desktop](./docs/screenshot/profile_desktop.JPG) | ![profile_modify](./docs/screenshot/profile_modify.JPG)
 
 ### 로그인 / 회원가입 페이지
 
@@ -358,11 +358,11 @@ Latte_BnB/
 - 로그인
     | 모바일 | 데스크탑 |   
     | :---: | :---: |   
-    | ![login_mobile](./docs/screenshot/login_mobile.jpg) | ![login_desktop](./docs/screenshot/login_desktop.JPG) |
+    | ![login_mobile](./docs/screenshot/login_mobile.JPG) | ![login_desktop](./docs/screenshot/login_desktop.JPG) |
 - 회원가입
     | 모바일 | 데스크탑 |   
     | :---: | :---: |   
-    | ![register_mobile](./docs/screenshot/register_mobile.jpg) | ![register_desktop](./docs/screenshot/register_desktop.JPG) |
+    | ![register_mobile](./docs/screenshot/register_mobile.JPG) | ![register_desktop](./docs/screenshot/register_desktop.JPG) |
 
 ### 관리자 페이지
 
@@ -372,19 +372,19 @@ Latte_BnB/
 - 관리자 랜딩, 관리자 로그인
     | 랜딩 | 로그인 |   
     | :---: | :---: |   
-    | ![admin_landing](./docs/screenshot/admin_landing.jpg) | ![admin_login](./docs/screenshot/admin_login.JPG) |
+    | ![admin_landing](./docs/screenshot/admin_landing.JPG) | ![admin_login](./docs/screenshot/admin_login.JPG) |
 - 관리자 숙소 등록
     | 등록1 | 등록2 | 등록3 | 등록4 |   
     | :---: | :---: | :---: | :---: |   
-    | ![admin_add_1](./docs/screenshot/admin_add_1.jpg) | ![admin_add_2](./docs/screenshot/admin_add_2.JPG) | ![admin_add_3](./docs/screenshot/admin_add_3.JPG) | ![admin_add_4](./docs//screenshot/admin_add_4.JPG)
+    | ![admin_add_1](./docs/screenshot/admin_add_1.JPG) | ![admin_add_2](./docs/screenshot/admin_add_2.JPG) | ![admin_add_3](./docs/screenshot/admin_add_3.JPG) | ![admin_add_4](./docs//screenshot/admin_add_4.JPG)
 - 관리자 숙소 상세
     | 상세1 | 상세2 |   
     | :---: | :---: |   
-    | ![admin_detail_1](./docs/screenshot/admin_detail_1.jpg) | ![admin_detail_2](./docs/screenshot/admin_detail_2.JPG)
+    | ![admin_detail_1](./docs/screenshot/admin_detail_1.JPG) | ![admin_detail_2](./docs/screenshot/admin_detail_2.JPG)
 - 관리자 숙소 수정
     | 수정1 | 수정2 | 수정3 |   
     | :---: | :---: | :---: |   
-    | ![admin_modfiy_1](./docs/screenshot/admin_modify_1.jpg) | ![admin_modify_2](./docs/screenshot/admin_modify_2.JPG) | ![admin_modify_3](./docs/screenshot/admin_modify_3.JPG) 
+    | ![admin_modfiy_1](./docs/screenshot/admin_modify_1.JPG) | ![admin_modify_2](./docs/screenshot/admin_modify_2.JPG) | ![admin_modify_3](./docs/screenshot/admin_modify_3.JPG) 
 
 ## 트러블 슈팅
 
